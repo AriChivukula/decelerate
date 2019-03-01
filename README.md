@@ -14,16 +14,17 @@ Data accessors for directories of workbooks of sheets of rows/columns of cells.
 `test`
 ## External API
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
-### CellParser
-`test`
-### ColumnParser/RowParser
-`test`
-### SheetParser
-`test`
-### WorkbookParser
-`test`
-### DirectoryParser
-`test`
+### Cell
+`type CellParser = async (cell: Cell) => Promise<{ [key: string]:  boolean | number | string; }>`
+### Column/Row
+`type ColumnParser = async (column: Column) => Promise<{ [key: string]:  CellBoundParser[]; }>`
+`type RowParser = async (row: Row) => Promise<{ [key: string]:  CellBoundParser[]; }>`
+### Sheet
+`type SheetParser = async (sheet: Sheet) => Promise<{ [key: string]:  ColumnBoundParser[] | RowBoundParser[]; }>`
+### Workbook
+`type WorkbookParser = async (workbook: Workbook) => Promise<{ [key: string]:  SheetBoundParser[]; }>`
+### Directory
+`type DirectoryParser = async (directory: Directory) => Promise<{ [key: string]:  WorkbookBoundParser[]; }>`
 ## CLI
 `npx decelerate --directory ROOT_DIRECTORY --parser ROOT_PARSER`
 ### Root Directory
