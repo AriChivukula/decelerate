@@ -1,9 +1,7 @@
 import "mocha";
 
 import * as chai from "chai";
-import {
-  chaiAsPromised
-} from "chai-as-promised";
+import chaiAsPromised from "chai-as-promised";
 
 import {
   noop,
