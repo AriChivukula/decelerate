@@ -3,37 +3,95 @@ This library provides an extendable spreadsheet parser.
 ## Internal API
 Data accessors for directories of workbooks of sheets of rows/columns of cells.
 ### Directory
-`test`
+```
+type DirectoryOutput = { [key: string]:  (DirectoryBinding | WorkbookBinding)[]; };
+interface DirectoryBinding {
+  execute(): DirectoryOutput
+}
+interface Directory {
+  bindParserToDirectory(parser: DirectoryParser, name: string): DirectoryBinding;
+  bindParserToDirectories(parser: DirectoryParser, match: RegExp): DirectoryBinding;
+  bindParserToWorkbook(parser: WorkbookParser, name: string): WorkbookBinding;
+  bindParserToWorkbooks(parser: WorkbookParser, match: RegExp): WorkbookBinding;
+}
+```
 ### Workbook
-`test`
+```
+type WorkbookOutput = { [key: string]:  SheetBinding[]; };
+interface WorkbookBinding {
+  execute(): WorkbookOutput;
+}
+interface Workbook {
+  bindParserToSheet(parser: SheetParser, name: string): SheetBinding;
+  bindParserToSheets(parser: SheetParser, match: RegExp): SheetBinding;
+}
+```
 ### Sheet
-`test`
+```
+type SheetOutput = { [key: string]:  (ColumnBinding | RowBinding)[]; };
+interface SheetBinding {
+  execute(): SheetOutput;
+}
+interface Sheet {
+  bindParserToColumn(parser: ColumnParser, index: number): ColumnBinding;
+  bindParserToColumnRange(parser: ColumnParser, start: number, length: number): ColumnBinding;
+  bindParserToRow(parser: RowParser, index: number): RowBinding;
+  bindParserToRowRange(parser: RowParser, start: number, length: number): RowBinding;
+}
+```
 ### Column/Row
-`test`
+```
+type ColumnOutput = { [key: string]:  CellBinding[]; };
+type RowOutput = { [key: string]:  CellBinding[]; };
+interface ColumnBinding {
+  execute(): ColumnOutput;
+}
+interface RowBinding {
+  execute(): RowOutput;
+}
+interface Column {
+  bindParserToCell(parser: CellParser, index: number): CellBinding;
+  bindParserToCellRange(parser: CellParser, start: number, length: number): CellBinding;
+}
+interface Row {
+  bindParserToCell(parser: CellParser, index: number): CellBinding;
+  bindParserToCellRange(parser: CellParser, start: number, length: number): CellBinding;
+}
+```
 ### Cell
-`test`
+```
+type CellOutput = { [key: string]:  boolean | number | string; };
+interface CellBinding {
+  execute(): CellOutput;
+}
+interface Cell {
+  toBoolean(): boolean;
+  toNumber(): number;
+  toString(): string;
+}
+```
 ## External API
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
 ### Cell
 ```
-type CellParser = async (cell: Cell) => Promise<{ [key: string]:  boolean | number | string; }>
+type CellParser = async (cell: Cell) => Promise<CellOutput>
 ```
 ### Column/Row
 ```
-type ColumnParser = async (column: Column) => Promise<{ [key: string]:  CellBoundParser[]; }>
-type RowParser = async (row: Row) => Promise<{ [key: string]:  CellBoundParser[]; }>
+type ColumnParser = async (column: Column) => Promise<ColumnOutput>
+type RowParser = async (row: Row) => Promise<RowOutput>
 ```
 ### Sheet
 ```
-type SheetParser = async (sheet: Sheet) => Promise<{ [key: string]:  ColumnBoundParser[] | RowBoundParser[]; }>
+type SheetParser = async (sheet: Sheet) => Promise<SheetOutput>
 ```
 ### Workbook
 ```
-type WorkbookParser = async (workbook: Workbook) => Promise<{ [key: string]:  SheetBoundParser[]; }>
+type WorkbookParser = async (workbook: Workbook) => Promise<WorkbookOutput>
 ```
 ### Directory
 ```
-type DirectoryParser = async (directory: Directory) => Promise<{ [key: string]:  WorkbookBoundParser[]; }>
+type DirectoryParser = async (directory: Directory) => Promise<DirectoryOutput>
 ```
 ## CLI
 ```
