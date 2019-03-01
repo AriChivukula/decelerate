@@ -30,3 +30,5 @@ Data parsers to define extraction of data from cells from rows/columns from shee
 The directory within which all target spreadsheets are.
 ### Root Parser
 The `DirectoryParser` default export of the `.ts` module.
+### Output
+`JSON` results from the actualized parse tree.
