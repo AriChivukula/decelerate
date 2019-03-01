@@ -9,8 +9,8 @@ interface DirectoryBinding {
   execute(): DirectoryOutput
 }
 interface Directory {
-  bindParserToDirectory(parser: DirectoryParser, name: string): DirectoryBinding;
-  bindParserToDirectories(parser: DirectoryParser, match: RegExp): DirectoryBinding;
+  bindParserToSubDirectory(parser: DirectoryParser, name: string): DirectoryBinding;
+  bindParserToSubDirectories(parser: DirectoryParser, match: RegExp): DirectoryBinding;
   bindParserToWorkbook(parser: WorkbookParser, name: string): WorkbookBinding;
   bindParserToWorkbooks(parser: WorkbookParser, match: RegExp): WorkbookBinding;
 }
