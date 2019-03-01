@@ -5,7 +5,6 @@ cache: yarn
 install:
 - npm install --global --upgrade yarn
 - yarn install
-- yarn picaresque
 jobs:
   include:
   - stage: Test
