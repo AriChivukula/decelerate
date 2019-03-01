@@ -16,19 +16,19 @@
   "dependencies": {
     "@babel/polyfill": "7.2.5",
     "xlsx": "0.14.1",
-    "yargs": "12.0.5"
+    "yargs": "13.2.1"
   },
   "devDependencies": {
     "@types/chai": "4.1.7",
     "@types/chai-as-promised": "7.1.0",
-    "@types/mocha": "5.2.5",
-    "@types/node": "10.12.24",
-    "@types/yargs": "12.0.8",
+    "@types/mocha": "5.2.6",
+    "@types/node": "11.10.0",
+    "@types/yargs": "12.0.9",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
-    "mocha": "5.2.0",
+    "mocha": "6.0.2",
     "ts-node": "8.0.2",
-    "typescript": "3.3.3"
+    "typescript": "3.3.3333"
   },
   "include": [
     "source/*"
