@@ -11,6 +11,7 @@ import {
 export type RowParser = ListParser<IRow>;
 
 export interface IRow extends IList {
+  kind: "Row",
 }
 
 export class Row extends List implements IRow, CanBeExported {
