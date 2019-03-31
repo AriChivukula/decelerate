@@ -36,7 +36,38 @@ describe(
       "sheet",
       async () => {
         const sheetExport = await demoSheet().export();
-        chai.expect(sheetExport).to.deep.equal({});
+        chai.expect(sheetExport).to.deep.equal({
+          "0:0": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+          "M:0": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+          "N:1": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+          "N:2": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+          "P:1": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+          "P:2": {
+            "A:0": "test",
+            "B:1": "test",
+            "B:2": "test",
+          },
+        });
       },
     );
 
