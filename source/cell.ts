@@ -2,8 +2,8 @@ import {
   CanBeExplained,
 } from "./explain";
 
-export type CellParser = async (cell: ICell) => Promise<void>;
-export type ValueParser = async (string: raw) => Promise<boolean | number | string>;
+export type CellParser = (cell: ICell) => Promise<void>;
+export type ValueParser = (string: raw) => Promise<boolean | number | string>;
 
 export interface ICell {
   toBoolean(): this;
