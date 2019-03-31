@@ -46,6 +46,14 @@ describe(
       },
     };
 
+    const workbookExample = {
+      "parser": "Workbook",
+      "inner": {
+        "/R/": sheetExample,
+        "Q": sheetExample,
+      },
+    };
+
     it(
       "directory",
       async () => {
@@ -61,10 +69,7 @@ describe(
       "workbook",
       async () => {
         const workbookExplain = await demoWorkbook().explain();
-        chai.expect(workbookExplain).to.deep.equal({
-          parser: "Workbook",
-          inner: {},
-        });
+        chai.expect(workbookExplain).to.deep.equal(workbookExample);
       },
     );
 
