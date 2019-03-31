@@ -59,11 +59,28 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     return target.name + ":" + target.index;
   }
 
-  explain(): TExplained {
-    return {
+  async explain(): Promise<TExplained> {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Column":
+          const column = new Column();
+          await target.parser(column);
+          finalTargets.inner[key] = await column.explain();
+          break;
+        case "Row":
+          const row = new Row();
+          await target.parser(row);
+          finalTargets.inner[key] = await row.explain();
+          break;
+      }
+    }
+    return finalTargets;
   }
 
   async export(): Promise<TExported> {
