@@ -3,7 +3,9 @@ import {
   TExplained,
   CanBeExported,
   TExported,
-} from "./interfaces";
+  ITarget,
+  HasTargets,
+} from "./common";
 import {
   SheetParser,
 } from "./sheet";
@@ -15,7 +17,11 @@ export interface IWorkbook {
   bindToSheets(match: RegExp, parser: SheetParser): this;
 }
 
-export class Workbook implements IWorkbook, CanBeExplained, CanBeExported {
+export interface IWorkbookTarget extends ITarget {
+  readonly parser: SheetParser,
+}
+
+export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, CanBeExplained, CanBeExported {
   bindToSheet(name: string, parser: SheetParser): this {
     return this;
   }
