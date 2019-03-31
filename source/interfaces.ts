@@ -1,7 +1,7 @@
 export type TExplained = {
   parser: string;
   inner: {
-    [k: string]: TExplained | boolean | number | string;
+    [k: string]: TExplained | null;
   };
 };
 
