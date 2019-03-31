@@ -39,7 +39,6 @@ async function demoSheetParser(sheet: ISheet): Promise<void> {
 }
 
 export function demoSheet(): Sheet {
-  return new Sheet();
   const sheet = new Sheet();
   demoSheetParser(sheet);
   return sheet;
