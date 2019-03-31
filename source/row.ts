@@ -10,4 +10,7 @@ export interface IRow extends IList {
 }
 
 export class Row extends List implements IRow {
+  explain(): Object {
+    return {};
+  }
 }
