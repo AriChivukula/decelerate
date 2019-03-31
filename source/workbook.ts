@@ -2,7 +2,7 @@ import {
   SheetParser,
 } from "./sheet";
 
-type WorkbookParser = async (workbook: IWorkbook) => Promise<void>
+type WorkbookParser = async (workbook: IWorkbook) => Promise<void>;
 
 export interface IWorkbook {
   bindToSheet(name: string, parser: SheetParser): this;
