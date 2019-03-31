@@ -13,6 +13,9 @@ import {
 import {
   Row,
 } from "../source/row";
+import {
+  Cell,
+} from "../source/cell";
 
 export function demoDirectory(): Directory {
   return new Directory();
@@ -32,4 +35,8 @@ export function demoColumn(): Column {
 
 export function demoRow(): Row {
   return new Row();
+}
+
+export function demoCell(): Cell {
+  return new Cell();
 }
