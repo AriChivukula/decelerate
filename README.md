@@ -4,7 +4,7 @@ This library provides an extendable spreadsheet parser.
 Data accessors for directories of workbooks of sheets of rows/columns of cells.
 ### Directory
 ```
-interface Directory {
+interface IDirectory {
   bindToSubDirectory(name: string, parser: DirectoryParser): this;
   bindToSubDirectories(match: RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string, parser: WorkbookParser): this;
@@ -13,14 +13,14 @@ interface Directory {
 ```
 ### Workbook
 ```
-interface Workbook {
+interface IWorkbook {
   bindToSheet(name: string, parser: SheetParser): this;
   bindToSheets(match: RegExp, parser: SheetParser): this;
 }
 ```
 ### Sheet
 ```
-interface Sheet {
+interface ISheet {
   bindToColumn(index: number, parser: ColumnParser): this;
   bindToColumnRange(start: number, length: number, parser: ColumnParser): this;
   bindToRow(index: number, parser: RowParser): this;
@@ -29,18 +29,18 @@ interface Sheet {
 ```
 ### Column/Row
 ```
-interface Column {
+interface IColumn {
   bindToCell(index: number, parser: CellParser): this;
   bindToCellRange(start: number, length: number, parser: CellParser): this;
 }
-interface Row {
+interface IRow {
   bindToCell(index: number, parser: CellParser): this;
   bindToCellRange(start: number, length: number, parser: CellParser): this;
 }
 ```
 ### Cell
 ```
-interface Cell {
+interface ICell {
   toBoolean(): this;
   toNumber(): this;
   toString(): this;
@@ -50,7 +50,7 @@ interface Cell {
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
 ### Cell
 ```
-type CellParser = async (cell: Cell) => Promise<boolean | number | string>
+type CellParser = async (cell: Cell) => Promise<void>
 ```
 ### Column/Row
 ```
