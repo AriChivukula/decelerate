@@ -18,8 +18,8 @@ export interface IList {
 }
 
 export interface IListTarget extends ITarget {
-  index: number,
-  parser: CellParser,
+  readonly index: number,
+  readonly parser: CellParser,
 }
 
 export abstract class List extends HasTarget<IListTarget> implements IList, CanBeExplained, CanBeExported {
