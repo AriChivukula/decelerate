@@ -37,7 +37,7 @@ export class Row extends List implements IRow, CanBeExplained, CanBeExported {
     for (const key in targets) {
       const cell = new Cell();
       const target = targets[key];
-      finalTargets[key] = await target.parser(cell);
+      finalTargets.inner[key] = await target.parser(cell);
     }
     return finalTargets;
   }
