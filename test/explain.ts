@@ -54,14 +54,31 @@ describe(
       },
     };
 
+    const directoryExample = {
+      "parser": "Directory",
+      "inner": {
+        "/X/": {
+          "parser": "Directory",
+          "inner": {
+            "/Z/": workbookExample,
+            "Y": workbookExample,
+          },
+        },
+        "W": {
+          "parser": "Directory",
+          "inner": {
+            "/Z/": workbookExample,
+            "Y": workbookExample,
+          },
+        },
+      },
+    };
+
     it(
       "directory",
       async () => {
         const directoryExplain = await demoDirectory().explain();
-        chai.expect(directoryExplain).to.deep.equal({
-          parser: "Directory",
-          inner: {},
-        });
+        chai.expect(directoryExplain).to.deep.equal(directoryExample);
       },
     );
 
