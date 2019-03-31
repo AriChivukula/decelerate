@@ -27,5 +27,8 @@ export {
 
 export {
   CellParser,
+  CellBooleanParser,
+  CellNumberParser,
+  CellStringParser,
   ICell,
 } from "./cell";
