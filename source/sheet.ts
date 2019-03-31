@@ -74,11 +74,11 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
       switch (target.kind) {
         case "Column":
           const column = new Column();
-          await target.parse(column);
+          await target.parser(column);
           finalTargets[key] = await column.export();
         case "Row":
           const row = new Row();
-          await target.parse(row);
+          await target.parser(row);
           finalTargets[key] = await row.export();
       }
     }
