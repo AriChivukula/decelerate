@@ -1,4 +1,7 @@
 import {
+  CanBeExplained,
+} from "./explain";
+import {
   IList,
   List,
   ListParser,
@@ -9,7 +12,7 @@ export type RowParser = ListParser<IRow>;
 export interface IRow extends IList {
 }
 
-export class Row extends List implements IRow {
+export class Row extends List implements IRow, CanBeExplained {
   explain(): Object {
     return {};
   }
