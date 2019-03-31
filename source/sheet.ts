@@ -3,6 +3,8 @@ import {
   TExplained,
   CanBeExported,
   TExported,
+  ITarget,
+  HasTargets,
 } from "./interfaces";
 import {
   ColumnParser,
@@ -20,7 +22,12 @@ export interface ISheet {
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
 }
 
-export class Sheet implements ISheet, CanBeExplained, CanBeExported {
+export interface ISheetTarget extends ITarget {
+  readonly index: number,
+  readonly parser: ColumnParser | RowParser,
+}
+
+export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     return this;
   }
