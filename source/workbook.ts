@@ -3,7 +3,7 @@ import {
   TExplained,
   CanBeExported,
   TExported,
-} from "./explain";
+} from "./interfaces";
 import {
   SheetParser,
 } from "./sheet";
