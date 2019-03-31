@@ -1,8 +1,6 @@
 import {
   CanBeExplained,
   TExplained,
-  CanBeExported,
-  TExported,
   ITarget,
   HasTargets,
 } from "./common";
@@ -22,7 +20,7 @@ export interface IListTarget extends ITarget {
   readonly parser: CellParser,
 }
 
-export abstract class List extends HasTarget<IListTarget> implements IList, CanBeExplained, CanBeExported {
+export abstract class List extends HasTarget<IListTarget> implements IList, CanBeExplained {
   bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
@@ -36,9 +34,5 @@ export abstract class List extends HasTarget<IListTarget> implements IList, CanB
       parser: this.constructor.name,
       inner: {},
     };
-  }
-
-  export(): TExported {
-    return {};
   }
 }
