@@ -12,7 +12,6 @@ export interface IDirectory {
 }
 
 export class Directory implements IDirectory {
-
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
@@ -28,5 +27,4 @@ export class Directory implements IDirectory {
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this {
     return this;
   }
-
 }
