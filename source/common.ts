@@ -6,7 +6,7 @@ export type TExplained = {
 };
 
 export interface CanBeExplained {
-  explain(): TExplained;
+  explain(): Promise<TExplained>;
 }
 
 export type TExported = {
