@@ -14,6 +14,7 @@ import {
 export type ColumnParser = ListParser<IColumn>;
 
 export interface IColumn extends IList {
+  kind: "Column",
 }
 
 export class Column extends List implements IColumn, CanBeExported {
