@@ -19,11 +19,7 @@ export type ColumnParser = ListParser<IColumn>;
 export interface IColumn extends IList {
 }
 
-export interface IColumnTarget extends IListTarget {
-  kind: "Column",
-}
-
-export class Column extends List<IColumnTarget> implements IColumn, CanBeExplained, CanBeExported {
+export class Column extends List implements IColumn, CanBeExplained, CanBeExported {
   explain(): TExplained {
     return {
       parser: this.constructor.name,
