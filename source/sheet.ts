@@ -25,6 +25,7 @@ export interface ISheet {
 }
 
 export interface ISheetTarget extends ITarget {
+  kind: "Sheet",
   readonly index: number,
   readonly parser: ColumnParser | RowParser,
 }
