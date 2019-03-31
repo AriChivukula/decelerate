@@ -19,7 +19,7 @@ export interface IRow extends IList {
 }
 
 export class Row extends List implements IRow, CanBeExplained, CanBeExported {
-  explain(): TExplained {
+  async explain(): Promise<TExplained> {
     const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
@@ -37,7 +37,7 @@ export class Row extends List implements IRow, CanBeExplained, CanBeExported {
     for (const key in targets) {
       const cell = new Cell();
       const target = targets[key];
-      finalTargets.inner[key] = await target.parser(cell);
+      finalTargets[key] = await target.parser(cell);
     }
     return finalTargets;
   }
