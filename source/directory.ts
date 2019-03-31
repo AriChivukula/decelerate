@@ -46,7 +46,7 @@ export class Directory extends HasTargets<IDirectoryTarget> implements IDirector
     return target.name;
   }
 
-  async explain(): Promise<TExplained> {
+  explain(): TExplained {
     return {
       parser: this.constructor.name,
       inner: {},
