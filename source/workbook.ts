@@ -35,11 +35,19 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return target.name;
   }
 
-  explain(): TExplained {
-    return {
+  async explain(): Promise<TExplained> {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      const target = targets[key];
+      const sheet = new Sheet();
+      await target.parser(sheet);
+      finalTargets.inner[key] = await sheet.explain();
+    }
+    return finalTargets;
   }
 
   async export(): Promise<TExported> {
