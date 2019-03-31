@@ -54,7 +54,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return target.name;
   }
 
-  explain(): TExplained {
+  async explain(): Promise<TExplained> {
     const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
