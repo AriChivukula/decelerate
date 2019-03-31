@@ -18,7 +18,7 @@ export interface IListTarget extends ITarget {
   readonly parser: CellParser,
 }
 
-export abstract class List<T extends IListTarget> extends HasTargets<T> implements IList {
+export abstract class List extends HasTargets<IListTarget> implements IList {
   bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
@@ -27,7 +27,7 @@ export abstract class List<T extends IListTarget> extends HasTargets<T> implemen
     return this;
   }
 
-  getTargetKey(target: T): string {
+  getTargetKey(target: IListTarget): string {
     return target.name + target.index;
   }
 }
