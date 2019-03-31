@@ -1,7 +1,9 @@
 import {
+  IDirectory,
   Directory,
 } from "../source/directory";
 import {
+  IWorkbook,
   Workbook,
 } from "../source/workbook";
 import {
@@ -22,12 +24,35 @@ import {
   Cell,
 } from "../source/cell";
 
+async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
+  directory
+    .bindToSubDirectory("W", demoDirectoryParserB)
+    .bindToSubDirectories(/X/, demoDirectoryParserB);
+}
+
+
+async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
+  directory
+    .bindToWorkbook("Y", demoWorkbookParser)
+    .bindToWorkbooks(/Z/, demoWorkbookParser);
+}
+
 export function demoDirectory(): Directory {
-  return new Directory();
+  const directory = new Directory();
+  demoDirectoryParserA(directory);
+  return directory;
+}
+
+async function demoWorkbookParser(workbook: IWorkbook): Promise<void> {
+  sheet
+    .bindToSheet("Q", demoSheetParser)
+    .bindToSheets(/R/, demoSheetParser);
 }
 
 export function demoWorkbook(): Workbook {
-  return new Workbook();
+  const workbook = new Workbook();
+  demoWorkbookParser(workbook);
+  return workbook;
 }
 
 async function demoSheetParser(sheet: ISheet): Promise<void> {
