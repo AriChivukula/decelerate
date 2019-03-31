@@ -18,11 +18,7 @@ export type RowParser = ListParser<IRow>;
 export interface IRow extends IList {
 }
 
-export interface IRowTarget extends IListTarget {
-  kind: "Row",
-}
-
-export class Row extends List<IRowTarget> implements IRow, CanBeExplained, CanBeExported {
+export class Row extends List implements IRow, CanBeExplained, CanBeExported {
   explain(): TExplained {
     return {
       parser: this.constructor.name,
