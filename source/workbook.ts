@@ -1,5 +1,8 @@
 import {
   CanBeExplained,
+  TExplained,
+  CanBeExported,
+  TExported,
 } from "./explain";
 import {
   SheetParser,
@@ -12,7 +15,7 @@ export interface IWorkbook {
   bindToSheets(match: RegExp, parser: SheetParser): this;
 }
 
-export class Workbook implements IWorkbook, CanBeExplained {
+export class Workbook implements IWorkbook, CanBeExplained, CanBeExported {
   bindToSheet(name: string, parser: SheetParser): this {
     return this;
   }
@@ -21,7 +24,14 @@ export class Workbook implements IWorkbook, CanBeExplained {
     return this;
   }
 
-  explain(): Object {
+  explain(): TExplained {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
+  }
+
+  export(): TExported {
     return {};
   }
 }
