@@ -28,7 +28,7 @@ export abstract class HasTargets<T extends ITarget> {
     this.targets.push(target);
   }
   
-  abstract getTargetKey(target: T) : string;
+  abstract getTargetKey(target: T): string;
   
   protected getTargets(): { [k: string]: T } {
     const finalTargets: { [k: string]: T } = {};
