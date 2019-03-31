@@ -5,7 +5,7 @@ import {
   WorkbookParser,
 } from "./workbook";
 
-export type DirectoryParser = async (directory: IDirectory) => Promise<void>;
+export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 
 export interface IDirectory {
   bindToSubDirectory(name: string, parser: DirectoryParser): this;
