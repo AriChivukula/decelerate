@@ -3,6 +3,8 @@ import {
   TExplained,
   CanBeExported,
   TExported,
+  ITarget,
+  HasTargets,
 } from "./interfaces";
 import {
   CellParser,
@@ -15,7 +17,12 @@ export interface IList {
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
 
-export abstract class List implements IList, CanBeExplained, CanBeExported {
+export interface IListTarget extends ITarget {
+  index: number,
+  parser: CellParser,
+}
+
+export abstract class List extends HasTarget<IListTarget> implements IList, CanBeExplained, CanBeExported {
   bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
