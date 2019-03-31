@@ -4,20 +4,12 @@ import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import {
-  Directory,
-} from "../source/directory";
-import {
-  Workbook,
-} from "../source/workbook";
-import {
-  Sheet,
-} from "../source/sheet";
-import {
-  Column,
-} from "../source/column";
-import {
-  Row,
-} from "../source/row";
+  demoDirectory,
+  demoWorkbook,
+  demoSheet,
+  demoColumn,
+  demoRow,
+} from "./demo";
 
 chai.use(chaiAsPromised);
 
@@ -27,8 +19,7 @@ describe(
     it(
       "directory",
       async () => {
-        const directory = new Directory();
-        const directoryExplain = await directory.explain();
+        const directoryExplain = await demoDirectory().explain();
         chai.expect(directoryExplain).to.deep.equal({
           parser: "Directory",
           inner: {},
@@ -39,8 +30,7 @@ describe(
     it(
       "workbook",
       async () => {
-        const workbook = new Workbook();
-        const workbookExplain = await workbook.explain();
+        const workbookExplain = await demoWorkbook().explain();
         chai.expect(workbookExplain).to.deep.equal({
           parser: "Workbook",
           inner: {},
@@ -51,8 +41,7 @@ describe(
     it(
       "sheet",
       async () => {
-        const sheet = new Sheet();
-        const sheetExplain = await sheet.explain();
+        const sheetExplain = await demoSheet().explain();
         chai.expect(sheetExplain).to.deep.equal({
           parser: "Sheet",
           inner: {},
@@ -63,8 +52,7 @@ describe(
     it(
       "column",
       async () => {
-        const column = new Column();
-        const columnExplain = await column.explain();
+        const columnExplain = await demoColumn().explain();
         chai.expect(columnExplain).to.deep.equal({
           parser: "Column",
           inner: {},
@@ -75,8 +63,7 @@ describe(
     it(
       "row",
       async () => {
-        const row = new Row();
-        const rowExplain = await row.explain();
+        const rowExplain = await demoRow().explain();
         chai.expect(rowExplain).to.deep.equal({
           parser: "Row",
           inner: {},
