@@ -44,10 +44,15 @@ interface ICell {
   toBoolean(): this;
   toNumber(): this;
   toString(): this;
+  toCustom(parser: ValueParser): this;
 }
 ```
 ## External API
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
+### Value
+```
+type ValueParser = async (string: raw) => Promise<boolean | number | string>;
+```
 ### Cell
 ```
 type CellParser = async (cell: Cell) => Promise<void>
