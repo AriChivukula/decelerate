@@ -44,7 +44,7 @@ export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExpl
     return this;
   }
 
-  getTargetKey(target: T): string {
+  getTargetKey(target: ISheetTarget): string {
     return target.name + ":" + target.index;
   }
 
