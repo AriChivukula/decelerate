@@ -34,7 +34,13 @@ export function demoColumn(): Column {
 }
 
 export function demoRow(): Row {
-  return new Row();
+  return (new Row())
+    .bindToCell("rowA", 0, demoCellParser)
+    .bindToCellRange("rowB", 1, 2, demoCellParser);
+}
+
+function demoCellParser(cell: ICell): string {
+  return "test";
 }
 
 export function demoCell(): Cell {
