@@ -1,4 +1,7 @@
 import {
+  CanBeExplained,
+} from "./explain";
+import {
   WorkbookParser,
 } from "./workbook";
 
@@ -11,7 +14,7 @@ export interface IDirectory {
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
 }
 
-export class Directory implements IDirectory {
+export class Directory implements IDirectory, CanBeExplained {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
@@ -26,5 +29,9 @@ export class Directory implements IDirectory {
 
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this {
     return this;
+  }
+
+  explain(): Object {
+    return {};
   }
 }
