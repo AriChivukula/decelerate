@@ -30,6 +30,10 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return this;
   }
 
+  getTargetKey(target: T): string {
+    return target.name;
+  }
+
   explain(): TExplained {
     return {
       parser: this.constructor.name,
