@@ -56,9 +56,9 @@ describe(
         chai.expect(columnExplain).to.deep.equal({
           parser: "Column",
           inner: {
-            "rowA:0": null,
-            "rowB:1": null,
-            "rowB:2": null,
+            "A:0": null,
+            "B:1": null,
+            "B:2": null,
           },
         });
       },
@@ -71,9 +71,9 @@ describe(
         chai.expect(rowExplain).to.deep.equal({
           parser: "Row",
           inner: {
-            "rowA:0": null,
-            "rowB:1": null,
-            "rowB:2": null,
+            "A:0": null,
+            "B:1": null,
+            "B:2": null,
           },
         });
       },
