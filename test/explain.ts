@@ -21,42 +21,47 @@ import {
 
 chai.use(chaiAsPromised);
 
-it(
-  "directory",
+describe(
+  "explain",
   () => {
-    const directory = new Directory();
-    chai.expect(directory.explain()).to.deep.equal({});
-  },
-);
+    it(
+      "directory",
+      () => {
+        const directory = new Directory();
+        chai.expect(directory.explain()).to.deep.equal({});
+      },
+    );
 
-it(
-  "workbook",
-  () => {
-    const workbook = new Workbook();
-    chai.expect(workbook.explain()).to.deep.equal({});
-  },
-);
+    it(
+      "workbook",
+      () => {
+        const workbook = new Workbook();
+        chai.expect(workbook.explain()).to.deep.equal({});
+      },
+    );
 
-it(
-  "sheet",
-  () => {
-    const sheet = new Sheet();
-    chai.expect(sheet.explain()).to.deep.equal({});
-  },
-);
+    it(
+      "sheet",
+      () => {
+        const sheet = new Sheet();
+        chai.expect(sheet.explain()).to.deep.equal({});
+      },
+    );
 
-it(
-  "column",
-  () => {
-    const column = new Column();
-    chai.expect(column.explain()).to.deep.equal({});
-  },
-);
+    it(
+      "column",
+      () => {
+        const column = new Column();
+        chai.expect(column.explain()).to.deep.equal({});
+      },
+    );
 
-it(
-  "row",
-  () => {
-    const row = new Row();
-    chai.expect(row.explain()).to.deep.equal({});
+    it(
+      "row",
+      () => {
+        const row = new Row();
+        chai.expect(row.explain()).to.deep.equal({});
+      },
+    );
   },
 );
