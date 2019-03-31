@@ -20,7 +20,7 @@ export interface IDirectory {
 }
 
 export interface TDirectoryTarget extends ITarget {
-  parser: DirectoryParser | WorkbookParser,
+  readonly parser: DirectoryParser | WorkbookParser,
 }
 
 export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
