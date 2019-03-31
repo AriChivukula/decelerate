@@ -1,9 +1,12 @@
 import {
+  CanBeExplained,
+  TExplained,
   CanBeExported,
   TExported,
 } from "./common";
 import {
   IList,
+  IListTarget,
   List,
   ListParser,
 } from "./list";
@@ -14,10 +17,20 @@ import {
 export type ColumnParser = ListParser<IColumn>;
 
 export interface IColumn extends IList {
+}
+
+export interface IColumnTarget extends IListTarget {
   kind: "Column",
 }
 
-export class Column extends List implements IColumn, CanBeExported {
+export class Column extends List<IColumnTarget> implements IColumn, CanBeExplained, CanBeExported {
+  explain(): TExplained {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
+  }
+
   async export(): Promise<TExported> {
     const targets = this.getTargets();
     const finalTargets: TExported = {};
