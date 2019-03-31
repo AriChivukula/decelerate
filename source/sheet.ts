@@ -3,7 +3,7 @@ import {
   RowParser,
 } from "./list";
 
-type SheetParser = async (sheet: ISheet) => Promise<void>;
+export type SheetParser = async (sheet: ISheet) => Promise<void>;
 
 export interface ISheet {
   bindToColumn(index: number, parser: ColumnParser): this;
