@@ -27,7 +27,7 @@ export abstract class List<T extends IListTarget> extends HasTargets<T> implemen
     return this;
   }
 
-  getTargetKey(target: IListTarget): string {
+  getTargetKey(target: T): string {
     return target.name + target.index;
   }
 }
