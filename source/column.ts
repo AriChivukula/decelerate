@@ -20,11 +20,16 @@ export interface IColumn extends IList {
 }
 
 export class Column extends List implements IColumn, CanBeExplained, CanBeExported {
-  explain(): TExplained {
-    return {
+  async explain(): Promise<TExplained> {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      finalTargets.inner[key] = null;
+    }
+    return finalTargets;
   }
 
   async export(): Promise<TExported> {
