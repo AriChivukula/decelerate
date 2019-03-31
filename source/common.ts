@@ -25,9 +25,6 @@ export abstract class HasTargets<T extends IHasTargets> {
   protected targets: { [k: string]: T } = {};
 
   protected addTarget(target: T): void {
-    if (target.name in this.targets) {
-      throw new Error("Target name cannot be duplicated: " + target.name);
-    }
-    this.targets[target.name] = target;
+    this.targets.push(target);
   }
 }
