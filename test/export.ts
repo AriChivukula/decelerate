@@ -36,11 +36,22 @@ describe(
       "Q": sheetExample,
     };
 
+    const directoryExample = {
+      "/X/": {
+        "/Z/": workbookExample,
+        "Y": workbookExample,
+      },
+       "W": {
+        "/Z/": workbookExample,
+        "Y": workbookExample,
+      },
+    };
+
     it(
       "directory",
       async () => {
         const directoryExport = await demoDirectory().export();
-        chai.expect(directoryExport).to.deep.equal({});
+        chai.expect(directoryExport).to.deep.equal(directoryExample);
       },
     );
 
