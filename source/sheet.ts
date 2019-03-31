@@ -25,12 +25,20 @@ export interface ISheet {
 }
 
 export interface ISheetTarget extends ITarget {
-  kind: "Sheet",
-  readonly index: number,
-  readonly parser: ColumnParser | RowParser,
+  readonly index: number;
 }
 
-export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExplained, CanBeExported {
+export interface ISheetColumnTarget extends ISheetTarget {
+  readonly kind: "Column";
+  readonly parser: ColumnParser;
+}
+
+export interface ISheetRowTarget extends ISheetTarget {
+  readonly kind: "Row";
+  readonly parser: RowParser;
+}
+
+export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     return this;
   }
@@ -63,7 +71,7 @@ export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExpl
     const finalTargets: TExported = {};
     for (const key in targets) {
       const target = targets[key];
-      switch (target.type) {
+      switch (target.kind) {
         case "Column":
           const column = new Column();
           await target.parse(column);
