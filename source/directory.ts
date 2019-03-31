@@ -19,11 +19,11 @@ export interface IDirectory {
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
 }
 
-export interface TDirectoryTarget extends ITarget {
+export interface IDirectoryTarget extends ITarget {
   readonly parser: DirectoryParser | WorkbookParser,
 }
 
-export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
+export class Directory extends HasTargets<IDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
@@ -40,7 +40,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
     return this;
   }
 
-  getTargetKey(target: T): string {
+  getTargetKey(target: IDirectoryTarget): string {
     return target.name;
   }
 
