@@ -27,7 +27,7 @@ describe(
     );
 
     it(
-      "number",
+      "string",
       async () => {
         chai.expect(demoCell().toString()).to.deep.equal("");
       },
