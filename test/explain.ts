@@ -44,7 +44,57 @@ describe(
         const sheetExplain = await demoSheet().explain();
         chai.expect(sheetExplain).to.deep.equal({
           parser: "Sheet",
-          inner: {},
+            inner: {
+              "0:0": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Row",
+              },
+              "M:0": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Column",
+              },
+              "N:1": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Column",
+              },
+              "N:2": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Column",
+              },
+              "P:1": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Row",
+              },
+              "P:2": {
+                "inner": {
+                  "A:0": null,
+                  "B:1": null,
+                  "B:2": null,
+                },
+                "parser": "Row",
+              },
+            },
+          },
         });
       },
     );
@@ -54,8 +104,8 @@ describe(
       async () => {
         const columnExplain = await demoColumn().explain();
         chai.expect(columnExplain).to.deep.equal({
-          parser: "Column",
-          inner: {
+          "parser": "Column",
+          "inner": {
             "A:0": null,
             "B:1": null,
             "B:2": null,
@@ -69,8 +119,8 @@ describe(
       async () => {
         const rowExplain = await demoRow().explain();
         chai.expect(rowExplain).to.deep.equal({
-          parser: "Row",
-          inner: {
+          "parser": "Row",
+          "inner": {
             "A:0": null,
             "B:1": null,
             "B:2": null,
