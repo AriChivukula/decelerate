@@ -19,7 +19,6 @@ export interface IWorkbook {
 }
 
 export interface IWorkbookTarget extends ITarget {
-  kind: "Workbook";
   readonly parser: SheetParser,
 }
 
