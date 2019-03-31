@@ -48,7 +48,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     for (const key in targets) {
       const target = targets[key];
       const sheet = new Sheet();
-      await target.parse(sheet);
+      await target.parser(sheet);
       finalTargets[key] = await sheet.export();
     }
     return finalTargets;
