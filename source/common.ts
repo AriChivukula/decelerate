@@ -22,9 +22,23 @@ export interface ITarget {
 }
 
 export abstract class HasTargets<T extends ITarget> {
-  protected targets: T[] = [];
+  private targets: T[] = [];
 
   protected addTarget(target: T): void {
     this.targets.push(target);
+  }
+  
+  abstract getTargetKey(target: T) : string;
+  
+  protected getTargets(): { [k: string]: T } {
+    const finalTargets: { [k: string]: T } = {};
+    this.targets.forEach((element: T): void => {
+      const finalKey = this.getTargetKey(element);
+      if (finalKey in finalTargets) {
+        throw new Error("Target keys must be unique, duplicate found: " + finalKey);
+      }
+      finalTargets[finalKey] = element;
+    });
+    return finalTargets;
   }
 }
