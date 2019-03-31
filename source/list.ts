@@ -29,6 +29,10 @@ export abstract class List extends HasTargets<IListTarget> implements IList, Can
     return this;
   }
 
+  getTargetKey(target: T): string {
+    return target.name + target.index;
+  }
+
   explain(): TExplained {
     return {
       parser: this.constructor.name,
