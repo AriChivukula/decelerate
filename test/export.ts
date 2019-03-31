@@ -26,41 +26,46 @@ describe(
   () => {
     it(
       "directory",
-      () => {
+      async () => {
         const directory = new Directory();
-        chai.expect(directory.export()).to.deep.equal({});
+        const directoryExport = await directory.export();
+        chai.expect(directoryExport).to.deep.equal({});
       },
     );
 
     it(
       "workbook",
-      () => {
+      async () => {
         const workbook = new Workbook();
-        chai.expect(workbook.export()).to.deep.equal({});
+        const workbookExport = await workbook.export();
+        chai.expect(workbookExport).to.deep.equal({});
       },
     );
 
     it(
       "sheet",
-      () => {
+      async () => {
         const sheet = new Sheet();
-        chai.expect(sheet.export()).to.deep.equal({});
+        const sheetExport = await sheet.export();
+        chai.expect(sheetExport).to.deep.equal({});
       },
     );
 
     it(
       "column",
-      () => {
+      async () => {
         const column = new Column();
-        chai.expect(column.export()).to.deep.equal({});
+        const columnExport = await column.export();
+        chai.expect(columnExport).to.deep.equal({});
       },
     );
 
     it(
       "row",
-      () => {
+      async () => {
         const row = new Row();
-        chai.expect(row.export()).to.deep.equal({});
+        const rowExport = await row.export();
+        chai.expect(rowExport).to.deep.equal({});
       },
     );
   },
