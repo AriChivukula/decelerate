@@ -40,13 +40,12 @@ export interface ISheetRowTarget extends ISheetTarget {
 
 export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
-    const target: ISheetColumnTarget = {
+    this.addTarget({
       name,
       index,
       parser,
       kind: "Column",
-    };
-    this.addTarget(target);
+    });
     return this;
   }
 
@@ -58,13 +57,12 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
   }
 
   bindToRow(name: string, index: number, parser: RowParser): this {
-    const target: ISheetRowTarget = {
+    this.addTarget({
       name,
       index,
       parser,
       kind: "Row",
-    };
-    this.addTarget(target);
+    });
     return this;
   }
 
