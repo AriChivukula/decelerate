@@ -4,20 +4,12 @@ import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import {
-  Directory,
-} from "../source/directory";
-import {
-  Workbook,
-} from "../source/workbook";
-import {
-  Sheet,
-} from "../source/sheet";
-import {
-  Column,
-} from "../source/column";
-import {
-  Row,
-} from "../source/row";
+  demoDirectory,
+  demoWorkbook,
+  demoSheet,
+  demoColumn,
+  demoRow,
+} from "./demo";
 
 chai.use(chaiAsPromised);
 
@@ -27,8 +19,7 @@ describe(
     it(
       "directory",
       async () => {
-        const directory = new Directory();
-        const directoryExport = await directory.export();
+        const directoryExport = await demoDirectory().export();
         chai.expect(directoryExport).to.deep.equal({});
       },
     );
@@ -36,8 +27,7 @@ describe(
     it(
       "workbook",
       async () => {
-        const workbook = new Workbook();
-        const workbookExport = await workbook.export();
+        const workbookExport = await demoWorkbook().export();
         chai.expect(workbookExport).to.deep.equal({});
       },
     );
@@ -45,8 +35,7 @@ describe(
     it(
       "sheet",
       async () => {
-        const sheet = new Sheet();
-        const sheetExport = await sheet.export();
+        const sheetExport = await demoSheet().export();
         chai.expect(sheetExport).to.deep.equal({});
       },
     );
@@ -54,8 +43,7 @@ describe(
     it(
       "column",
       async () => {
-        const column = new Column();
-        const columnExport = await column.export();
+        const columnExport = await demoColumn().export();
         chai.expect(columnExport).to.deep.equal({});
       },
     );
@@ -63,8 +51,7 @@ describe(
     it(
       "row",
       async () => {
-        const row = new Row();
-        const rowExport = await row.export();
+        const rowExport = await demoRow().export();
         chai.expect(rowExport).to.deep.equal({});
       },
     );
