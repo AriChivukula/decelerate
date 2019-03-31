@@ -44,6 +44,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
       name,
       index,
       parser,
+      kind: "Column",
     };
     this.addTarget(target);
     return this;
@@ -61,6 +62,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
       name,
       index,
       parser,
+      kind: "Row",
     };
     this.addTarget(target);
     return this;
