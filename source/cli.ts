@@ -1,7 +1,6 @@
 import * as yargs from "yargs";
 
 import {
-  noop,
 } from "./index";
 
 yargs
@@ -9,9 +8,12 @@ yargs
     "$0",
     true,
     (y: yargs.Argv<any>): yargs.Argv<any> => y,
-    (argv: yargs.Arguments<any>): void => {
-      noop();
+    async (argv: yargs.Arguments<any>): Promise<void> => {
+      entry();
     },
   )
   .help()
   .argv;
+
+export async function entry(): Promise<void> {
+}
