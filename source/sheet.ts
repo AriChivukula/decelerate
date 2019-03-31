@@ -6,7 +6,7 @@ import {
   RowParser,
 } from "./list";
 
-export type SheetParser = async (sheet: ISheet) => Promise<void>;
+export type SheetParser = (sheet: ISheet) => Promise<void>;
 
 export interface ISheet {
   bindToColumn(index: number, parser: ColumnParser): this;
