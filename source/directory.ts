@@ -3,6 +3,8 @@ import {
   CanBeExported,
   TExplained,
   TExported,
+  ITarget,
+  HasTargets,
 } from "./interfaces";
 import {
   WorkbookParser,
@@ -17,7 +19,10 @@ export interface IDirectory {
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
 }
 
-export class Directory implements IDirectory, CanBeExplained, CanBeExported {
+export interface TDirectoryTarget extends ITarget {
+};
+
+export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
