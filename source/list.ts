@@ -20,7 +20,7 @@ export interface IListTarget extends ITarget {
   readonly parser: CellParser,
 }
 
-export abstract class List extends HasTarget<IListTarget> implements IList, CanBeExplained {
+export abstract class List extends HasTargets<IListTarget> implements IList, CanBeExplained {
   bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
