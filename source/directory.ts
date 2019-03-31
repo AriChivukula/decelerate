@@ -21,11 +21,19 @@ export interface IDirectory {
 }
 
 export interface IDirectoryTarget extends ITarget {
-  kind: "Directory";
-  readonly parser: DirectoryParser | WorkbookParser,
 }
 
-export class Directory extends HasTargets<IDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
+export interface IDirectoryDirectoryTarget extends ITarget {
+  kind: "Directory";
+  readonly parser: DirectoryParser;
+}
+
+export interface IDirectoryWorkbookTarget extends ITarget {
+  kind: "Workbook";
+  readonly parser: WorkbookParser;
+}
+
+export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
@@ -42,7 +50,7 @@ export class Directory extends HasTargets<IDirectoryTarget> implements IDirector
     return this;
   }
 
-  getTargetKey(target: IDirectoryTarget): string {
+  getTargetKey(target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget): string {
     return target.name;
   }
 
