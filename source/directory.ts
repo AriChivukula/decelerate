@@ -1,6 +1,8 @@
 import {
   CanBeExplained,
   CanBeExported,
+  TExplained,
+  TExported,
 } from "./interfaces";
 import {
   WorkbookParser,
@@ -32,11 +34,14 @@ export class Directory implements IDirectory, CanBeExplained, CanBeExported {
     return this;
   }
 
-  explain(): Object {
-    return {};
+  explain(): TExplained {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
   }
 
-  export(): Object {
+  export(): TExported {
     return {};
   }
 }
