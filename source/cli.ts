@@ -8,12 +8,10 @@ yargs
     "$0",
     true,
     (y: yargs.Argv<any>): yargs.Argv<any> => y,
-    async (argv: yargs.Arguments<any>): Promise<void> => {
-      entry();
-    },
+    entryPoint,
   )
   .help()
   .argv;
 
-export async function entry(): Promise<void> {
+export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
 }
