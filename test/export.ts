@@ -44,7 +44,11 @@ describe(
       "column",
       async () => {
         const columnExport = await demoColumn().export();
-        chai.expect(columnExport).to.deep.equal({});
+        chai.expect(columnExport).to.deep.equal({
+          "rowA:0": "test",
+          "rowB:1": "test",
+          "rowB:2": "test",
+        });
       },
     );
 
@@ -52,7 +56,11 @@ describe(
       "row",
       async () => {
         const rowExport = await demoRow().export();
-        chai.expect(rowExport).to.deep.equal({});
+        chai.expect(rowExport).to.deep.equal({
+          "rowA:0": "test",
+          "rowB:1": "test",
+          "rowB:2": "test",
+        });
       },
     );
   },
