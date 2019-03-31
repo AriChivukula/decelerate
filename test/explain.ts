@@ -18,9 +18,6 @@ import {
 import {
   Row,
 } from "../source/row";
-import {
-  Cell,
-} from "../source/cell";
 
 chai.use(chaiAsPromised);
 
@@ -61,13 +58,5 @@ it(
   () => {
     const row = new Row();
     chai.expect(row.explain()).to.deep.equal({});
-  },
-);
-
-it(
-  "cell",
-  () => {
-    const cell = new Cell();
-    chai.expect(cell.explain()).to.deep.equal({});
   },
 );
