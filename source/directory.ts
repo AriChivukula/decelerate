@@ -40,6 +40,10 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
     return this;
   }
 
+  getTargetKey(target: T): string {
+    return target.name;
+  }
+
   explain(): TExplained {
     return {
       parser: this.constructor.name,
