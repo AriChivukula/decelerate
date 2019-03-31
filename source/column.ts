@@ -10,4 +10,7 @@ export interface IColumn extends IList {
 }
 
 export class Column extends List implements IColumn {
+  explain(): Object {
+    return {};
+  }
 }
