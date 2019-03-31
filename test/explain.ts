@@ -55,7 +55,11 @@ describe(
         const columnExplain = await demoColumn().explain();
         chai.expect(columnExplain).to.deep.equal({
           parser: "Column",
-          inner: {},
+          inner: {
+            "rowA:0": null,
+            "rowB:1": null,
+            "rowB:2": null,
+          },
         });
       },
     );
@@ -66,7 +70,11 @@ describe(
         const rowExplain = await demoRow().explain();
         chai.expect(rowExplain).to.deep.equal({
           parser: "Row",
-          inner: {},
+          inner: {
+            "rowA:0": null,
+            "rowB:1": null,
+            "rowB:2": null,
+          },
         });
       },
     );
