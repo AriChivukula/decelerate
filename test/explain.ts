@@ -23,12 +23,13 @@ chai.use(chaiAsPromised);
 
 describe(
   "explain",
-  () => {
+  async () => {
     it(
       "directory",
-      () => {
+      async () => {
         const directory = new Directory();
-        chai.expect(directory.explain()).to.deep.equal({
+        const directoryExplain = await directory.explain();
+        chai.expect(directoryExplain).to.deep.equal({
           parser: "Directory",
           inner: {},
         });
@@ -37,9 +38,10 @@ describe(
 
     it(
       "workbook",
-      () => {
+      async () => {
         const workbook = new Workbook();
-        chai.expect(workbook.explain()).to.deep.equal({
+        const workbookExplain = await workbook.explain();
+        chai.expect(workbookExplain).to.deep.equal({
           parser: "Workbook",
           inner: {},
         });
@@ -48,9 +50,10 @@ describe(
 
     it(
       "sheet",
-      () => {
+      async () => {
         const sheet = new Sheet();
-        chai.expect(sheet.explain()).to.deep.equal({
+        const sheetExplain = await sheet.explain();
+        chai.expect(sheetExplain).to.deep.equal({
           parser: "Sheet",
           inner: {},
         });
@@ -59,9 +62,10 @@ describe(
 
     it(
       "column",
-      () => {
+      async () => {
         const column = new Column();
-        chai.expect(column.explain()).to.deep.equal({
+        const columnExplain = await column.explain();
+        chai.expect(columnExplain).to.deep.equal({
           parser: "Column",
           inner: {},
         });
@@ -70,9 +74,10 @@ describe(
 
     it(
       "row",
-      () => {
+      async () => {
         const row = new Row();
-        chai.expect(row.explain()).to.deep.equal({
+        const rowExplain = await row.explain();
+        chai.expect(rowExplain).to.deep.equal({
           parser: "Row",
           inner: {},
         });

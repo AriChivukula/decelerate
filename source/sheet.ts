@@ -3,11 +3,15 @@ import {
   TExplained,
   CanBeExported,
   TExported,
-} from "./interfaces";
+  ITarget,
+  HasTargets,
+} from "./common";
 import {
+  Column,
   ColumnParser,
 } from "./column";
 import {
+  Row,
   RowParser,
 } from "./row";
 
@@ -20,7 +24,21 @@ export interface ISheet {
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
 }
 
-export class Sheet implements ISheet, CanBeExplained, CanBeExported {
+export interface ISheetTarget extends ITarget {
+  readonly index: number;
+}
+
+export interface ISheetColumnTarget extends ISheetTarget {
+  readonly kind: "Column";
+  readonly parser: ColumnParser;
+}
+
+export interface ISheetRowTarget extends ISheetTarget {
+  readonly kind: "Row";
+  readonly parser: RowParser;
+}
+
+export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     return this;
   }
@@ -37,14 +55,52 @@ export class Sheet implements ISheet, CanBeExplained, CanBeExported {
     return this;
   }
 
-  explain(): TExplained {
-    return {
+  getTargetKey(target: ISheetTarget): string {
+    return target.name + ":" + target.index;
+  }
+
+  async explain(): Promise<TExplained> {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Column":
+          const column = new Column();
+          await target.parser(column);
+          finalTargets.inner[key] = await column.explain();
+          break;
+        case "Row":
+          const row = new Row();
+          await target.parser(row);
+          finalTargets.inner[key] = await row.explain();
+          break;
+      }
+    }
+    return finalTargets;
   }
 
-  export(): TExported {
-    return {};
+  async export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Column":
+          const column = new Column();
+          await target.parser(column);
+          finalTargets[key] = await column.export();
+          break;
+        case "Row":
+          const row = new Row();
+          await target.parser(row);
+          finalTargets[key] = await row.export();
+          break;
+      }
+    }
+    return finalTargets;
   }
 }

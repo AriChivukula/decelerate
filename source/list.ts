@@ -1,9 +1,7 @@
 import {
-  CanBeExplained,
-  TExplained,
-  CanBeExported,
-  TExported,
-} from "./interfaces";
+  ITarget,
+  HasTargets,
+} from "./common";
 import {
   CellParser,
 } from "./cell";
@@ -15,7 +13,12 @@ export interface IList {
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
 
-export abstract class List implements IList, CanBeExplained, CanBeExported {
+export interface IListTarget extends ITarget {
+  readonly index: number,
+  readonly parser: CellParser,
+}
+
+export abstract class List extends HasTargets<IListTarget> implements IList {
   bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
@@ -24,14 +27,7 @@ export abstract class List implements IList, CanBeExplained, CanBeExported {
     return this;
   }
 
-  explain(): TExplained {
-    return {
-      parser: this.constructor.name,
-      inner: {},
-    };
-  }
-
-  export(): TExported {
-    return {};
+  getTargetKey(target: IListTarget): string {
+    return target.name + target.index;
   }
 }

@@ -3,8 +3,11 @@ import {
   CanBeExported,
   TExplained,
   TExported,
-} from "./interfaces";
+  ITarget,
+  HasTargets,
+} from "./common";
 import {
+  Workbook,
   WorkbookParser,
 } from "./workbook";
 
@@ -17,7 +20,20 @@ export interface IDirectory {
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
 }
 
-export class Directory implements IDirectory, CanBeExplained, CanBeExported {
+export interface IDirectoryTarget extends ITarget {
+}
+
+export interface IDirectoryDirectoryTarget extends ITarget {
+  kind: "Directory";
+  readonly parser: DirectoryParser;
+}
+
+export interface IDirectoryWorkbookTarget extends ITarget {
+  kind: "Workbook";
+  readonly parser: WorkbookParser;
+}
+
+export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     return this;
   }
@@ -34,14 +50,52 @@ export class Directory implements IDirectory, CanBeExplained, CanBeExported {
     return this;
   }
 
-  explain(): TExplained {
-    return {
+  getTargetKey(target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget): string {
+    return target.name;
+  }
+
+  async explain(): Promise<TExplained> {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Directory":
+          const directory = new Directory();
+          await target.parser(directory);
+          finalTargets.inner[key] = await directory.explain();
+          break;
+        case "Workbook":
+          const workbook = new Workbook();
+          await target.parser(workbook);
+          finalTargets.inner[key] = await workbook.explain();
+          break;
+      }
+    }
+    return finalTargets;
   }
 
-  export(): TExported {
-    return {};
+  async export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Directory":
+          const directory = new Directory();
+          await target.parser(directory);
+          finalTargets[key] = await directory.export();
+          break;
+        case "Workbook":
+          const workbook = new Workbook();
+          await target.parser(workbook);
+          finalTargets[key] = await workbook.export();
+          break;
+      }
+    }
+    return finalTargets;
   }
 }
