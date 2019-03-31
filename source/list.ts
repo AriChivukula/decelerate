@@ -36,6 +36,6 @@ export abstract class List extends HasTargets<IListTarget> implements IList {
   }
 
   getTargetKey(target: IListTarget): string {
-    return target.name + target.index;
+    return target.name + ":" + target.index;
   }
 }
