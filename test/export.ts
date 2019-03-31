@@ -32,54 +32,34 @@ describe(
       },
     );
 
+    const sheetExample = {
+      "0:0": listExample,
+      "M:0": listExample,
+      "N:1": listExample,
+      "N:2": listExample,
+      "P:1": listExample,
+      "P:2": listExample,
+    };
+
     it(
       "sheet",
       async () => {
         const sheetExport = await demoSheet().export();
-        chai.expect(sheetExport).to.deep.equal({
-          "0:0": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-          "M:0": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-          "N:1": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-          "N:2": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-          "P:1": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-          "P:2": {
-            "A:0": "test",
-            "B:1": "test",
-            "B:2": "test",
-          },
-        });
+        chai.expect(sheetExport).to.deep.equal(sheetExample);
       },
     );
+
+    const listExample = {
+      "A:0": "test",
+      "B:1": "test",
+      "B:2": "test",
+    };
 
     it(
       "column",
       async () => {
         const columnExport = await demoColumn().export();
-        chai.expect(columnExport).to.deep.equal({
-          "A:0": "test",
-          "B:1": "test",
-          "B:2": "test",
-        });
+        chai.expect(columnExport).to.deep.equal(listExample);
       },
     );
 
@@ -87,11 +67,7 @@ describe(
       "row",
       async () => {
         const rowExport = await demoRow().export();
-        chai.expect(rowExport).to.deep.equal({
-          "A:0": "test",
-          "B:1": "test",
-          "B:2": "test",
-        });
+        chai.expect(rowExport).to.deep.equal(listExample);
       },
     );
   },
