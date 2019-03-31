@@ -16,6 +16,21 @@ chai.use(chaiAsPromised);
 describe(
   "export",
   () => {
+    const listExample = {
+      "A:0": "test",
+      "B:1": "test",
+      "B:2": "test",
+    };
+
+    const sheetExample = {
+      "0:0": listExample,
+      "M:0": listExample,
+      "N:1": listExample,
+      "N:2": listExample,
+      "P:1": listExample,
+      "P:2": listExample,
+    };
+
     it(
       "directory",
       async () => {
@@ -32,15 +47,6 @@ describe(
       },
     );
 
-    const sheetExample = {
-      "0:0": listExample,
-      "M:0": listExample,
-      "N:1": listExample,
-      "N:2": listExample,
-      "P:1": listExample,
-      "P:2": listExample,
-    };
-
     it(
       "sheet",
       async () => {
@@ -48,12 +54,6 @@ describe(
         chai.expect(sheetExport).to.deep.equal(sheetExample);
       },
     );
-
-    const listExample = {
-      "A:0": "test",
-      "B:1": "test",
-      "B:2": "test",
-    };
 
     it(
       "column",
