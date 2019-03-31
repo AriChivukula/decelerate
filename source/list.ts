@@ -11,16 +11,16 @@ import {
 export type ListParser<T extends IList> = (list: T) => Promise<void>;
 
 export interface IList {
-  bindToCell(index: number, parser: CellParser): this;
-  bindToCellRange(start: number, length: number, parser: CellParser): this;
+  bindToCell(name: string, index: number, parser: CellParser): this;
+  bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
 
 export abstract class List implements IList, CanBeExplained, CanBeExported {
-  bindToCell(index: number, parser: CellParser): this {
+  bindToCell(name: string, index: number, parser: CellParser): this {
     return this;
   }
 
-  bindToCellRange(start: number, length: number, parser: CellParser): this {
+  bindToCellRange(name: string, start: number, length: number, parser: CellParser): this {
     return this;
   }
 
