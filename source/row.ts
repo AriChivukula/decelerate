@@ -20,10 +20,15 @@ export interface IRow extends IList {
 
 export class Row extends List implements IRow, CanBeExplained, CanBeExported {
   explain(): TExplained {
-    return {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      finalTargets.inner[key] = null;
+    }
+    return finalTargets;
   }
 
   async export(): Promise<TExported> {
