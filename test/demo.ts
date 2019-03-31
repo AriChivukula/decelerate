@@ -8,12 +8,16 @@ import {
   Sheet,
 } from "../source/sheet";
 import {
+  IList,
+} from "../source/list";
+import {
   Column,
 } from "../source/column";
 import {
   Row,
 } from "../source/row";
 import {
+  ICell,
   Cell,
 } from "../source/cell";
 
@@ -29,14 +33,18 @@ export function demoSheet(): Sheet {
   return new Sheet();
 }
 
+async function demoListParser(list: IList): Promise<void> {
+  list
+    .bindToCell("rowA", 0, demoCellParser)
+    .bindToCellRange("rowB", 1, 2, demoCellParser);
+}
+
 export function demoColumn(): Column {
-  return new Column();
+  return demoListParser(new Column());
 }
 
 export function demoRow(): Row {
-  return (new Row())
-    .bindToCell("rowA", 0, demoCellParser)
-    .bindToCellRange("rowB", 1, 2, demoCellParser);
+  return demoListParser(new Row());
 }
 
 async function demoCellParser(cell: ICell): Promise<string> {
