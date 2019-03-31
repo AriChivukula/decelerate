@@ -1,35 +1,33 @@
-import {
-  CanBeExplained,
-} from "./explain";
+export type CellParser = (cell: ICell) => Promise<boolean | number | string>;
 
-export type CellParser = (cell: ICell) => Promise<void>;
-export type ValueParser = (string: raw) => Promise<boolean | number | string>;
-
-export interface ICell {
-  toBoolean(): this;
-  toNumber(): this;
-  toString(): this;
-  toCustom(parser: ValueParser): this;
+export async function CellBooleanParser(cell: ICell): Promise<boolean> {
+  return cell.toBoolean();
 }
 
-export class Cell implements ICell, CanBeExplained {
-  toBoolean(): this {
-    return this;
+export async function CellNumberParser(cell: ICell): Promise<number> {
+  return cell.toNumber();
+}
+
+export async function CellStringParser(cell: ICell): Promise<string> {
+  return cell.toString();
+}
+
+export interface ICell {
+  toBoolean(): boolean;
+  toNumber(): number;
+  toString(): string;
+}
+
+export class Cell implements ICell {
+  toBoolean(): boolean {
+    return false;
   }
 
-  toNumber(): this {
-    return this;
+  toNumber(): number {
+    return 0;
   }
 
-  toString(): this {
-    return this;
-  }
-
-  toCustom(parser: ValueParser): this {
-    return this;
-  }
-
-  explain(): Object {
-    return {};
+  toString(): string {
+    return "";
   }
 }
