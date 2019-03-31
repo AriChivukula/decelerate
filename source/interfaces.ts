@@ -9,10 +9,10 @@ export interface CanBeExplained {
   explain(): TExplained;
 }
 
-export type TExport = {
+export type TExported = {
   [k: string]: Export | boolean | number | string;
 };
 
 export interface CanBeExported {
-  export(): TExport;
+  export(): TExported;
 }
