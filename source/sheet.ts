@@ -7,9 +7,11 @@ import {
   HasTargets,
 } from "./common";
 import {
+  Column,
   ColumnParser,
 } from "./column";
 import {
+  Row,
   RowParser,
 } from "./row";
 
@@ -55,7 +57,22 @@ export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExpl
     };
   }
 
-  export(): TExported {
-    return {};
+  async export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.type) {
+        case "Column":
+          const column = new Column();
+          await target.parse(column);
+          finalTargets[key] = await column.export();
+        case "Row":
+          const row = new Row();
+          await target.parse(row);
+          finalTargets[key] = await row.export();
+      }
+    }
+    return finalTargets;
   }
 }
