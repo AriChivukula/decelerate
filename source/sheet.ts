@@ -3,8 +3,10 @@ import {
 } from "./explain";
 import {
   ColumnParser,
+} from "./column";
+import {
   RowParser,
-} from "./list";
+} from "./row";
 
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
