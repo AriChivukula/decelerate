@@ -22,7 +22,7 @@ export interface ITarget {
 }
 
 export abstract class HasTargets<T extends ITarget> {
-  protected targets: { [k: string]: T } = {};
+  protected targets: T[] = [];
 
   protected addTarget(target: T): void {
     this.targets.push(target);
