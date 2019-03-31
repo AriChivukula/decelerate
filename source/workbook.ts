@@ -7,6 +7,7 @@ import {
   HasTargets,
 } from "./common";
 import {
+  Sheet,
   SheetParser,
 } from "./sheet";
 
@@ -18,6 +19,7 @@ export interface IWorkbook {
 }
 
 export interface IWorkbookTarget extends ITarget {
+  kind: "Sheet";
   readonly parser: SheetParser,
 }
 
@@ -41,7 +43,15 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     };
   }
 
-  export(): TExported {
-    return {};
+  async export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const target = targets[key];
+      const sheet = new Sheet();
+      await target.parse(sheet);
+      finalTargets[key] = await sheet.export();
+    }
+    return finalTargets;
   }
 }
