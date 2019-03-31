@@ -1,3 +1,3 @@
-interface CanBeExplained {
+export interface CanBeExplained {
   explain(): Object;
 }
