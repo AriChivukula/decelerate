@@ -28,7 +28,7 @@ it(
   "directory",
   () => {
     const directory = new Directory();
-    expect(directory.explain()).to.deep.equal({});
+    chai.expect(directory.explain()).to.deep.equal({});
   },
 );
 
@@ -36,7 +36,7 @@ it(
   "workbook",
   () => {
     const workbook = new Workbook();
-    expect(workbook.explain()).to.deep.equal({});
+    chai.expect(workbook.explain()).to.deep.equal({});
   },
 );
 
@@ -44,7 +44,7 @@ it(
   "sheet",
   () => {
     const sheet = new Sheet();
-    expect(sheet.explain()).to.deep.equal({});
+    chai.expect(sheet.explain()).to.deep.equal({});
   },
 );
 
@@ -52,7 +52,7 @@ it(
   "column",
   () => {
     const column = new Column();
-    expect(column.explain()).to.deep.equal({});
+    chai.expect(column.explain()).to.deep.equal({});
   },
 );
 
@@ -60,7 +60,7 @@ it(
   "row",
   () => {
     const row = new Row();
-    expect(row.explain()).to.deep.equal({});
+    chai.expect(row.explain()).to.deep.equal({});
   },
 );
 
@@ -68,6 +68,6 @@ it(
   "cell",
   () => {
     const cell = new Cell();
-    expect(cell.explain()).to.deep.equal({});
+    chai.expect(cell.explain()).to.deep.equal({});
   },
 );
