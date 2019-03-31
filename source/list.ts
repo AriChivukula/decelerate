@@ -5,7 +5,7 @@ import {
   TExported,
   ITarget,
   HasTargets,
-} from "./interfaces";
+} from "./common";
 import {
   CellParser,
 } from "./cell";
