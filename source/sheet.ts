@@ -44,6 +44,10 @@ export class Sheet extends HasTargets<ISheetTarget> implements ISheet, CanBeExpl
     return this;
   }
 
+  getTargetKey(target: T): string {
+    return target.name + ":" + target.index;
+  }
+
   explain(): TExplained {
     return {
       parser: this.constructor.name,
