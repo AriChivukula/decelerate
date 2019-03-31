@@ -7,6 +7,7 @@ import {
   HasTargets,
 } from "./common";
 import {
+  Workbook,
   WorkbookParser,
 } from "./workbook";
 
@@ -20,6 +21,7 @@ export interface IDirectory {
 }
 
 export interface IDirectoryTarget extends ITarget {
+  kind: "Directory";
   readonly parser: DirectoryParser | WorkbookParser,
 }
 
@@ -44,14 +46,29 @@ export class Directory extends HasTargets<IDirectoryTarget> implements IDirector
     return target.name;
   }
 
-  explain(): TExplained {
+  async explain(): Promise<TExplained> {
     return {
       parser: this.constructor.name,
       inner: {},
     };
   }
 
-  export(): TExported {
-    return {};
+  async export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.type) {
+        case "Directory":
+          const directory = new Directory();
+          await target.parse(directory);
+          finalTargets[key] = await directory.export();
+        case "Workbook":
+          const workbook = new Workbook();
+          await target.parse(workbook);
+          finalTargets[key] = await workbook.export();
+      }
+    }
+    return finalTargets;
   }
 }
