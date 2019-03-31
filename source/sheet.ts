@@ -14,10 +14,10 @@ import {
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
 export interface ISheet {
-  bindToColumn(index: number, parser: ColumnParser): this;
-  bindToColumnRange(start: number, length: number, parser: ColumnParser): this;
-  bindToRow(index: number, parser: RowParser): this;
-  bindToRowRange(start: number, length: number, parser: RowParser): this;
+  bindToColumn(name: string, index: number, parser: ColumnParser): this;
+  bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
+  bindToRow(name: string, index: number, parser: RowParser): this;
+  bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
 }
 
 export class Sheet implements ISheet, CanBeExplained, CanBeExported {
