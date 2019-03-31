@@ -41,38 +41,33 @@ interface IRow {
 ### Cell
 ```
 interface ICell {
-  toBoolean(): this;
-  toNumber(): this;
-  toString(): this;
-  toCustom(parser: ValueParser): this;
+  toBoolean(): boolean;
+  toNumber(): number;
+  toString(): string;
 }
 ```
 ## External API
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
-### Value
-```
-type ValueParser = async (string: raw) => Promise<boolean | number | string>;
-```
 ### Cell
 ```
-type CellParser = async (cell: Cell) => Promise<void>
+type CellParser = async (cell: ICell) => Promise<boolean | number | string>
 ```
 ### Column/Row
 ```
-type ColumnParser = async (column: Column) => Promise<void>
-type RowParser = async (row: Row) => Promise<void>
+type ColumnParser = async (column: IColumn) => Promise<void>
+type RowParser = async (row: IRow) => Promise<void>
 ```
 ### Sheet
 ```
-type SheetParser = async (sheet: Sheet) => Promise<void>
+type SheetParser = async (sheet: ISheet) => Promise<void>
 ```
 ### Workbook
 ```
-type WorkbookParser = async (workbook: Workbook) => Promise<void>
+type WorkbookParser = async (workbook: IWorkbook) => Promise<void>
 ```
 ### Directory
 ```
-type DirectoryParser = async (directory: Directory) => Promise<void>
+type DirectoryParser = async (directory: IDirectory) => Promise<void>
 ```
 ## CLI
 ```
