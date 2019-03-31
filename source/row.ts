@@ -26,7 +26,7 @@ export class Row extends List implements IRow, CanBeExplained, CanBeExported {
     };
   }
 
-  export(): Promise<TExported> {
+  async export(): Promise<TExported> {
     const targets = this.getTargets();
     const finalTargets: TExported = {};
     for (const key in targets) {
