@@ -5,6 +5,7 @@ import {
   Workbook,
 } from "../source/workbook";
 import {
+  ISheet,
   Sheet,
 } from "../source/sheet";
 import {
@@ -29,8 +30,19 @@ export function demoWorkbook(): Workbook {
   return new Workbook();
 }
 
+async function demoSheetParser(sheet: ISheet): Promise<void> {
+  sheet
+    .bindToColumn("M", 0, demoListParser)
+    .bindToColumnRange("N", 1, 2, demoListParser)
+    .bindToRow("0", 0, demoListParser)
+    .bindToRowRange("P", 1, 2, demoListParser);
+}
+
 export function demoSheet(): Sheet {
   return new Sheet();
+  const sheet = new Sheet();
+  demoSheetParser(sheet);
+  return sheet;
 }
 
 async function demoListParser(list: IList): Promise<void> {
