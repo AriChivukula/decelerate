@@ -1,4 +1,7 @@
 import {
+  CanBeExplained,
+} from "./explain";
+import {
   ColumnParser,
   RowParser,
 } from "./list";
@@ -12,7 +15,7 @@ export interface ISheet {
   bindToRowRange(start: number, length: number, parser: RowParser): this;
 }
 
-export class Sheet implements ISheet {
+export class Sheet implements ISheet, CanBeExplained {
   bindToColumn(index: number, parser: ColumnParser): this {
     return this;
   }
@@ -27,5 +30,9 @@ export class Sheet implements ISheet {
 
   bindToRowRange(start: number, length: number, parser: RowParser): this {
     return this;
+  }
+
+  explain(): Object {
+    return {};
   }
 }
