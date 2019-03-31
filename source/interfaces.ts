@@ -1,7 +1,7 @@
 export type TExplained = {
   parser: string;
   inner: {
-    [k: string]: TExplained;
+    [k: string]: TExplained | boolean | number | string;
   };
 };
 
@@ -10,7 +10,7 @@ export interface CanBeExplained {
 }
 
 export type TExported = {
-  [k: string]: Export | boolean | number | string;
+  [k: string]: TExported | boolean | number | string;
 };
 
 export interface CanBeExported {
