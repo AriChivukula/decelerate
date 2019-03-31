@@ -35,8 +35,8 @@ export function demoSheet(): Sheet {
 
 async function demoListParser(list: IList): Promise<void> {
   list
-    .bindToCell("rowA", 0, demoCellParser)
-    .bindToCellRange("rowB", 1, 2, demoCellParser);
+    .bindToCell("A", 0, demoCellParser)
+    .bindToCellRange("B", 1, 2, demoCellParser);
 }
 
 export function demoColumn(): Column {
