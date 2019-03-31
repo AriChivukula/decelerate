@@ -24,10 +24,15 @@ export interface IWorkbookTarget extends ITarget {
 
 export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, CanBeExplained, CanBeExported {
   bindToSheet(name: string, parser: SheetParser): this {
+    this.addTarget({
+      name,
+      parser,
+    });
     return this;
   }
 
   bindToSheets(match: RegExp, parser: SheetParser): this {
+    this.bindToSheet(match.toString(), parser);
     return this;
   }
 

@@ -40,18 +40,36 @@ export interface ISheetRowTarget extends ISheetTarget {
 
 export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
+    this.addTarget({
+      name,
+      index,
+      parser,
+      kind: "Column",
+    });
     return this;
   }
 
   bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this {
+    for (let idx = start; idx < start + length; idx++) {
+      this.bindToColumn(name, idx, parser);
+    }
     return this;
   }
 
   bindToRow(name: string, index: number, parser: RowParser): this {
+    this.addTarget({
+      name,
+      index,
+      parser,
+      kind: "Row",
+    });
     return this;
   }
 
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this {
+    for (let idx = start; idx < start + length; idx++) {
+      this.bindToRow(name, idx, parser);
+    }
     return this;
   }
 

@@ -4,83 +4,113 @@ import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import {
-  Directory,
-} from "../source/directory";
-import {
-  Workbook,
-} from "../source/workbook";
-import {
-  Sheet,
-} from "../source/sheet";
-import {
-  Column,
-} from "../source/column";
-import {
-  Row,
-} from "../source/row";
+  demoDirectory,
+  demoWorkbook,
+  demoSheet,
+  demoColumn,
+  demoRow,
+} from "./demo";
 
 chai.use(chaiAsPromised);
 
 describe(
   "explain",
   async () => {
+    const rowExample = {
+      "parser": "Row",
+      "inner": {
+        "A:0": null,
+        "B:1": null,
+        "B:2": null,
+      },
+    };
+
+    const columnExample = {
+      "parser": "Column",
+      "inner": {
+        "A:0": null,
+        "B:1": null,
+        "B:2": null,
+      },
+    };
+
+    const sheetExample = {
+      "parser": "Sheet",
+      "inner": {
+        "0:0": rowExample,
+        "M:0": columnExample,
+        "N:1": columnExample,
+        "N:2": columnExample,
+        "P:1": rowExample,
+        "P:2": rowExample,
+      },
+    };
+
+    const workbookExample = {
+      "parser": "Workbook",
+      "inner": {
+        "/R/": sheetExample,
+        "Q": sheetExample,
+      },
+    };
+
+    const directoryExample = {
+      "parser": "Directory",
+      "inner": {
+        "/X/": {
+          "parser": "Directory",
+          "inner": {
+            "/Z/": workbookExample,
+            "Y": workbookExample,
+          },
+        },
+        "W": {
+          "parser": "Directory",
+          "inner": {
+            "/Z/": workbookExample,
+            "Y": workbookExample,
+          },
+        },
+      },
+    };
+
     it(
       "directory",
       async () => {
-        const directory = new Directory();
-        const directoryExplain = await directory.explain();
-        chai.expect(directoryExplain).to.deep.equal({
-          parser: "Directory",
-          inner: {},
-        });
+        const directoryExplain = await demoDirectory().explain();
+        chai.expect(directoryExplain).to.deep.equal(directoryExample);
       },
     );
 
     it(
       "workbook",
       async () => {
-        const workbook = new Workbook();
-        const workbookExplain = await workbook.explain();
-        chai.expect(workbookExplain).to.deep.equal({
-          parser: "Workbook",
-          inner: {},
-        });
+        const workbookExplain = await demoWorkbook().explain();
+        chai.expect(workbookExplain).to.deep.equal(workbookExample);
       },
     );
 
     it(
       "sheet",
       async () => {
-        const sheet = new Sheet();
-        const sheetExplain = await sheet.explain();
-        chai.expect(sheetExplain).to.deep.equal({
-          parser: "Sheet",
-          inner: {},
-        });
+        const sheetExplain = await demoSheet().explain();
+        chai.expect(sheetExplain).to.deep.equal(sheetExample);
       },
     );
 
     it(
       "column",
       async () => {
-        const column = new Column();
-        const columnExplain = await column.explain();
-        chai.expect(columnExplain).to.deep.equal({
-          parser: "Column",
-          inner: {},
-        });
+        const columnExplain = await demoColumn().explain();
+        chai.expect(columnExplain).to.deep.equal(columnExample);
       },
     );
 
     it(
       "row",
       async () => {
-        const row = new Row();
-        const rowExplain = await row.explain();
-        chai.expect(rowExplain).to.deep.equal({
-          parser: "Row",
-          inner: {},
-        });
+        const rowExplain = await demoRow().explain();
+        chai.expect(rowExplain).to.deep.equal(rowExample);
       },
     );
   },

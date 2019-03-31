@@ -4,68 +4,86 @@ import * as chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import {
-  Directory,
-} from "../source/directory";
-import {
-  Workbook,
-} from "../source/workbook";
-import {
-  Sheet,
-} from "../source/sheet";
-import {
-  Column,
-} from "../source/column";
-import {
-  Row,
-} from "../source/row";
+  demoDirectory,
+  demoWorkbook,
+  demoSheet,
+  demoColumn,
+  demoRow,
+} from "./demo";
 
 chai.use(chaiAsPromised);
 
 describe(
   "export",
   () => {
+    const listExample = {
+      "A:0": "test",
+      "B:1": "test",
+      "B:2": "test",
+    };
+
+    const sheetExample = {
+      "0:0": listExample,
+      "M:0": listExample,
+      "N:1": listExample,
+      "N:2": listExample,
+      "P:1": listExample,
+      "P:2": listExample,
+    };
+
+    const workbookExample = {
+      "/R/": sheetExample,
+      "Q": sheetExample,
+    };
+
+    const directoryExample = {
+      "/X/": {
+        "/Z/": workbookExample,
+        "Y": workbookExample,
+      },
+       "W": {
+        "/Z/": workbookExample,
+        "Y": workbookExample,
+      },
+    };
+
     it(
       "directory",
       async () => {
-        const directory = new Directory();
-        const directoryExport = await directory.export();
-        chai.expect(directoryExport).to.deep.equal({});
+        const directoryExport = await demoDirectory().export();
+        chai.expect(directoryExport).to.deep.equal(directoryExample);
       },
     );
 
     it(
       "workbook",
       async () => {
-        const workbook = new Workbook();
-        const workbookExport = await workbook.export();
-        chai.expect(workbookExport).to.deep.equal({});
+        const workbookExport = await demoWorkbook().export();
+        chai.expect(workbookExport).to.deep.equal(workbookExample);
       },
     );
 
     it(
       "sheet",
       async () => {
-        const sheet = new Sheet();
-        const sheetExport = await sheet.export();
-        chai.expect(sheetExport).to.deep.equal({});
+        const sheetExport = await demoSheet().export();
+        chai.expect(sheetExport).to.deep.equal(sheetExample);
       },
     );
 
     it(
       "column",
       async () => {
-        const column = new Column();
-        const columnExport = await column.export();
-        chai.expect(columnExport).to.deep.equal({});
+        const columnExport = await demoColumn().export();
+        chai.expect(columnExport).to.deep.equal(listExample);
       },
     );
 
     it(
       "row",
       async () => {
-        const row = new Row();
-        const rowExport = await row.export();
-        chai.expect(rowExport).to.deep.equal({});
+        const rowExport = await demoRow().export();
+        chai.expect(rowExport).to.deep.equal(listExample);
       },
     );
   },
