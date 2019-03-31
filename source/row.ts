@@ -14,7 +14,14 @@ export interface IRow extends IList {
 }
 
 export class Row extends List implements IRow, CanBeExported {
-  export(): TExported {
-    return {};
+  export(): Promise<TExported> {
+    const targets = this.getTargets();
+    const finalTargets: TExported = {};
+    for (const key in targets) {
+      const cell = new Cell();
+      const target = targets[key];
+      finalTargets[key] = await target.parser(cell);
+    }
+    return finalTargets;
   }
 }
