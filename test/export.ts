@@ -31,6 +31,11 @@ describe(
       "P:2": listExample,
     };
 
+    const workbookExample = {
+      "/R/": sheetExample,
+      "Q": sheetExample,
+    };
+
     it(
       "directory",
       async () => {
@@ -43,7 +48,7 @@ describe(
       "workbook",
       async () => {
         const workbookExport = await demoWorkbook().export();
-        chai.expect(workbookExport).to.deep.equal({});
+        chai.expect(workbookExport).to.deep.equal(workbookExample);
       },
     );
 
