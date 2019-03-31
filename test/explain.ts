@@ -28,7 +28,10 @@ describe(
       "directory",
       () => {
         const directory = new Directory();
-        chai.expect(directory.explain()).to.deep.equal({});
+        chai.expect(directory.explain()).to.deep.equal({
+          parser: "Directory",
+          inner: {},
+        });
       },
     );
 
@@ -36,7 +39,10 @@ describe(
       "workbook",
       () => {
         const workbook = new Workbook();
-        chai.expect(workbook.explain()).to.deep.equal({});
+        chai.expect(workbook.explain()).to.deep.equal({
+          parser: "Workbook",
+          inner: {},
+        });
       },
     );
 
@@ -44,7 +50,10 @@ describe(
       "sheet",
       () => {
         const sheet = new Sheet();
-        chai.expect(sheet.explain()).to.deep.equal({});
+        chai.expect(sheet.explain()).to.deep.equal({
+          parser: "Sheet",
+          inner: {},
+        });
       },
     );
 
@@ -52,7 +61,10 @@ describe(
       "column",
       () => {
         const column = new Column();
-        chai.expect(column.explain()).to.deep.equal({});
+        chai.expect(column.explain()).to.deep.equal({
+          parser: "Column",
+          inner: {},
+        });
       },
     );
 
@@ -60,7 +72,10 @@ describe(
       "row",
       () => {
         const row = new Row();
-        chai.expect(row.explain()).to.deep.equal({});
+        chai.expect(row.explain()).to.deep.equal({
+          parser: "Row",
+          inner: {},
+        });
       },
     );
   },
