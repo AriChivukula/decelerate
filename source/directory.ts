@@ -71,10 +71,12 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
           const directory = new Directory();
           await target.parser(directory);
           finalTargets[key] = await directory.export();
+          break;
         case "Workbook":
           const workbook = new Workbook();
           await target.parser(workbook);
           finalTargets[key] = await workbook.export();
+          break;
       }
     }
     return finalTargets;
