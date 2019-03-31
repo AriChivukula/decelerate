@@ -76,10 +76,12 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
           const column = new Column();
           await target.parser(column);
           finalTargets[key] = await column.export();
+          break;
         case "Row":
           const row = new Row();
           await target.parser(row);
           finalTargets[key] = await row.export();
+          break;
       }
     }
     return finalTargets;
