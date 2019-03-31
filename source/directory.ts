@@ -55,10 +55,27 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   }
 
   explain(): TExplained {
-    return {
+    const targets = this.getTargets();
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
+    for (const key in targets) {
+      const target = targets[key];
+      switch (target.kind) {
+        case "Directory":
+          const directory = new Directory();
+          await target.parser(directory);
+          finalTargets.inner[key] = await directory.explain();
+          break;
+        case "Workbook":
+          const workbook = new Workbook();
+          await target.parser(workbook);
+          finalTargets.inner[key] = await workbook.explain();
+          break;
+      }
+    }
+    return finalTargets;
   }
 
   async export(): Promise<TExported> {
