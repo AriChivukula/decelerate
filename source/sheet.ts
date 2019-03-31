@@ -1,5 +1,8 @@
 import {
   CanBeExplained,
+  TExplained,
+  CanBeExported,
+  TExported,
 } from "./explain";
 import {
   ColumnParser,
@@ -17,7 +20,7 @@ export interface ISheet {
   bindToRowRange(start: number, length: number, parser: RowParser): this;
 }
 
-export class Sheet implements ISheet, CanBeExplained {
+export class Sheet implements ISheet, CanBeExplained, CanBeExported {
   bindToColumn(index: number, parser: ColumnParser): this {
     return this;
   }
@@ -34,7 +37,14 @@ export class Sheet implements ISheet, CanBeExplained {
     return this;
   }
 
-  explain(): Object {
+  explain(): TExplained {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
+  }
+
+  export(): TExported {
     return {};
   }
 }
