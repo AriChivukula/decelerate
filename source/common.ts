@@ -16,3 +16,21 @@ export type TExported = {
 export interface CanBeExported {
   export(): TExported;
 }
+
+export interface ITarget {
+  readonly name: string;
+}
+
+export abstract class HasTargets<T extends IHasTargets> {
+  protected targets: { [k: string]: T } = {};
+
+  protected addTarget(target: T): void {
+    if (target.name.includes(":")) {
+      throw new Error("Target name cannot contain semicolon: " + target.name);
+    }
+    if (target.name in this.targets) {
+      throw new Error("Target name cannot be duplicated: " + target.name);
+    }
+    this.targets[target.name] = target;
+  }
+}
