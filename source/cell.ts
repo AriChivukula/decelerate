@@ -1,3 +1,7 @@
+import {
+  CanBeExplained,
+} from "./explain";
+
 export type CellParser = async (cell: ICell) => Promise<void>;
 
 export interface ICell {
@@ -6,7 +10,7 @@ export interface ICell {
   toString(): this;
 }
 
-export class Cell implements ICell {
+export class Cell implements ICell, CanBeExplained {
   toBoolean(): this {
     return this;
   }
@@ -17,5 +21,9 @@ export class Cell implements ICell {
 
   toString(): this {
     return this;
+  }
+
+  explain(): Object {
+    return {};
   }
 }
