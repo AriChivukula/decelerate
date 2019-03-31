@@ -9,7 +9,7 @@ import {
 } from "./list";
 import {
   Cell
-} from "./Cell";
+} from "./cell";
 
 export type ColumnParser = ListParser<IColumn>;
 
@@ -17,12 +17,12 @@ export interface IColumn extends IList {
 }
 
 export class Column extends List implements IColumn, CanBeExported {
-  export(): TExported {
+  async export(): Promise<TExported> {
     const targets = this.getTargets();
     const finalTargets: TExported = {};
     for (const key in targets) {
       const cell = new Cell();
-      finalTargets[key] = targets[key].parser(cell);
+      finalTargets[key] = await targets[key].parser(cell);
     }
     return finalTargets;
   }
