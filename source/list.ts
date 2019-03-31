@@ -1,7 +1,4 @@
 import {
-  CanBeExplained,
-} from "./explain";
-import {
   CellParser,
 } from "./cell";
 
@@ -12,7 +9,7 @@ export interface IList {
   bindToCellRange(start: number, length: number, parser: CellParser): this;
 }
 
-export abstract class List implements IList, CanBeExplained {
+export abstract class List implements IList {
   bindToCell(index: number, parser: CellParser): this {
     return this;
   }
