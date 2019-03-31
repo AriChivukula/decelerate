@@ -30,7 +30,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return this;
   }
 
-  getTargetKey(target: T): string {
+  getTargetKey(target: IWorkbookTarget): string {
     return target.name;
   }
 
