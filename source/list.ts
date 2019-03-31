@@ -29,7 +29,7 @@ export abstract class List extends HasTargets<IListTarget> implements IList, Can
     return this;
   }
 
-  getTargetKey(target: IList): string {
+  getTargetKey(target: IListTarget): string {
     return target.name + target.index;
   }
 
