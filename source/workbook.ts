@@ -1,4 +1,7 @@
 import {
+  CanBeExplained,
+} from "./explain";
+import {
   SheetParser,
 } from "./sheet";
 
@@ -9,12 +12,16 @@ export interface IWorkbook {
   bindToSheets(match: RegExp, parser: SheetParser): this;
 }
 
-export class Workbook implements IWorkbook {
+export class Workbook implements IWorkbook, CanBeExplained {
   bindToSheet(name: string, parser: SheetParser): this {
     return this;
   }
 
   bindToSheets(match: RegExp, parser: SheetParser): this {
     return this;
+  }
+
+  explain(): Object {
+    return {};
   }
 }
