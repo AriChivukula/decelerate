@@ -39,7 +39,7 @@ export function demoRow(): Row {
     .bindToCellRange("rowB", 1, 2, demoCellParser);
 }
 
-function demoCellParser(cell: ICell): string {
+async function demoCellParser(cell: ICell): Promise<string> {
   return "test";
 }
 
