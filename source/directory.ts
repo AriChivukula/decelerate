@@ -20,7 +20,7 @@ export interface IDirectory {
 }
 
 export interface TDirectoryTarget extends ITarget {
-};
+}
 
 export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
