@@ -21,7 +21,7 @@ export interface ITarget {
   readonly name: string;
 }
 
-export abstract class HasTargets<T extends IHasTargets> {
+export abstract class HasTargets<T extends ITarget> {
   protected targets: { [k: string]: T } = {};
 
   protected addTarget(target: T): void {
