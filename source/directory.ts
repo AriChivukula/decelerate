@@ -35,18 +35,30 @@ export interface IDirectoryWorkbookTarget extends ITarget {
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Directory",
+    });
     return this;
   }
 
   bindToSubDirectories(match: RegExp, parser: DirectoryParser): this {
+    this.bindToSubDirectory(match.toString(), parser);
     return this;
   }
 
   bindToWorkbook(name: string, parser: WorkbookParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Workbook",
+    });
     return this;
   }
 
   bindToWorkbooks(match: RegExp, parser: WorkbookParser): this {
+    this.bindToWorkbook(match.toString(), parser);
     return this;
   }
 
