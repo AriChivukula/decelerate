@@ -66,14 +66,14 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     const finalTargets: TExported = {};
     for (const key in targets) {
       const target = targets[key];
-      switch (target.type) {
+      switch (target.kind) {
         case "Directory":
           const directory = new Directory();
-          await target.parse(directory);
+          await target.parser(directory);
           finalTargets[key] = await directory.export();
         case "Workbook":
           const workbook = new Workbook();
-          await target.parse(workbook);
+          await target.parser(workbook);
           finalTargets[key] = await workbook.export();
       }
     }
