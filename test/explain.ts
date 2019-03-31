@@ -38,94 +38,57 @@ describe(
       },
     );
 
+    const sheetExample = {
+      "parser": "Sheet",
+      "inner": {
+        "0:0": rowExample,
+        "M:0": columnExample,
+        "N:1": columnExample,
+        "N:2": columnExample,
+        "P:1": rowExample,
+        "P:2": rowExample,
+      },
+    };
+
     it(
       "sheet",
       async () => {
         const sheetExplain = await demoSheet().explain();
-        chai.expect(sheetExplain).to.deep.equal({
-          parser: "Sheet",
-            inner: {
-              "0:0": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Row",
-              },
-              "M:0": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Column",
-              },
-              "N:1": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Column",
-              },
-              "N:2": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Column",
-              },
-              "P:1": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Row",
-              },
-              "P:2": {
-                "inner": {
-                  "A:0": null,
-                  "B:1": null,
-                  "B:2": null,
-                },
-                "parser": "Row",
-              },
-            },
-          },
-        });
+        chai.expect(sheetExplain).to.deep.equal(sheetExample);
       },
     );
+    
+    const columnExample = {
+      "parser": "Column",
+      "inner": {
+        "A:0": null,
+        "B:1": null,
+        "B:2": null,
+      },
+    };
 
     it(
       "column",
       async () => {
         const columnExplain = await demoColumn().explain();
-        chai.expect(columnExplain).to.deep.equal({
-          "parser": "Column",
-          "inner": {
-            "A:0": null,
-            "B:1": null,
-            "B:2": null,
-          },
-        });
+        chai.expect(columnExplain).to.deep.equal(columnExample);
       },
     );
+    
+    const rowExample = {
+      "parser": "Row",
+      "inner": {
+        "A:0": null,
+        "B:1": null,
+        "B:2": null,
+      },
+    };
 
     it(
       "row",
       async () => {
         const rowExplain = await demoRow().explain();
-        chai.expect(rowExplain).to.deep.equal({
-          "parser": "Row",
-          "inner": {
-            "A:0": null,
-            "B:1": null,
-            "B:2": null,
-          },
-        });
+        chai.expect(rowExplain).to.deep.equal(rowExample);
       },
     );
   },
