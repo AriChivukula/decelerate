@@ -1,6 +1,6 @@
 import {
   CanBeExplained,
-} from "./explain";
+} from "./interfaces";
 import {
   IList,
   List,
