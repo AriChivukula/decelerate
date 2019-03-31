@@ -1,5 +1,6 @@
 import {
   CanBeExplained,
+  TExplained,
 } from "./interfaces";
 import {
   IList,
@@ -13,7 +14,10 @@ export interface IColumn extends IList {
 }
 
 export class Column extends List implements IColumn, CanBeExplained {
-  explain(): Object {
-    return {};
+  explain(): TExplained {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
   }
 }
