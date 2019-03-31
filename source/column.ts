@@ -22,7 +22,8 @@ export class Column extends List implements IColumn, CanBeExported {
     const finalTargets: TExported = {};
     for (const key in targets) {
       const cell = new Cell();
-      finalTargets[key] = await targets[key].parser(cell);
+      const target = targets[key];
+      finalTargets[key] = await target.parser(cell);
     }
     return finalTargets;
   }
