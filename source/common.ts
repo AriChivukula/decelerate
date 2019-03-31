@@ -6,7 +6,7 @@ export type TExplained = {
 };
 
 export interface CanBeExplained {
-  explain(): TExplained;
+  explain(): Promise<TExplained>;
 }
 
 export type TExported = {
@@ -14,7 +14,7 @@ export type TExported = {
 };
 
 export interface CanBeExported {
-  export(): TExported;
+  export(): Promise<TExported>;
 }
 
 export interface ITarget {
