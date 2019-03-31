@@ -40,11 +40,15 @@ async function demoListParser(list: IList): Promise<void> {
 }
 
 export function demoColumn(): Column {
-  return demoListParser(new Column());
+  const column = new Column();
+  demoListParser(column);
+  return column;
 }
 
 export function demoRow(): Row {
-  return demoListParser(new Row());
+  const row = new Row();
+  demoListParser(row);
+  return row;
 }
 
 async function demoCellParser(cell: ICell): Promise<string> {
