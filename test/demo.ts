@@ -44,7 +44,7 @@ export function demoDirectory(): Directory {
 }
 
 async function demoWorkbookParser(workbook: IWorkbook): Promise<void> {
-  sheet
+  workbook
     .bindToSheet("Q", demoSheetParser)
     .bindToSheets(/R/, demoSheetParser);
 }
