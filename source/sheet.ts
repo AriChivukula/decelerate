@@ -74,28 +74,22 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     return this;
   }
 
-  getTargetKey(target: ISheetTarget): string {
-    return target.name + ":" + target.index;
-  }
-
   async explain(): Promise<TExplained> {
-    const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Column":
           const column = new Column();
           await target.parser(column);
-          finalTargets.inner[key] = await column.explain();
+          finalTargets.inner[target.name + ":" + target.index] = await column.explain();
           break;
         case "Row":
           const row = new Row();
           await target.parser(row);
-          finalTargets.inner[key] = await row.explain();
+          finalTargets.inner[target.name + ":" + target.index] = await row.explain();
           break;
       }
     }
@@ -103,20 +97,18 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
   }
 
   async export(): Promise<TExported> {
-    const targets = this.getTargets();
     const finalTargets: TExported = {};
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Column":
           const column = new Column();
           await target.parser(column);
-          finalTargets[key] = await column.export();
+          finalTargets[target.name + ":" + target.index] = await column.export();
           break;
         case "Row":
           const row = new Row();
           await target.parser(row);
-          finalTargets[key] = await row.export();
+          finalTargets[target.name + ":" + target.index] = await row.export();
           break;
       }
     }
