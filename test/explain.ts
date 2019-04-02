@@ -57,18 +57,12 @@ describe(
     const directoryExample = {
       "parser": "Directory",
       "inner": {
-        "/X/": {
+        "fake_client_a.xlsx": workbookExample,
+        "sub": {
           "parser": "Directory",
           "inner": {
-            "/Z/": workbookExample,
-            "Y": workbookExample,
-          },
-        },
-        "W": {
-          "parser": "Directory",
-          "inner": {
-            "/Z/": workbookExample,
-            "Y": workbookExample,
+            "fake_client_b.xlsx": workbookExample,
+            "fake_client_c.xlsx": workbookExample,
           },
         },
       },
