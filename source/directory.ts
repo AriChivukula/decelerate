@@ -1,4 +1,8 @@
 import {
+  promises,
+} from "fs";
+import {
+  basename,
   join,
 } from "path";
 
@@ -89,7 +93,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Directory":
-          const subdirs = await this.getMatchingSubDirectories(this.path, target.name);
+          const subdirs = await this.getMatchingSubDirectories(target.name);
           for (const subdir of subdirs) {
             const directory = new Directory(join(this.path, subdir));
             await target.parser(directory);
@@ -97,7 +101,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
           }
           break;
         case "Workbook":
-          const files = await this.getMatchingFiles(this.path, target.name);
+          const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
             const workbook = new Workbook(join(this.path, file));
             await target.parser(workbook);
@@ -115,7 +119,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     for (const target of targets) {
       switch (target.kind) {
         case "Directory":
-          const subdirs = await this.getMatchingSubDirectories(this.path, target.name);
+          const subdirs = await this.getMatchingSubDirectories(target.name);
           for (const subdir of subdirs) {
             const directory = new Directory(join(this.path, subdir));
             await target.parser(directory);
@@ -123,7 +127,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
           }
           break;
         case "Workbook":
-          const files = await this.getMatchingFiles(this.path, target.name);
+          const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
             const workbook = new Workbook(join(this.path, file));
             await target.parser(workbook);
@@ -133,5 +137,37 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       }
     }
     return finalTargets;
+  }
+  
+  private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {
+    return await this.getMatching(nameMatch, false);
+  }
+  
+  private async getMatchingFiles(nameMatch: string | RegExp): Promise<string[]> {
+    return await this.getMatching(nameMatch, true);
+  }
+  
+  private async getMatching(nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
+    let paths = await promises.readdir(this.path, {withFileTypes: true});
+    let matches: string[] = [];
+    for (let dirent of paths) {
+      if (isFile && !dirent.isFile()) {
+        continue;
+      }
+      if (!isFile && !dirent.isDirectory()) {
+        continue;
+      }
+      const endName = basename(dirent.name);
+      if (typeof nameMatch === "string") {
+        if (endName === nameMatch) {
+          matches.push(endName);
+        }
+      } else {
+        if (endName.match(nameMatch)) {
+          matches.push(endName);
+        }
+      }
+    }
+    return matches;
   }
 }
