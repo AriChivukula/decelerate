@@ -24,6 +24,12 @@ export interface IWorkbookTarget extends ITarget {
 }
 
 export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, CanBeExplained, CanBeExported {
+  constructor(
+    private readonly path: string,
+  ) {
+    super();
+  }
+
   bindToSheet(name: string, parser: SheetParser): this {
     this.addTarget({
       name,
@@ -40,33 +46,25 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return this;
   }
 
-  getTargetKey(target: IWorkbookTarget): string {
-    return target.name;
-  }
-
   async explain(): Promise<TExplained> {
-    const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       const sheet = new Sheet();
       await target.parser(sheet);
-      finalTargets.inner[key] = await sheet.explain();
+      finalTargets.inner[target.name] = await sheet.explain();
     }
     return finalTargets;
   }
 
   async export(): Promise<TExported> {
-    const targets = this.getTargets();
     const finalTargets: TExported = {};
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       const sheet = new Sheet();
       await target.parser(sheet);
-      finalTargets[key] = await sheet.export();
+      finalTargets[target.name] = await sheet.export();
     }
     return finalTargets;
   }
