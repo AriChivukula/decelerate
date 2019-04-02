@@ -18,6 +18,7 @@ export interface CanBeExported {
 }
 
 export interface ITarget {
+  readonly name: string;
 }
 
 export abstract class HasTargets<T extends ITarget> {
