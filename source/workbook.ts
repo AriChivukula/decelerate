@@ -40,7 +40,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
 
   bindToSheets(name: RegExp, parser: SheetParser): this {
     this.addTarget({
-      name,
+      name.toString(),
       parser,
     });
     return this;
