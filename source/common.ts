@@ -1,10 +1,3 @@
-import {
-  promises,
-} from "fs";
-import {
-  basename,
-} from "path";
-
 export type TExplained = {
   parser: string;
   inner: {
@@ -36,37 +29,5 @@ export abstract class HasTargets<T extends ITarget> {
 
   protected getTargets(): T[] {
     return this.targets;
-  }
-
-  protected async getMatchingSubDirectories(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
-    return await this.getMatching(rootPath, nameMatch, false);
-  }
-  
-  protected async getMatchingFiles(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
-    return await this.getMatching(rootPath, nameMatch, true);
-  }
-  
-  private async getMatching(rootPath: string, nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
-    let paths = await promises.readdir(rootPath, {withFileTypes: true});
-    let matches: string[] = [];
-    for (let dirent of paths) {
-      if (isFile && !dirent.isFile()) {
-        continue;
-      }
-      if (!isFile && !dirent.isDirectory()) {
-        continue;
-      }
-      const endName = basename(dirent.name);
-      if (typeof nameMatch === "string") {
-        if (endName === nameMatch) {
-          matches.push(endName);
-        }
-      } else {
-        if (endName.match(nameMatch)) {
-          matches.push(endName);
-        }
-      }
-    }
-    return matches;
   }
 }
