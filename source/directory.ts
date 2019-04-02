@@ -148,7 +148,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   }
   
   private async getMatching(nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
-    // ts-ignore
+    // @ts-ignore
     let paths = await promises.readdir(this.path, {withFileTypes: true});
     let matches: string[] = [];
     for (let dirent of paths) {
