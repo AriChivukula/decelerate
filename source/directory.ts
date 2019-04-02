@@ -25,14 +25,15 @@ export interface IDirectory {
 }
 
 export interface IDirectoryTarget extends ITarget {
+  readonly name: string | RegExp;
 }
 
-export interface IDirectoryDirectoryTarget extends ITarget {
+export interface IDirectoryDirectoryTarget extends IDirectoryTarget {
   kind: "Directory";
   readonly parser: DirectoryParser;
 }
 
-export interface IDirectoryWorkbookTarget extends ITarget {
+export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
   kind: "Workbook";
   readonly parser: WorkbookParser;
 }
@@ -53,8 +54,12 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  bindToSubDirectories(match: RegExp, parser: DirectoryParser): this {
-    this.bindToSubDirectory(match.toString(), parser);
+  bindToSubDirectories(name: RegExp, parser: DirectoryParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Directory",
+    });
     return this;
   }
 
@@ -67,13 +72,17 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  bindToWorkbooks(match: RegExp, parser: WorkbookParser): this {
-    this.bindToWorkbook(match.toString(), parser);
+  bindToWorkbooks(name: RegExp, parser: WorkbookParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Directory",
+    });
     return this;
   }
 
   getTargetKey(target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget): string {
-    return target.name;
+    return typeof target.name == "string" ? target.name : target.name.toString();
   }
 
   async explain(): Promise<TExplained> {
