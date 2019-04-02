@@ -19,6 +19,7 @@ export interface IWorkbook {
 }
 
 export interface IWorkbookTarget extends ITarget {
+  readonly name: string | RegExp;
   readonly parser: SheetParser,
 }
 
@@ -31,8 +32,11 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return this;
   }
 
-  bindToSheets(match: RegExp, parser: SheetParser): this {
-    this.bindToSheet(match.toString(), parser);
+  bindToSheets(name: RegExp, parser: SheetParser): this {
+    this.addTarget({
+      name,
+      parser,
+    });
     return this;
   }
 
