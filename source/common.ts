@@ -38,7 +38,7 @@ export abstract class HasTargets<T extends ITarget> {
     return this.targets;
   }
 
-  private getMatchingDirectories(rootPath: string, nameMatch: string | RegExp): string[] {
+  private getMatchingSubDirectories(rootPath: string, nameMatch: string | RegExp): string[] {
     let paths = await fsPromises.readdir(rootPath, {withFileTypes: true});
     let matches: string[] = [];
     for (let dirent of paths) {
