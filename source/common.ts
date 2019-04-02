@@ -1,5 +1,5 @@
 import {
-  fsPromises,
+  promises,
 } from "fs";
 import {
   basename,
@@ -47,7 +47,7 @@ export abstract class HasTargets<T extends ITarget> {
   }
   
   private async getMatching(rootPath: string, nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
-    let paths = await fsPromises.readdir(rootPath, {withFileTypes: true});
+    let paths = await promises.readdir(rootPath, {withFileTypes: true});
     let matches: string[] = [];
     for (let dirent of paths) {
       if (isFile && !dirent.isFile()) {
