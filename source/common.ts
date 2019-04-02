@@ -1,6 +1,6 @@
 import {
-  readdir,
-} from "fsPromises";
+  fsPromises,
+} from "fs";
 import {
   basename,
 } from "path";
@@ -39,11 +39,11 @@ export abstract class HasTargets<T extends ITarget> {
   }
 
   protected async getMatchingSubDirectories(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
-    return await getMatching(rootPath, nameMatch, false);
+    return await this.getMatching(rootPath, nameMatch, false);
   }
   
   protected async getMatchingFiles(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
-    return await getMatching(rootPath, nameMatch, true);
+    return await this.getMatching(rootPath, nameMatch, true);
   }
   
   private async getMatching(rootPath: string, nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
