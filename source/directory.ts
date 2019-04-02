@@ -39,8 +39,10 @@ export interface IDirectoryWorkbookTarget extends ITarget {
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
   constructor(
-    readonly private path: string,
-  ) {}
+    private readonly path: string,
+  ) {
+    super();
+  }
 
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     this.addTarget({
