@@ -38,7 +38,7 @@ async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
 }
 
 export function demoDirectory(): Directory {
-  const directory = new Directory();
+  const directory = new Directory("./test/data/");
   demoDirectoryParserA(directory);
   return directory;
 }
