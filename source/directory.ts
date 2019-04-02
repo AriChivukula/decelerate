@@ -1,4 +1,8 @@
 import {
+  join,
+} from "path";
+
+import {
   CanBeExplained,
   CanBeExported,
   TExplained,
@@ -34,6 +38,10 @@ export interface IDirectoryWorkbookTarget extends ITarget {
 }
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
+  constructor(
+    readonly private path: string,
+  ) {}
+
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     this.addTarget({
       name,
@@ -76,7 +84,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       const target = targets[key];
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory();
+          const directory = new Directory(join(this.path, target.name));
           await target.parser(directory);
           finalTargets.inner[key] = await directory.explain();
           break;
@@ -97,7 +105,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       const target = targets[key];
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory();
+          const directory = new Directory(join(this.path, target.name));
           await target.parser(directory);
           finalTargets[key] = await directory.export();
           break;
