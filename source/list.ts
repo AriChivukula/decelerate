@@ -14,6 +14,7 @@ export interface IList {
 }
 
 export interface IListTarget extends ITarget {
+  readonly name: string;
   readonly index: number,
   readonly parser: CellParser,
 }
