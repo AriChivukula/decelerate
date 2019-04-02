@@ -76,7 +76,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     this.addTarget({
       name,
       parser,
-      kind: "Directory",
+      kind: "Workbook",
     });
     return this;
   }
