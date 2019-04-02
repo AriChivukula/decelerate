@@ -25,6 +25,7 @@ export interface ISheet {
 }
 
 export interface ISheetTarget extends ITarget {
+  readonly name: string;
   readonly index: number;
 }
 
