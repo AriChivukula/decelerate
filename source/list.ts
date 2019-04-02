@@ -14,6 +14,7 @@ export interface IList {
 }
 
 export interface IListTarget extends ITarget {
+  readonly name: string;
   readonly index: number,
   readonly parser: CellParser,
 }
@@ -33,9 +34,5 @@ export abstract class List extends HasTargets<IListTarget> implements IList {
       this.bindToCell(name, idx, parser);
     }
     return this;
-  }
-
-  getTargetKey(target: IListTarget): string {
-    return target.name + ":" + target.index;
   }
 }

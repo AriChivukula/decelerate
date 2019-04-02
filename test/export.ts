@@ -37,13 +37,10 @@ describe(
     };
 
     const directoryExample = {
-      "/X/": {
-        "/Z/": workbookExample,
-        "Y": workbookExample,
-      },
-       "W": {
-        "/Z/": workbookExample,
-        "Y": workbookExample,
+      "fake_client_a.xlsx": workbookExample,
+       "sub": {
+        "fake_client_b.xlsx": workbookExample,
+        "fake_client_c.xlsx": workbookExample,
       },
     };
 

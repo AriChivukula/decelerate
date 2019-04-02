@@ -26,19 +26,19 @@ import {
 
 async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
   directory
-    .bindToSubDirectory("W", demoDirectoryParserB)
-    .bindToSubDirectories(/X/, demoDirectoryParserB);
+    .bindToSubDirectory("sub", demoDirectoryParserB)
+    .bindToWorkbook("fake_client_a.xlsx", demoWorkbookParser);
 }
 
 
 async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
   directory
-    .bindToWorkbook("Y", demoWorkbookParser)
-    .bindToWorkbooks(/Z/, demoWorkbookParser);
+    .bindToSubDirectories(/fake_client/, demoDirectoryParserB)
+    .bindToWorkbooks(/fake_client_.\.xlsx/, demoWorkbookParser);
 }
 
 export function demoDirectory(): Directory {
-  const directory = new Directory();
+  const directory = new Directory("./test/data/");
   demoDirectoryParserA(directory);
   return directory;
 }
@@ -50,7 +50,7 @@ async function demoWorkbookParser(workbook: IWorkbook): Promise<void> {
 }
 
 export function demoWorkbook(): Workbook {
-  const workbook = new Workbook();
+  const workbook = new Workbook("");
   demoWorkbookParser(workbook);
   return workbook;
 }

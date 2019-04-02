@@ -1,4 +1,12 @@
 import {
+  promises,
+} from "fs";
+import {
+  basename,
+  join,
+} from "path";
+
+import {
   CanBeExplained,
   CanBeExported,
   TExplained,
@@ -21,19 +29,26 @@ export interface IDirectory {
 }
 
 export interface IDirectoryTarget extends ITarget {
+  readonly name: string | RegExp;
 }
 
-export interface IDirectoryDirectoryTarget extends ITarget {
+export interface IDirectoryDirectoryTarget extends IDirectoryTarget {
   kind: "Directory";
   readonly parser: DirectoryParser;
 }
 
-export interface IDirectoryWorkbookTarget extends ITarget {
+export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
   kind: "Workbook";
   readonly parser: WorkbookParser;
 }
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
+  constructor(
+    private readonly path: string,
+  ) {
+    super();
+  }
+
   bindToSubDirectory(name: string, parser: DirectoryParser): this {
     this.addTarget({
       name,
@@ -43,8 +58,12 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  bindToSubDirectories(match: RegExp, parser: DirectoryParser): this {
-    this.bindToSubDirectory(match.toString(), parser);
+  bindToSubDirectories(name: RegExp, parser: DirectoryParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Directory",
+    });
     return this;
   }
 
@@ -57,33 +76,37 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  bindToWorkbooks(match: RegExp, parser: WorkbookParser): this {
-    this.bindToWorkbook(match.toString(), parser);
+  bindToWorkbooks(name: RegExp, parser: WorkbookParser): this {
+    this.addTarget({
+      name,
+      parser,
+      kind: "Workbook",
+    });
     return this;
   }
 
-  getTargetKey(target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget): string {
-    return target.name;
-  }
-
   async explain(): Promise<TExplained> {
-    const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory();
-          await target.parser(directory);
-          finalTargets.inner[key] = await directory.explain();
+          const subdirs = await this.getMatchingSubDirectories(target.name);
+          for (const subdir of subdirs) {
+            const directory = new Directory(join(this.path, subdir));
+            await target.parser(directory);
+            finalTargets.inner[subdir] = await directory.explain();
+          }
           break;
         case "Workbook":
-          const workbook = new Workbook();
-          await target.parser(workbook);
-          finalTargets.inner[key] = await workbook.explain();
+          const files = await this.getMatchingFiles(target.name);
+          for (const file of files) {
+            const workbook = new Workbook(join(this.path, file));
+            await target.parser(workbook);
+            finalTargets.inner[file] = await workbook.explain();
+          }
           break;
       }
     }
@@ -93,21 +116,59 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   async export(): Promise<TExported> {
     const targets = this.getTargets();
     const finalTargets: TExported = {};
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of targets) {
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory();
-          await target.parser(directory);
-          finalTargets[key] = await directory.export();
+          const subdirs = await this.getMatchingSubDirectories(target.name);
+          for (const subdir of subdirs) {
+            const directory = new Directory(join(this.path, subdir));
+            await target.parser(directory);
+            finalTargets[subdir] = await directory.export();
+          }
           break;
         case "Workbook":
-          const workbook = new Workbook();
-          await target.parser(workbook);
-          finalTargets[key] = await workbook.export();
+          const files = await this.getMatchingFiles(target.name);
+          for (const file of files) {
+            const workbook = new Workbook(join(this.path, file));
+            await target.parser(workbook);
+            finalTargets[file] = await workbook.export();
+          }
           break;
       }
     }
     return finalTargets;
+  }
+  
+  private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {
+    return await this.getMatching(nameMatch, false);
+  }
+  
+  private async getMatchingFiles(nameMatch: string | RegExp): Promise<string[]> {
+    return await this.getMatching(nameMatch, true);
+  }
+  
+  private async getMatching(nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
+    // @ts-ignore
+    let paths = await promises.readdir(this.path, {withFileTypes: true});
+    let matches: string[] = [];
+    for (let dirent of paths) {
+      if (isFile && !dirent.isFile()) {
+        continue;
+      }
+      if (!isFile && !dirent.isDirectory()) {
+        continue;
+      }
+      const endName = basename(dirent.name);
+      if (typeof nameMatch === "string") {
+        if (endName === nameMatch) {
+          matches.push(endName);
+        }
+      } else {
+        if (endName.match(nameMatch)) {
+          matches.push(endName);
+        }
+      }
+    }
+    return matches;
   }
 }
