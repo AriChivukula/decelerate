@@ -38,11 +38,22 @@ export abstract class HasTargets<T extends ITarget> {
     return this.targets;
   }
 
-  private getMatchingSubDirectories(rootPath: string, nameMatch: string | RegExp): string[] {
+  protected async getMatchingSubDirectories(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
+    return await getMatching(rootPath, nameMatch, false);
+  }
+  
+  protected async getMatchingFiles(rootPath: string, nameMatch: string | RegExp): Promise<string[]> {
+    return await getMatching(rootPath, nameMatch, true);
+  }
+  
+  private async getMatching(rootPath: string, nameMatch: string | RegExp, isFile: boolean): Promise<string[]> {
     let paths = await fsPromises.readdir(rootPath, {withFileTypes: true});
     let matches: string[] = [];
     for (let dirent of paths) {
-      if (!dirent.isDirectory()) {
+      if (isFile && !dirent.isFile()) {
+        continue;
+      }
+      if (!isFile && !dirent.isDirectory()) {
         continue;
       }
       const endName = basename(dirent.name);
