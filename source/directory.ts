@@ -81,28 +81,28 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  getTargetKey(target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget): string {
-    return typeof target.name == "string" ? target.name : target.name.toString();
-  }
-
   async explain(): Promise<TExplained> {
-    const targets = this.getTargets();
     const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory(join(this.path, target.name));
-          await target.parser(directory);
-          finalTargets.inner[key] = await directory.explain();
+          const subdirs = await this.getMatchingSubDirectories(this.path, target.name);
+          for (const subdir of subdirs) {
+            const directory = new Directory(join(this.path, subdir));
+            await target.parser(directory);
+            finalTargets.inner[subdir] = await directory.explain();
+          }
           break;
         case "Workbook":
-          const workbook = new Workbook();
-          await target.parser(workbook);
-          finalTargets.inner[key] = await workbook.explain();
+          const files = await this.getMatchingFiles(this.path, target.name);
+          for (const file of files) {
+            const workbook = new Workbook(join(this.path, file));
+            await target.parser(workbook);
+            finalTargets.inner[file] = await workbook.explain();
+          }
           break;
       }
     }
@@ -112,18 +112,23 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   async export(): Promise<TExported> {
     const targets = this.getTargets();
     const finalTargets: TExported = {};
-    for (const key in targets) {
-      const target = targets[key];
+    for (const target of targets) {
       switch (target.kind) {
         case "Directory":
-          const directory = new Directory(join(this.path, target.name));
-          await target.parser(directory);
-          finalTargets[key] = await directory.export();
+          const subdirs = await this.getMatchingSubDirectories(this.path, target.name);
+          for (const subdir of subdirs) {
+            const directory = new Directory(join(this.path, subdir));
+            await target.parser(directory);
+            finalTargets[subdir] = await directory.export();
+          }
           break;
         case "Workbook":
-          const workbook = new Workbook();
-          await target.parser(workbook);
-          finalTargets[key] = await workbook.export();
+          const files = await this.getMatchingFiles(this.path, target.name);
+          for (const file of files) {
+            const workbook = new Workbook(join(this.path, file));
+            await target.parser(workbook);
+            finalTargets[file] = await workbook.export();
+          }
           break;
       }
     }
