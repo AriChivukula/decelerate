@@ -19,7 +19,7 @@ export interface IWorkbook {
 }
 
 export interface IWorkbookTarget extends ITarget {
-  readonly name: string | RegExp;
+  readonly name: string;
   readonly parser: SheetParser,
 }
 
