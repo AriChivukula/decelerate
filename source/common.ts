@@ -1,3 +1,10 @@
+import {
+  readdir,
+} from "fsPromises";
+import {
+  basename,
+} from "path";
+
 export type TExplained = {
   parser: string;
   inner: {
@@ -29,5 +36,26 @@ export abstract class HasTargets<T extends ITarget> {
 
   protected getTargets(): T[] {
     return this.targets;
+  }
+
+  private getMatchingDirectories(rootPath: string, nameMatch: string | RegExp): string[] {
+    let paths = await fsPromises.readdir(rootPath, {withFileTypes: true});
+    let matches: string[] = [];
+    for (let dirent of paths) {
+      if (!dirent.isDirectory()) {
+        continue;
+      }
+      const endName = basename(dirent.name);
+      if (typeof nameMatch === "string") {
+        if (endName === nameMatch) {
+          matches.push(endName);
+        }
+      } else {
+        if (endName.match(nameMatch)) {
+          matches.push(endName);
+        }
+      }
+    }
+    return matches;
   }
 }
