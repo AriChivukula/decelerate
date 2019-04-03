@@ -12,7 +12,12 @@ export type TExported = {
 export interface ITarget {
 }
 
-export abstract class HasTargets<T extends ITarget> {
+export interface ICanExportAndExplain {
+  explain(): Promise<TExplained>;
+  export(): Promise<TExported>;
+}
+
+export abstract class HasTargets<T extends ITarget> implements ICanExportAndExplain {
   private targets: T[] = [];
 
   protected addTarget(target: T): void {
@@ -24,7 +29,7 @@ export abstract class HasTargets<T extends ITarget> {
   }
   
   abstract protected explore(
-    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void>;
 
   async explain(): Promise<TExplained> {
@@ -33,7 +38,7 @@ export abstract class HasTargets<T extends ITarget> {
       inner: {},
     };
     await this.explore(
-      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
+      async (key: string, value: ICanExportAndExplain): Promise<void> => {
         finalTargets.inner[key] = await value.explain();
       },
     );
@@ -43,7 +48,7 @@ export abstract class HasTargets<T extends ITarget> {
   async export(): Promise<TExported> {
     const finalTargets: TExported = {};
     await this.explore(
-      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
+      async (key: string, value: ICanExportAndExplain): Promise<void> => {
         finalTargets[key] = await value.export();
       },
     );
