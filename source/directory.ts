@@ -68,28 +68,24 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
   }
 
   protected async explore(
-    appendToOutput: (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>) => Promise<void>,
+    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Directory":
           const subdirs = await this.getMatchingSubDirectories(target.name);
           for (const subdir of subdirs) {
-            await appendToOutput(
-              subdir,
-              target,
-              new Directory(join(this.path, subdir)),
-            );
+            const directory = new Directory(join(this.path, subdir));
+            await target.parser(directory);
+            await appendToOutput(subdir, directory);
           }
           break;
         case "Workbook":
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
-            await appendToOutput(
-              file,
-              target,
-              new Workbook(join(this.path, file)),
-            );
+            const workbook = new Workbook(join(this.path, file));
+            await target.parser(workbook);
+            await appendToOutput(file, workbook);
           }
           break;
       }
@@ -102,8 +98,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
       inner: {},
     };
     await this.explore(
-      async (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>): Promise<void> => {
-        await target.parser(value);
+      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
         finalTargets.inner[key] = await value.explain();
       },
     );
@@ -113,8 +108,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
   async export(): Promise<TExported> {
     const finalTargets: TExported = {};
     await this.explore(
-      async (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>): Promise<void> => {
-        await target.parser(value);
+      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
         finalTargets[key] = await value.export();
       },
     );
