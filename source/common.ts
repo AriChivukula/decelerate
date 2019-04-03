@@ -28,7 +28,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     return this.targets;
   }
   
-  abstract protected explore(
+  protected abstract explore(
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void>;
 
