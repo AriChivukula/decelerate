@@ -13,7 +13,7 @@ jobs:
     - yarn outdated
     - yarn mocha
     - yarn tsc
-    - bash test/auto.sh
+    - bash test/e2e.sh
   - stage: Deploy
     if: tag IS present
     script:
