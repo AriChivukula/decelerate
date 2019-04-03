@@ -1,4 +1,8 @@
 import {
+  readFile,
+} from "xlsx";
+
+import {
   IDirectory,
   Directory,
 } from "../source/directory";
@@ -47,12 +51,12 @@ export function demoDirectory(): Directory {
 
 async function demoWorkbookParser(workbook: IWorkbook): Promise<void> {
   workbook
-    .bindToSheet("Q", demoSheetParser)
-    .bindToSheet(/R/, demoSheetParser);
+    .bindToSheet("Other Questions", demoSheetParser)
+    .bindToSheet(/Harm Details/, demoSheetParser);
 }
 
 export function demoWorkbook(): Workbook {
-  const workbook = new Workbook("");
+  const workbook = new Workbook(readFile("./test/data/fake_client_a.xlsx"));
   demoWorkbookParser(workbook);
   return workbook;
 }
