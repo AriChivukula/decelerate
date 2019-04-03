@@ -1,6 +1,4 @@
 import {
-  TExplained,
-  TExported,
   ITarget,
   HasTargets,
 } from "./common";
@@ -35,26 +33,13 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     return this;
   }
 
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
+  async protected explore(
+    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+  ): Promise<void> {
     for (const target of this.getTargets()) {
       const sheet = new Sheet();
       await target.parser(sheet);
-      finalTargets.inner[target.name] = await sheet.explain();
+      await appendToOutput(target.name, sheet);
     }
-    return finalTargets;
-  }
-
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    for (const target of this.getTargets()) {
-      const sheet = new Sheet();
-      await target.parser(sheet);
-      finalTargets[target.name] = await sheet.export();
-    }
-    return finalTargets;
   }
 }
