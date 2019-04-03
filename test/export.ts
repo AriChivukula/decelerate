@@ -17,21 +17,21 @@ describe(
   "export",
   () => {
     const listExample = {
-      "A:0": false,
-      "B:1": 0,
-      "B:2": 0,
-      "C:3": "",
-      "D:4": "test",
-      "D:5": "test",
+      "A:25": false,
+      "B:26": 0,
+      "B:27": 0,
+      "C:28": "",
+      "D:29": "test",
+      "D:30": "test",
     };
 
     const sheetExample = {
-      "0:0": listExample,
-      "M:0": listExample,
-      "N:1": listExample,
-      "N:2": listExample,
-      "P:1": listExample,
-      "P:2": listExample,
+      "0:25": listExample,
+      "M:25": listExample,
+      "N:26": listExample,
+      "N:27": listExample,
+      "P:26": listExample,
+      "P:27": listExample,
     };
 
     const workbookExample = {
