@@ -32,7 +32,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
 
   bindToSheet(name: string | RegExp, parser: SheetParser): this {
     this.addTarget({
-      name: typeof name === "string" ? name : name.toString(),
+      name,
       parser,
     });
     return this;
@@ -42,9 +42,28 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
-      const sheet = new Sheet();
-      await target.parser(sheet);
-      await appendToOutput(target.name, sheet);
+      const sheetNames = await this.getMatchingSheetNames(target.name);
+      for (const sheetName of sheetNames) {
+        const sheet = new Sheet();
+        await target.parser(sheet);
+        await appendToOutput(sheetName, sheet);
+      }
     }
+  }
+
+  private async getMatchingSheetNames(nameMatch: string | RegExp): Promise<string[]> {
+    const matches: string[] = [];
+    for (const sheetName in this.wb.Sheets) {
+      if (typeof nameMatch === "string") {
+        if (sheetName === nameMatch) {
+          matches.push(endName);
+        }
+      } else {
+        if (sheetName.match(nameMatch)) {
+          matches.push(endName);
+        }
+      }
+    }
+    return matches;
   }
 }
