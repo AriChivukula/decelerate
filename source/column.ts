@@ -1,7 +1,5 @@
 import {
-  CanBeExplained,
   TExplained,
-  CanBeExported,
   TExported,
 } from "./common";
 import {
@@ -19,7 +17,7 @@ export type ColumnParser = ListParser<IColumn>;
 export interface IColumn extends IList {
 }
 
-export class Column extends List implements IColumn, CanBeExplained, CanBeExported {
+export class Column extends List implements IColumn {
   async explain(): Promise<TExplained> {
     const finalTargets: TExplained = {
       parser: this.constructor.name,
