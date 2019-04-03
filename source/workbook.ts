@@ -1,4 +1,8 @@
 import {
+  WorkBook,
+} from "./xslx";
+
+import {
   ICanExportAndExplain,
   ITarget,
   HasTargets,
@@ -21,7 +25,7 @@ export interface IWorkbookTarget extends ITarget {
 
 export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
   constructor(
-    private readonly path: string,
+    private readonly wb: WorkBook,
   ) {
     super();
   }
