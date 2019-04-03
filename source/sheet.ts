@@ -71,7 +71,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     return this;
   }
 
-  async protected explore(
+  protected async explore(
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
