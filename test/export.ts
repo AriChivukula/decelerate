@@ -17,9 +17,12 @@ describe(
   "export",
   () => {
     const listExample = {
-      "A:0": "test",
-      "B:1": "test",
-      "B:2": "test",
+      "A:0": false,
+      "B:1": 0,
+      "B:2": 0,
+      "C:3": "",
+      "D:4": "test",
+      "D:5": "test",
     };
 
     const sheetExample = {
