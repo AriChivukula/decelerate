@@ -63,10 +63,10 @@ export function demoWorkbook(): Workbook {
 
 async function demoSheetParser(sheet: ISheet): Promise<void> {
   sheet
-    .bindToColumn("M", 0, demoListParser)
-    .bindToColumnRange("N", 1, 2, demoListParser)
-    .bindToRow("0", 0, demoListParser)
-    .bindToRowRange("P", 1, 2, demoListParser);
+    .bindToColumn("M", 25, demoListParser)
+    .bindToColumnRange("N", 26, 2, demoListParser)
+    .bindToRow("0", 25, demoListParser)
+    .bindToRowRange("P", 26, 2, demoListParser);
 }
 
 export function demoSheet(): Sheet {
@@ -77,10 +77,10 @@ export function demoSheet(): Sheet {
 
 async function demoListParser(list: IList): Promise<void> {
   list
-    .bindToCell("A", 0, CellBooleanParser)
-    .bindToCellRange("B", 1, 2, CellNumberParser)
-    .bindToCell("C", 3, CellStringParser)
-    .bindToCellRange("D", 4, 2, async (raw: string) => "test");
+    .bindToCell("A", 25, CellBooleanParser)
+    .bindToCellRange("B", 26, 2, CellNumberParser)
+    .bindToCell("C", 28, CellStringParser)
+    .bindToCellRange("D", 29, 2, async (raw: string) => "test");
 }
 
 export function demoColumn(): Column {
