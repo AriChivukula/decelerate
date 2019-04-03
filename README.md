@@ -5,17 +5,14 @@ Data accessors for directories of workbooks of sheets of rows/columns of cells.
 ### Directory
 ```
 interface IDirectory {
-  bindToSubDirectory(name: string, parser: DirectoryParser): this;
-  bindToSubDirectories(match: RegExp, parser: DirectoryParser): this;
-  bindToWorkbook(name: string, parser: WorkbookParser): this;
-  bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
+  bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
+  bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
 }
 ```
 ### Workbook
 ```
 interface IWorkbook {
-  bindToSheet(name: string, parser: SheetParser): this;
-  bindToSheets(match: RegExp, parser: SheetParser): this;
+  bindToSheet(name: string | RegExp, parser: SheetParser): this;
 }
 ```
 ### Sheet
