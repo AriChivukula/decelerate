@@ -8,7 +8,7 @@ import {
   CellStringParser,
 } from "../../source/index";
 
-export async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
+export default async function(directory: IDirectory): Promise<void> {
   directory
     .bindToSubDirectory("sub", demoDirectoryParserB)
     .bindToWorkbook("fake_client_a.xlsx", demoWorkbookParser);
