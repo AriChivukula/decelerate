@@ -31,8 +31,9 @@ yargs
 
 export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   const directory = new Directory(argv.directory);
-  const parser: DirectoryParser = require(`${process.cwd()}/${argv.parser}`);
-  await parser(directory);
+  const mod: { [key: string]: any } = require(`${process.cwd()}/${argv.parser}`);
+  console.log(mod);
+  await mod[""](directory);
   const exported = await directory.export();
   console.log(exported);
 }
