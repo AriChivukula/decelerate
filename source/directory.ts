@@ -42,7 +42,7 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
 
 export type TDirectoryTarget = IDirectoryDirectoryTarget | IDirectoryWorkbookTarget;
 
-export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
+export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory {
   constructor(
     private readonly path: string,
   ) {
