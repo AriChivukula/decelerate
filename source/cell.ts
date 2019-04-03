@@ -40,6 +40,8 @@ export class Cell implements ICanExportAndExplain {
   }
 
   async export(): Promise<TExported> {
+    console.log(utils.encode_cell({r: this.rowIdx, c: this.columnIdx}));
+    console.log(this.ws[utils.encode_cell({r: this.rowIdx, c: this.columnIdx})]);
     return await this.parser(utils.format_cell(this.ws[utils.encode_cell({r: this.rowIdx, c: this.columnIdx})]));
   }
 }
