@@ -6,8 +6,8 @@ export type TExplained = {
 };
 
 export type TExported = {
-  [k: string]: TExported | boolean | number | string;
-};
+  [k: string]: TExported;
+} | boolean | number | string;
 
 export interface ITarget {
 }
