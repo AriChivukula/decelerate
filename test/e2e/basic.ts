@@ -10,14 +10,14 @@ import {
 
 export default async function(directory: IDirectory): Promise<void> {
   directory
-    .bindToSubDirectory("sub", demoDirectoryParserB)
+    .bindToSubDirectory("sub", demoDirectoryParser)
     .bindToWorkbook("fake_client_a.xlsx", demoWorkbookParser);
 }
 
 
-async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
+async function demoDirectoryParser(directory: IDirectory): Promise<void> {
   directory
-    .bindToSubDirectory(/fake_client/, demoDirectoryParserB)
+    .bindToSubDirectory(/fake_client/, demoDirectoryParser)
     .bindToWorkbook(/fake_client_.\.xlsx/, demoWorkbookParser);
 }
 
