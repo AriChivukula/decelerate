@@ -1,7 +1,5 @@
 import {
-  CanBeExplained,
   TExplained,
-  CanBeExported,
   TExported,
   ITarget,
   HasTargets,
@@ -39,7 +37,7 @@ export interface ISheetRowTarget extends ISheetTarget {
   readonly parser: RowParser;
 }
 
-export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
+export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet {
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     this.addTarget({
       name,
