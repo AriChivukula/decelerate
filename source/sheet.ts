@@ -1,8 +1,9 @@
 import {
-  CanBeExplained,
-  TExplained,
-  CanBeExported,
-  TExported,
+  WorkSheet,
+} from "xlsx";
+
+import {
+  ICanExportAndExplain,
   ITarget,
   HasTargets,
 } from "./common";
@@ -39,7 +40,13 @@ export interface ISheetRowTarget extends ISheetTarget {
   readonly parser: RowParser;
 }
 
-export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet, CanBeExplained, CanBeExported {
+export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet {
+  constructor(
+    private readonly ws: WorkSheet,
+  ) {
+    super();
+  }
+
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     this.addTarget({
       name,
@@ -74,44 +81,22 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     return this;
   }
 
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
+  protected async explore(
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
+  ): Promise<void> {
     for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Column":
-          const column = new Column();
+          const column = new Column(this.ws, target.index);
           await target.parser(column);
-          finalTargets.inner[target.name + ":" + target.index] = await column.explain();
+          await appendToOutput(target.name + ":" + target.index, column);
           break;
         case "Row":
-          const row = new Row();
+          const row = new Row(this.ws, target.index);
           await target.parser(row);
-          finalTargets.inner[target.name + ":" + target.index] = await row.explain();
+          await appendToOutput(target.name + ":" + target.index, row);
           break;
       }
     }
-    return finalTargets;
-  }
-
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    for (const target of this.getTargets()) {
-      switch (target.kind) {
-        case "Column":
-          const column = new Column();
-          await target.parser(column);
-          finalTargets[target.name + ":" + target.index] = await column.export();
-          break;
-        case "Row":
-          const row = new Row();
-          await target.parser(row);
-          finalTargets[target.name + ":" + target.index] = await row.export();
-          break;
-      }
-    }
-    return finalTargets;
   }
 }
