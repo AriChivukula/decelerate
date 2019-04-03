@@ -1,6 +1,6 @@
 import {
   WorkBook,
-} from "./xslx";
+} from "xlsx";
 
 import {
   ICanExportAndExplain,
