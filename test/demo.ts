@@ -70,7 +70,7 @@ async function demoSheetParser(sheet: ISheet): Promise<void> {
 }
 
 export function demoSheet(): Sheet {
-  const sheet = new Sheet();
+  const sheet = new Sheet(readFile("./test/data/fake_client_a.xlsx").Sheets["Harm Details"]);
   demoSheetParser(sheet);
   return sheet;
 }
@@ -84,13 +84,13 @@ async function demoListParser(list: IList): Promise<void> {
 }
 
 export function demoColumn(): Column {
-  const column = new Column();
+  const column = new Column(readFile("./test/data/fake_client_a.xlsx").Sheets["Harm Details"], 0);
   demoListParser(column);
   return column;
 }
 
 export function demoRow(): Row {
-  const row = new Row();
+  const row = new Row(readFile("./test/data/fake_client_a.xlsx").Sheets["Harm Details"], 0);
   demoListParser(row);
   return row;
 }
