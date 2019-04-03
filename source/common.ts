@@ -5,17 +5,9 @@ export type TExplained = {
   };
 };
 
-export interface CanBeExplained {
-  explain(): Promise<TExplained>;
-}
-
 export type TExported = {
   [k: string]: TExported | boolean | number | string;
 };
-
-export interface CanBeExported {
-  export(): Promise<TExported>;
-}
 
 export interface ITarget {
 }
@@ -30,4 +22,8 @@ export abstract class HasTargets<T extends ITarget> {
   protected getTargets(): T[] {
     return this.targets;
   }
+  
+  abstract explain(): Promise<TExplained>;
+  
+  abstract export(): Promise<TExported>;
 }
