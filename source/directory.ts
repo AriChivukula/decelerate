@@ -7,8 +7,6 @@ import {
 } from "path";
 
 import {
-  CanBeExplained,
-  CanBeExported,
   TExplained,
   TExported,
   ITarget,
