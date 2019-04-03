@@ -14,8 +14,7 @@ import {
 export type WorkbookParser = (workbook: IWorkbook) => Promise<void>;
 
 export interface IWorkbook {
-  bindToSheet(name: string, parser: SheetParser): this;
-  bindToSheets(match: RegExp, parser: SheetParser): this;
+  bindToSheet(name: string | RegExp, parser: SheetParser): this;
 }
 
 export interface IWorkbookTarget extends ITarget {
@@ -30,17 +29,9 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     super();
   }
 
-  bindToSheet(name: string, parser: SheetParser): this {
+  bindToSheet(name: string | RegExp, parser: SheetParser): this {
     this.addTarget({
       name,
-      parser,
-    });
-    return this;
-  }
-
-  bindToSheets(name: RegExp, parser: SheetParser): this {
-    this.addTarget({
-      name: name.toString(),
       parser,
     });
     return this;
