@@ -20,8 +20,7 @@ export class Row extends List implements IRow {
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
-      const cell = new Cell();
-      await target.parser(cell);
+      const cell = new Cell(target.parser);
       await appendToOutput(target.name + ":" + target.index, cell);
     }
   }
