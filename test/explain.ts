@@ -16,21 +16,32 @@ chai.use(chaiAsPromised);
 describe(
   "explain",
   async () => {
+    const cellExample = {
+      "parser": "Cell",
+      "inner": {},
+    };
+
     const rowExample = {
       "parser": "Row",
       "inner": {
-        "A:0": null,
-        "B:1": null,
-        "B:2": null,
+        "A:0": cellExample,
+        "B:1": cellExample,
+        "B:2": cellExample,
+        "C:3": cellExample,
+        "D:4": cellExample,
+        "D:5": cellExample,
       },
     };
 
     const columnExample = {
       "parser": "Column",
       "inner": {
-        "A:0": null,
-        "B:1": null,
-        "B:2": null,
+        "A:0": cellExample,
+        "B:1": cellExample,
+        "B:2": cellExample,
+        "C:3": cellExample,
+        "D:4": cellExample,
+        "D:5": cellExample,
       },
     };
 
