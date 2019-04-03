@@ -20,8 +20,10 @@ import {
   Row,
 } from "../source/row";
 import {
-  ICell,
   Cell,
+  CellBooleanParser,
+  CellNumberParser,
+  CellStringParser,
 } from "../source/cell";
 
 async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
@@ -71,8 +73,10 @@ export function demoSheet(): Sheet {
 
 async function demoListParser(list: IList): Promise<void> {
   list
-    .bindToCell("A", 0, demoCellParser)
-    .bindToCellRange("B", 1, 2, demoCellParser);
+    .bindToCell("A", 0, CellBooleanParser)
+    .bindToCellRange("B", 1, 2, CellNumberParser)
+    .bindToCell("C", 3, CellStringParser)
+    .bindToCellRange("D", 4, 2, (raw: string) => "test");
 }
 
 export function demoColumn(): Column {
@@ -85,12 +89,4 @@ export function demoRow(): Row {
   const row = new Row();
   demoListParser(row);
   return row;
-}
-
-async function demoCellParser(cell: ICell): Promise<string> {
-  return "test";
-}
-
-export function demoCell(): Cell {
-  return new Cell();
 }
