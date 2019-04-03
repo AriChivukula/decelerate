@@ -33,8 +33,8 @@ async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
 
 async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
   directory
-    .bindToSubDirectories(/fake_client/, demoDirectoryParserB)
-    .bindToWorkbooks(/fake_client_.\.xlsx/, demoWorkbookParser);
+    .bindToSubDirectory(/fake_client/, demoDirectoryParserB)
+    .bindToWorkbook(/fake_client_.\.xlsx/, demoWorkbookParser);
 }
 
 export function demoDirectory(): Directory {
@@ -46,7 +46,7 @@ export function demoDirectory(): Directory {
 async function demoWorkbookParser(workbook: IWorkbook): Promise<void> {
   workbook
     .bindToSheet("Q", demoSheetParser)
-    .bindToSheets(/R/, demoSheetParser);
+    .bindToSheet(/R/, demoSheetParser);
 }
 
 export function demoWorkbook(): Workbook {
