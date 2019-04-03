@@ -1,4 +1,8 @@
 import {
+  WorkSheet,
+} from "xlsx";
+
+import {
   ICanExportAndExplain,
   ITarget,
   HasTargets,
@@ -37,6 +41,12 @@ export interface ISheetRowTarget extends ISheetTarget {
 }
 
 export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet {
+  constructor(
+    private readonly ws: WorkSheet,
+  ) {
+    super();
+  }
+
   bindToColumn(name: string, index: number, parser: ColumnParser): this {
     this.addTarget({
       name,
@@ -77,12 +87,12 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Column":
-          const column = new Column();
+          const column = new Column(this.ws, target.index);
           await target.parser(column);
           await appendToOutput(target.name + ":" + target.index, column);
           break;
         case "Row":
-          const row = new Row();
+          const row = new Row(this.ws, target.index);
           await target.parser(row);
           await appendToOutput(target.name + ":" + target.index, row);
           break;
