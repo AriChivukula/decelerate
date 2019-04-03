@@ -1,33 +1,42 @@
-export type CellParser = (cell: ICell) => Promise<boolean | number | string>;
+import {
+  ICanExportAndExplain,
+  TExplained,
+  TExported,
+} from "./common";
 
-export async function CellBooleanParser(cell: ICell): Promise<boolean> {
-  return cell.toBoolean();
+type CellParser = (raw: string) => boolean | number | string;
+
+export async function CellBooleanParser(raw: string): Promise<boolean> {
+  return Boolean(JSON.parse(raw));
 }
 
-export async function CellNumberParser(cell: ICell): Promise<number> {
-  return cell.toNumber();
+export async function CellNumberParser(raw: string): Promise<number> {
+  return Number(JSON.parse(raw));
 }
 
-export async function CellStringParser(cell: ICell): Promise<string> {
-  return cell.toString();
+export async function CellStringParser(raw: string): Promise<string> {
+  return raw;
 }
 
 export interface ICell {
-  toBoolean(): boolean;
-  toNumber(): number;
-  toString(): string;
+  bind(parser: CellParser): void;
 }
 
-export class Cell implements ICell {
-  toBoolean(): boolean {
-    return false;
+export class Cell implements ICell, ICanExportAndExplain {
+  private parser: CellParser = CellStringParser;
+  
+  bind(parser: CellParser): void {
+    this.parser = parser;
+  }
+  
+  async explain(): Promise<TExplained> {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
   }
 
-  toNumber(): number {
-    return 0;
-  }
-
-  toString(): string {
-    return "";
+  async export(): Promise<TExported> {
+    return this.parser("");
   }
 }
