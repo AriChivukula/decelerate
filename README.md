@@ -35,19 +35,11 @@ interface IRow {
   bindToCellRange(start: number, length: number, parser: CellParser): this;
 }
 ```
-### Cell
-```
-interface ICell {
-  toBoolean(): boolean;
-  toNumber(): number;
-  toString(): string;
-}
-```
 ## External API
 Data parsers to define extraction of data from cells from rows/columns from sheets from workbooks from directories.
 ### Cell
 ```
-type CellParser = async (cell: ICell) => Promise<boolean | number | string>
+type CellParser = async (raw: string) => Promise<boolean | number | string>
 ```
 ### Column/Row
 ```
