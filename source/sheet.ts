@@ -1,4 +1,5 @@
 import {
+  ICanExportAndExplain,
   ITarget,
   HasTargets,
 } from "./common";
@@ -71,7 +72,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
   }
 
   async protected explore(
-    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
       switch (target.kind) {
