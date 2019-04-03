@@ -19,7 +19,7 @@ export interface IWorkbook {
 }
 
 export interface IWorkbookTarget extends ITarget {
-  readonly name: string;
+  readonly name: string | RegExp;
   readonly parser: SheetParser,
 }
 
@@ -56,11 +56,11 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     for (const sheetName in this.wb.Sheets) {
       if (typeof nameMatch === "string") {
         if (sheetName === nameMatch) {
-          matches.push(endName);
+          matches.push(sheetName);
         }
       } else {
         if (sheetName.match(nameMatch)) {
-          matches.push(endName);
+          matches.push(sheetName);
         }
       }
     }
