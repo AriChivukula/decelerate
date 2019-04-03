@@ -1,4 +1,9 @@
 import {
+  WorkSheet,
+  Utils,
+} from "xlsx";
+
+import {
   ICanExportAndExplain,
   TExplained,
   TExported,
@@ -20,6 +25,9 @@ export async function CellStringParser(raw: string): Promise<string> {
 
 export class Cell implements ICanExportAndExplain {
   constructor(
+    private readonly ws: WorkSheet,
+    private readonly rowIdx: number,
+    private readonly columnIdx: number,
     private readonly parser: CellParser,
   ) {
   }
@@ -32,6 +40,6 @@ export class Cell implements ICanExportAndExplain {
   }
 
   async export(): Promise<TExported> {
-    return await this.parser("");
+    return await this.parser(String(this.ws[Utils.encode_cell({r: this.rowIdx, c: this.columnIdx})].v));
   }
 }
