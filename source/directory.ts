@@ -22,8 +22,8 @@ import {
 export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 
 export interface IDirectory {
-  bindToSubDirectory(name: string, parser: DirectoryParser): this;
-  bindToWorkbook(name: string, parser: WorkbookParser): this;
+  bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
+  bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
 }
 
 export interface IDirectoryTarget extends ITarget {
