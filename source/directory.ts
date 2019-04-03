@@ -5,6 +5,9 @@ import {
   basename,
   join,
 } from "path";
+import {
+  readFile,
+} from "xlsx";
 
 import {
   ICanExportAndExplain,
@@ -78,7 +81,9 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
         case "Workbook":
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
-            const workbook = new Workbook(join(this.path, file));
+            const workbook = new Workbook(
+              readFile(join(this.path, file)),
+            );
             await target.parser(workbook);
             await appendToOutput(file, workbook);
           }
