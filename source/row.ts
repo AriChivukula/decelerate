@@ -1,8 +1,4 @@
 import {
-  TExplained,
-  TExported,
-} from "./common";
-import {
   IList,
   List,
   ListParser,
@@ -17,23 +13,13 @@ export interface IRow extends IList {
 }
 
 export class Row extends List implements IRow {
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    for (const target of this.getTargets()) {
-      finalTargets.inner[target.name + ":" + target.index] = null;
-    }
-    return finalTargets;
-  }
-
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
+  async protected explore(
+    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+  ): Promise<void> {
     for (const target of this.getTargets()) {
       const cell = new Cell();
-      finalTargets[target.name + ":" + target.index] = await target.parser(cell);
+      await target.parser(cell);
+      await appendToOutput(target.name + ":" + target.index, cell);
     }
-    return finalTargets;
   }
 }
