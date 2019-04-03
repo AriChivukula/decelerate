@@ -44,7 +44,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     for (const target of this.getTargets()) {
       const sheetNames = await this.getMatchingSheetNames(target.name);
       for (const sheetName of sheetNames) {
-        const sheet = new Sheet();
+        const sheet = new Sheet(this.wb.Sheets[sheetName]);
         await target.parser(sheet);
         await appendToOutput(sheetName, sheet);
       }
