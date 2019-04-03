@@ -76,7 +76,7 @@ async function demoListParser(list: IList): Promise<void> {
     .bindToCell("A", 0, CellBooleanParser)
     .bindToCellRange("B", 1, 2, CellNumberParser)
     .bindToCell("C", 3, CellStringParser)
-    .bindToCellRange("D", 4, 2, (raw: string) => "test");
+    .bindToCellRange("D", 4, 2, async (raw: string) => "test");
 }
 
 export function demoColumn(): Column {
