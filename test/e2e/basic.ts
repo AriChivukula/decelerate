@@ -6,7 +6,7 @@ import {
   CellBooleanParser,
   CellNumberParser,
   CellStringParser,
-} from "../source/index";
+} from "../../source/index";
 
 export async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
   directory
