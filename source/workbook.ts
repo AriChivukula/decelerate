@@ -34,7 +34,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     return this;
   }
 
-  async protected explore(
+  protected async explore(
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
