@@ -35,8 +35,9 @@ describe(
     };
 
     const workbookExample = {
-      "/R/": sheetExample,
-      "Q": sheetExample,
+      "Harm Details": sheetExample,
+      "Harm Details (2)": sheetExample,
+      "Other Questions": sheetExample,
     };
 
     const directoryExample = {
