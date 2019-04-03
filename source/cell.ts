@@ -1,33 +1,45 @@
-export type CellParser = (cell: ICell) => Promise<boolean | number | string>;
+import {
+  WorkSheet,
+  utils,
+} from "xlsx";
 
-export async function CellBooleanParser(cell: ICell): Promise<boolean> {
-  return cell.toBoolean();
+import {
+  ICanExportAndExplain,
+  TExplained,
+  TExported,
+} from "./common";
+
+export type CellParser = (raw: string) => Promise<boolean | number | string>;
+
+export async function CellBooleanParser(raw: string): Promise<boolean> {
+  return Boolean(raw);
 }
 
-export async function CellNumberParser(cell: ICell): Promise<number> {
-  return cell.toNumber();
+export async function CellNumberParser(raw: string): Promise<number> {
+  return Number(raw);
 }
 
-export async function CellStringParser(cell: ICell): Promise<string> {
-  return cell.toString();
+export async function CellStringParser(raw: string): Promise<string> {
+  return raw;
 }
 
-export interface ICell {
-  toBoolean(): boolean;
-  toNumber(): number;
-  toString(): string;
-}
-
-export class Cell implements ICell {
-  toBoolean(): boolean {
-    return false;
+export class Cell implements ICanExportAndExplain {
+  constructor(
+    private readonly ws: WorkSheet,
+    private readonly rowIdx: number,
+    private readonly columnIdx: number,
+    private readonly parser: CellParser,
+  ) {
   }
 
-  toNumber(): number {
-    return 0;
+  async explain(): Promise<TExplained> {
+    return {
+      parser: this.constructor.name,
+      inner: {},
+    };
   }
 
-  toString(): string {
-    return "";
+  async export(): Promise<TExported> {
+    return await this.parser(utils.format_cell(this.ws[utils.encode_cell({r: this.rowIdx, c: this.columnIdx})]));
   }
 }

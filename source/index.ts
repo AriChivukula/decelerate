@@ -30,5 +30,4 @@ export {
   CellBooleanParser,
   CellNumberParser,
   CellStringParser,
-  ICell,
 } from "./cell";

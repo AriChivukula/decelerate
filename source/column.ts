@@ -1,12 +1,12 @@
 import {
-  CanBeExplained,
-  TExplained,
-  CanBeExported,
-  TExported,
+  WorkSheet,
+} from "xlsx";
+
+import {
+  ICanExportAndExplain,
 } from "./common";
 import {
   IList,
-  IListTarget,
   List,
   ListParser,
 } from "./list";
@@ -19,24 +19,20 @@ export type ColumnParser = ListParser<IColumn>;
 export interface IColumn extends IList {
 }
 
-export class Column extends List implements IColumn, CanBeExplained, CanBeExported {
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    for (const target of this.getTargets()) {
-      finalTargets.inner[target.name + ":" + target.index] = null;
-    }
-    return finalTargets;
+export class Column extends List implements IColumn {
+  constructor(
+    private readonly ws: WorkSheet,
+    private readonly columnIdx: number,
+  ) {
+    super();
   }
 
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
+  protected async explore(
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
+  ): Promise<void> {
     for (const target of this.getTargets()) {
-      const cell = new Cell();
-      finalTargets[target.name + ":" + target.index] = await target.parser(cell);
+      const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
+      await appendToOutput(target.name + ":" + target.index, cell);
     }
-    return finalTargets;
   }
 }

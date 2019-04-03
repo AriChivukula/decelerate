@@ -1,6 +1,6 @@
 {
   "name": "decelerate",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Batch Excel Processing",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -13,7 +13,7 @@
     "spec": ["test/*.ts"]
   },
   "dependencies": {
-    "@babel/polyfill": "7.4.0",
+    "@babel/polyfill": "7.4.3",
     "xlsx": "0.14.2",
     "yargs": "13.2.2"
   },

@@ -1,8 +1,9 @@
 import {
-  CanBeExplained,
-  TExplained,
-  CanBeExported,
-  TExported,
+  WorkBook,
+} from "xlsx";
+
+import {
+  ICanExportAndExplain,
   ITarget,
   HasTargets,
 } from "./common";
@@ -14,23 +15,22 @@ import {
 export type WorkbookParser = (workbook: IWorkbook) => Promise<void>;
 
 export interface IWorkbook {
-  bindToSheet(name: string, parser: SheetParser): this;
-  bindToSheets(match: RegExp, parser: SheetParser): this;
+  bindToSheet(name: string | RegExp, parser: SheetParser): this;
 }
 
 export interface IWorkbookTarget extends ITarget {
-  readonly name: string;
+  readonly name: string | RegExp;
   readonly parser: SheetParser,
 }
 
-export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, CanBeExplained, CanBeExported {
+export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
   constructor(
-    private readonly path: string,
+    private readonly wb: WorkBook,
   ) {
     super();
   }
 
-  bindToSheet(name: string, parser: SheetParser): this {
+  bindToSheet(name: string | RegExp, parser: SheetParser): this {
     this.addTarget({
       name,
       parser,
@@ -38,34 +38,32 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, 
     return this;
   }
 
-  bindToSheets(name: RegExp, parser: SheetParser): this {
-    this.addTarget({
-      name: name.toString(),
-      parser,
-    });
-    return this;
+  protected async explore(
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
+  ): Promise<void> {
+    for (const target of this.getTargets()) {
+      const sheetNames = await this.getMatchingSheetNames(target.name);
+      for (const sheetName of sheetNames) {
+        const sheet = new Sheet(this.wb.Sheets[sheetName]);
+        await target.parser(sheet);
+        await appendToOutput(sheetName, sheet);
+      }
+    }
   }
 
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    for (const target of this.getTargets()) {
-      const sheet = new Sheet();
-      await target.parser(sheet);
-      finalTargets.inner[target.name] = await sheet.explain();
+  private async getMatchingSheetNames(nameMatch: string | RegExp): Promise<string[]> {
+    const matches: string[] = [];
+    for (const sheetName in this.wb.Sheets) {
+      if (typeof nameMatch === "string") {
+        if (sheetName === nameMatch) {
+          matches.push(sheetName);
+        }
+      } else {
+        if (sheetName.match(nameMatch)) {
+          matches.push(sheetName);
+        }
+      }
     }
-    return finalTargets;
-  }
-
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    for (const target of this.getTargets()) {
-      const sheet = new Sheet();
-      await target.parser(sheet);
-      finalTargets[target.name] = await sheet.export();
-    }
-    return finalTargets;
+    return matches;
   }
 }

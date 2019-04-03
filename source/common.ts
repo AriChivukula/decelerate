@@ -1,26 +1,23 @@
 export type TExplained = {
   parser: string;
   inner: {
-    [k: string]: TExplained | null;
+    [k: string]: TExplained;
   };
 };
 
-export interface CanBeExplained {
-  explain(): Promise<TExplained>;
-}
-
 export type TExported = {
-  [k: string]: TExported | boolean | number | string;
-};
-
-export interface CanBeExported {
-  export(): Promise<TExported>;
-}
+  [k: string]: TExported;
+} | boolean | number | string;
 
 export interface ITarget {
 }
 
-export abstract class HasTargets<T extends ITarget> {
+export interface ICanExportAndExplain {
+  explain(): Promise<TExplained>;
+  export(): Promise<TExported>;
+}
+
+export abstract class HasTargets<T extends ITarget> implements ICanExportAndExplain {
   private targets: T[] = [];
 
   protected addTarget(target: T): void {
@@ -29,5 +26,32 @@ export abstract class HasTargets<T extends ITarget> {
 
   protected getTargets(): T[] {
     return this.targets;
+  }
+  
+  protected abstract explore(
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
+  ): Promise<void>;
+
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    await this.explore(
+      async (key: string, value: ICanExportAndExplain): Promise<void> => {
+        finalTargets.inner[key] = await value.explain();
+      },
+    );
+    return finalTargets;
+  }
+
+  async export(): Promise<TExported> {
+    const finalTargets: TExported = {};
+    await this.explore(
+      async (key: string, value: ICanExportAndExplain): Promise<void> => {
+        finalTargets[key] = await value.export();
+      },
+    );
+    return finalTargets;
   }
 }
