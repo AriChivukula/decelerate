@@ -36,9 +36,7 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
   readonly parser: WorkbookParser;
 }
 
-export type TDirectoryTarget = IDirectoryDirectoryTarget | IDirectoryWorkbookTarget;
-
-export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory {
+export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
   constructor(
     private readonly path: string,
   ) {
