@@ -32,6 +32,6 @@ export class Cell implements ICanExportAndExplain {
   }
 
   async export(): Promise<TExported> {
-    return this.parser("");
+    return await this.parser("");
   }
 }
