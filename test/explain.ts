@@ -60,8 +60,9 @@ describe(
     const workbookExample = {
       "parser": "Workbook",
       "inner": {
-        "/R/": sheetExample,
-        "Q": sheetExample,
+        "Harm Details": sheetExample,
+        "Harm Details (2)": sheetExample,
+        "Other Questions": sheetExample,
       },
     };
 
