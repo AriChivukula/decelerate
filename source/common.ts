@@ -23,7 +23,30 @@ export abstract class HasTargets<T extends ITarget> {
     return this.targets;
   }
   
-  abstract explain(): Promise<TExplained>;
-  
-  abstract export(): Promise<TExported>;
+  abstract protected explore(
+    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+  ): Promise<void>;
+
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    await this.explore(
+      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
+        finalTargets.inner[key] = await value.explain();
+      },
+    );
+    return finalTargets;
+  }
+
+  async export(): Promise<TExported> {
+    const finalTargets: TExported = {};
+    await this.explore(
+      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
+        finalTargets[key] = await value.export();
+      },
+    );
+    return finalTargets;
+  }
 }
