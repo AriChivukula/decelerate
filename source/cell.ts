@@ -1,6 +1,6 @@
 import {
   WorkSheet,
-  Utils,
+  utils,
 } from "xlsx";
 
 import {
@@ -40,6 +40,6 @@ export class Cell implements ICanExportAndExplain {
   }
 
   async export(): Promise<TExported> {
-    return await this.parser(String(this.ws[Utils.encode_cell({r: this.rowIdx, c: this.columnIdx})].v));
+    return await this.parser(String(this.ws[utils.encode_cell({r: this.rowIdx, c: this.columnIdx})].v));
   }
 }
