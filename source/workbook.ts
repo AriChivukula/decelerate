@@ -29,7 +29,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
 
   bindToSheet(name: string | RegExp, parser: SheetParser): this {
     this.addTarget({
-      name,
+      name: typeof name === "string" ? name : name.toString(),
       parser,
     });
     return this;
