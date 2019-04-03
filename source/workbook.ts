@@ -1,7 +1,5 @@
 import {
-  CanBeExplained,
   TExplained,
-  CanBeExported,
   TExported,
   ITarget,
   HasTargets,
@@ -22,7 +20,7 @@ export interface IWorkbookTarget extends ITarget {
   readonly parser: SheetParser,
 }
 
-export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook, CanBeExplained, CanBeExported {
+export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
   constructor(
     private readonly path: string,
   ) {
