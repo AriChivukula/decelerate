@@ -1,7 +1,5 @@
 import {
-  CanBeExplained,
   TExplained,
-  CanBeExported,
   TExported,
 } from "./common";
 import {
@@ -18,7 +16,7 @@ export type RowParser = ListParser<IRow>;
 export interface IRow extends IList {
 }
 
-export class Row extends List implements IRow, CanBeExplained, CanBeExported {
+export class Row extends List implements IRow {
   async explain(): Promise<TExplained> {
     const finalTargets: TExplained = {
       parser: this.constructor.name,
