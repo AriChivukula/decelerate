@@ -7,8 +7,6 @@ import {
 } from "path";
 
 import {
-  TExplained,
-  TExported,
   ITarget,
   HasTargets,
 } from "./common";
@@ -88,29 +86,6 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
           break;
       }
     }
-  }
-
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    await this.explore(
-      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
-        finalTargets.inner[key] = await value.explain();
-      },
-    );
-    return finalTargets;
-  }
-
-  async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    await this.explore(
-      async (key: string, value: HasTargets<ITarget>): Promise<void> => {
-        finalTargets[key] = await value.export();
-      },
-    );
-    return finalTargets;
   }
   
   private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {
