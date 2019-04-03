@@ -16,7 +16,7 @@ export interface IColumn extends IList {
 }
 
 export class Column extends List implements IColumn {
-  async protected explore(
+  protected async explore(
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
