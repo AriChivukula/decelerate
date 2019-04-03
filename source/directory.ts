@@ -23,9 +23,7 @@ export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 
 export interface IDirectory {
   bindToSubDirectory(name: string, parser: DirectoryParser): this;
-  bindToSubDirectories(match: RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string, parser: WorkbookParser): this;
-  bindToWorkbooks(match: RegExp, parser: WorkbookParser): this;
 }
 
 export interface IDirectoryTarget extends ITarget {
@@ -51,7 +49,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
     super();
   }
 
-  bindToSubDirectory(name: string, parser: DirectoryParser): this {
+  bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this {
     this.addTarget({
       name,
       parser,
@@ -60,25 +58,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
     return this;
   }
 
-  bindToSubDirectories(name: RegExp, parser: DirectoryParser): this {
-    this.addTarget({
-      name,
-      parser,
-      kind: "Directory",
-    });
-    return this;
-  }
-
-  bindToWorkbook(name: string, parser: WorkbookParser): this {
-    this.addTarget({
-      name,
-      parser,
-      kind: "Workbook",
-    });
-    return this;
-  }
-
-  bindToWorkbooks(name: RegExp, parser: WorkbookParser): this {
+  bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this {
     this.addTarget({
       name,
       parser,
@@ -106,7 +86,7 @@ export class Directory extends HasTargets<TDirectoryTarget> implements IDirector
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
             await appendToOutput(
-              subdir,
+              file,
               target,
               new Workbook(join(this.path, file)),
             );
