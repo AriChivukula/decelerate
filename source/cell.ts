@@ -7,11 +7,11 @@ import {
 export type CellParser = (raw: string) => Promise<boolean | number | string>;
 
 export async function CellBooleanParser(raw: string): Promise<boolean> {
-  return Boolean(JSON.parse(raw));
+  return Boolean(raw);
 }
 
 export async function CellNumberParser(raw: string): Promise<number> {
-  return Number(JSON.parse(raw));
+  return Number(raw);
 }
 
 export async function CellStringParser(raw: string): Promise<string> {
