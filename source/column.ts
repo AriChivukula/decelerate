@@ -1,4 +1,7 @@
 import {
+  ICanExportAndExplain,
+} from "./common";
+import {
   IList,
   List,
   ListParser,
@@ -14,7 +17,7 @@ export interface IColumn extends IList {
 
 export class Column extends List implements IColumn {
   async protected explore(
-    appendToOutput: (key: string, value: HasTargets<ITarget>) => Promise<void>,
+    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
     for (const target of this.getTargets()) {
       const cell = new Cell();
