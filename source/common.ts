@@ -1,7 +1,7 @@
 export type TExplained = {
   parser: string;
   inner: {
-    [k: string]: TExplained | null;
+    [k: string]: TExplained;
   };
 };
 
