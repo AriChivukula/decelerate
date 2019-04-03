@@ -42,7 +42,9 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
   readonly parser: WorkbookParser;
 }
 
-export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory, CanBeExplained, CanBeExported {
+export type TDirectoryTarget = IDirectoryDirectoryTarget | IDirectoryWorkbookTarget;
+
+export class Directory extends HasTargets<TDirectoryTarget> implements IDirectory, CanBeExplained, CanBeExported {
   constructor(
     private readonly path: string,
   ) {
@@ -85,57 +87,57 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
+  protected async explore(
+    appendToOutput: (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>) => Promise<void>,
+  ): Promise<void> {
     for (const target of this.getTargets()) {
       switch (target.kind) {
         case "Directory":
           const subdirs = await this.getMatchingSubDirectories(target.name);
           for (const subdir of subdirs) {
-            const directory = new Directory(join(this.path, subdir));
-            await target.parser(directory);
-            finalTargets.inner[subdir] = await directory.explain();
+            await appendToOutput(
+              subdir,
+              target,
+              new Directory(join(this.path, subdir)),
+            );
           }
           break;
         case "Workbook":
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
-            const workbook = new Workbook(join(this.path, file));
-            await target.parser(workbook);
-            finalTargets.inner[file] = await workbook.explain();
+            await appendToOutput(
+              subdir,
+              target,
+              new Workbook(join(this.path, file)),
+            );
           }
           break;
       }
     }
+  }
+
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    await this.explore(
+      async (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>): Promise<void> => {
+        await target.parser(value);
+        finalTargets.inner[key] = await value.explain();
+      },
+    );
     return finalTargets;
   }
 
   async export(): Promise<TExported> {
-    const targets = this.getTargets();
     const finalTargets: TExported = {};
-    for (const target of targets) {
-      switch (target.kind) {
-        case "Directory":
-          const subdirs = await this.getMatchingSubDirectories(target.name);
-          for (const subdir of subdirs) {
-            const directory = new Directory(join(this.path, subdir));
-            await target.parser(directory);
-            finalTargets[subdir] = await directory.export();
-          }
-          break;
-        case "Workbook":
-          const files = await this.getMatchingFiles(target.name);
-          for (const file of files) {
-            const workbook = new Workbook(join(this.path, file));
-            await target.parser(workbook);
-            finalTargets[file] = await workbook.export();
-          }
-          break;
-      }
-    }
+    await this.explore(
+      async (key: string, target: TDirectoryTarget, value: HasTargets<TDirectoryTarget>): Promise<void> => {
+        await target.parser(value);
+        finalTargets[key] = await value.export();
+      },
+    );
     return finalTargets;
   }
   
