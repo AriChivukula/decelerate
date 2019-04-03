@@ -2,7 +2,8 @@ import {
   IDirectory,
   IWorkbook,
   ISheet,
-  IList,
+  IColumn,
+  IRow,
   CellBooleanParser,
   CellNumberParser,
   CellStringParser,
@@ -35,7 +36,7 @@ async function demoSheetParser(sheet: ISheet): Promise<void> {
     .bindToRowRange("P", 26, 2, demoListParser);
 }
 
-async function demoListParser(list: IList): Promise<void> {
+async function demoListParser(list: IColumn | IRow): Promise<void> {
   list
     .bindToCell("A", 25, CellBooleanParser)
     .bindToCellRange("B", 26, 2, CellNumberParser)
