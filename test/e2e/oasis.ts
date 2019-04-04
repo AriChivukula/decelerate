@@ -43,7 +43,7 @@ async function otherQuestionsParser(sheet: ISheet): Promise<void> {
 }
 
 function otherQuestionsTristateParser(start: number): RowParser {
-  return async (row: IRow) => Promise<void> {
+  return async (row: IRow): Promise<void> => {
     row
       .bindToCell("yes", start, CellBooleanParser)
       .bindToCell("no", start + 1, CellBooleanParser)
