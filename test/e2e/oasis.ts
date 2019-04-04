@@ -39,7 +39,9 @@ async function otherQuestionsParser(sheet: ISheet): Promise<void> {
     .bindToRow("serious_harm", 2, otherQuestionsTristateParser(6))
     .bindToRow("isolation_in_us", 2, otherQuestionsTristateParser(10))
     .bindToRow("harm_in_us", 2, otherQuestionsTristateParser(14))
-    .bindToRow("country_of_origin", 5, otherQuestionsTristateParser(14));
+    .bindToColumnRange("mental_health_diagnosis", 3, 2, otherQuestionsMentalHealthDiagnosisParser)
+    .bindToColumnRange("serious_harm_type", 6, 2, otherQuestionsSeriousHarmTypeParser)
+    .bindToRow("country_of_origin", 5, otherQuestionsCountryParser);
 }
 
 function otherQuestionsTristateParser(start: number): RowParser {
@@ -49,6 +51,23 @@ function otherQuestionsTristateParser(start: number): RowParser {
       .bindToCell("no", start + 1, CellBooleanParser)
       .bindToCell("n/a", start + 2, CellBooleanParser);
   };
+}
+
+async function otherQuestionsMentalHealthDiagnosisParser(row: IRow): Promise<void> {
+  row
+    .bindToCell("ptsd", 5, CellStringParser)
+    .bindToCell("anxiety", 6, CellStringParser)
+    .bindToCell("depression", 7, CellStringParser)
+    .bindToCell("other", 8, CellStringParser);
+}
+
+async function otherQuestionsSeriousHarmTypeParser(row: IRow): Promise<void> {
+  row
+    .bindToCell("medical", 5, CellStringParser)
+    .bindToCell("economic", 6, CellStringParser)
+    .bindToCell("crime", 7, CellStringParser)
+    .bindToCell("dv_or_pa", 8, CellStringParser)
+    .bindToCell("other", 9, CellStringParser);
 }
 
 async function otherQuestionsCountryParser(row: IRow): Promise<void> {
