@@ -1,6 +1,6 @@
 {
   "name": "decelerate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Batch Excel Processing",
   "main": "build/index.js",
   "types": "build/index.d.ts",
