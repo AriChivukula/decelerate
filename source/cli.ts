@@ -1,4 +1,7 @@
 import * as yargs from "yargs";
+import {
+  render,
+} from "prettyjson";
 
 import {
   Directory,
@@ -34,5 +37,5 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   const mod: { default: DirectoryParser } = require(`${process.cwd()}/${argv.parser}`);
   await mod.default(directory);
   const exported = await directory.export();
-  console.log(JSON.stringify(exported, null, 2));
+  console.log(prettyjson.render(exported));
 }
