@@ -55,22 +55,22 @@ function otherQuestionsTristateParser(start: number): RowParser {
 
 async function otherQuestionsMentalHealthDiagnosisParser(row: IRow): Promise<void> {
   row
-    .bindToCell("ptsd", 5, CellStringParser)
-    .bindToCell("anxiety", 6, CellStringParser)
-    .bindToCell("depression", 7, CellStringParser)
-    .bindToCell("other", 8, CellStringParser);
+    .bindToCell("ptsd", 5, CellBooleanParser)
+    .bindToCell("anxiety", 6, CellBooleanParser)
+    .bindToCell("depression", 7, CellBooleanParser)
+    .bindToCell("other", 8, CellBooleanParser);
 }
 
 async function otherQuestionsSeriousHarmTypeParser(row: IRow): Promise<void> {
   row
-    .bindToCell("medical", 5, CellStringParser)
-    .bindToCell("economic", 6, CellStringParser)
-    .bindToCell("crime", 7, CellStringParser)
-    .bindToCell("dv_or_pa", 8, CellStringParser)
-    .bindToCell("other", 9, CellStringParser);
+    .bindToCell("medical", 5, CellBooleanParser)
+    .bindToCell("economic", 6, CellBooleanParser)
+    .bindToCell("crime", 7, CellBooleanParser)
+    .bindToCell("dv_or_pa", 8, CellBooleanParser)
+    .bindToCell("other", 9, CellBooleanParser);
 }
 
 async function otherQuestionsCountryParser(row: IRow): Promise<void> {
   row
-    .bindToCell("name", 8, CellStringParser);
+    .bindToCell("name", 9, CellStringParser);
 }
