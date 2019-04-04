@@ -13,7 +13,7 @@ export default directoryParser;
 async function directoryParser(directory: IDirectory): Promise<void> {
   directory
     .bindToWorkbook(/\.xlsx/, workbookParser)
-    .bindToDirectory(/.*/, directoryParser);
+    .bindToSubDirectory(/.*/, directoryParser);
 }
 
 async function workbookParser(workbook: IWorkbook): Promise<void> {
