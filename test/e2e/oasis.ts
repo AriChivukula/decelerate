@@ -2,10 +2,7 @@ import {
   IDirectory,
   IWorkbook,
   ISheet,
-  IColumn,
   IRow,
-  CellBooleanParser,
-  CellNumberParser,
   CellStringParser,
 } from "../../source/index";
 
@@ -16,23 +13,23 @@ export default async function(directory: IDirectory): Promise<void> {
 
 async function workbookParser(workbook: IWorkbook): Promise<void> {
   workbook
-    .bindToSheet("Other Questions", otherQuestionParser)
-    .bindToSheet(/Harm Details/, harmDetailParser);
+    .bindToSheet(/Harm Details/, harmDetailParser)
+    .bindToSheet("Other Questions", otherQuestionParser);
+}
+
+async function harmDetailParser(sheet: ISheet): Promise<void> {
+  sheet
+    .bindToRowRange("row", 4, 14, harmDetailRowParser);
+}
+
+async function harmDetailRowParser(row: IRow): Promise<void> {
+  sheet
+    .bindToCell("type", 1, CellStringParser)
+    .bindToCell("actor", 2, CellStringParser)
+    .bindToCell("age", 3, CellStringParser)
+    .bindToCell("frequency", 4, CellStringParser)
+    .bindToCell("notes", 5, CellStringParser);
 }
 
 async function otherQuestionParser(sheet: ISheet): Promise<void> {
 }
-
-async function harmDetailParser(sheet: ISheet): Promise<void> {
-}
-
-async function demoRowParser(list: IRow): Promise<void> {
-}
-
-async function demoColumnParser(list: IColumn): Promise<void> {
-}
-
-async function demoCellParser(raw: string): Promise<string> {
-  return "";
-}
-
