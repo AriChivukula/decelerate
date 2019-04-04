@@ -8,9 +8,12 @@ import {
   CellStringParser,
 } from "../../source/index";
 
-export default async function(directory: IDirectory): Promise<void> {
+export default directoryParser;
+
+async function directoryParser(directory: IDirectory): Promise<void> {
   directory
-    .bindToWorkbook(/\.xlsx/, workbookParser);
+    .bindToWorkbook(/\.xlsx/, workbookParser)
+    .bindToDirectory(/.*/, directoryParser);
 }
 
 async function workbookParser(workbook: IWorkbook): Promise<void> {
