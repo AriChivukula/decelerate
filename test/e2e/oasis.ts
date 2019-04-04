@@ -23,7 +23,7 @@ async function harmDetailParser(sheet: ISheet): Promise<void> {
 }
 
 async function harmDetailRowParser(row: IRow): Promise<void> {
-  sheet
+  row
     .bindToCell("type", 1, CellStringParser)
     .bindToCell("actor", 2, CellStringParser)
     .bindToCell("age", 3, CellStringParser)
