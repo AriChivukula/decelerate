@@ -69,12 +69,12 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget,
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
-    const promises = [];
+    const promiseArray = [];
     switch (target.kind) {
       case "Directory":
         const subdirs = await this.getMatchingSubDirectories(target.name);
         for (const subdir of subdirs) {
-          promises.push(async () => {
+          promiseArray.push(async () => {
             const directory = new Directory(join(this.path, subdir));
             await target.parser(directory);
             await appendToOutput(subdir, directory);
@@ -84,7 +84,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       case "Workbook":
         const files = await this.getMatchingFiles(target.name);
         for (const file of files) {
-          promises.push(async () => {
+          promiseArray.push(async () => {
             const data = await promises.readFile(join(this.path, file));
             const workbook = new Workbook(read(data));
             await target.parser(workbook);
@@ -93,7 +93,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
         }
         break;
     }
-    await Promise.all(promises);
+    await Promise.all(promiseArray);
   }
   
   private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {
