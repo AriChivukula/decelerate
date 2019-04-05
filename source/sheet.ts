@@ -15,6 +15,9 @@ import {
   Row,
   RowParser,
 } from "./row";
+import {
+  CellParser,
+} from "./row";
 
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
@@ -23,24 +26,33 @@ export interface ISheet {
   bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
   bindToRow(name: string, index: number, parser: RowParser): this;
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
+  bindToCell(name: string, row: number, column: number, parser: RowParser): this;
 }
 
 export interface ISheetTarget extends ITarget {
   readonly name: string;
-  readonly index: number;
 }
 
 export interface ISheetColumnTarget extends ISheetTarget {
+  readonly index: number;
   readonly kind: "Column";
   readonly parser: ColumnParser;
 }
 
 export interface ISheetRowTarget extends ISheetTarget {
+  readonly index: number;
   readonly kind: "Row";
   readonly parser: RowParser;
 }
 
-export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> implements ISheet {
+export interface ISheetCellTarget extends ISheetTarget {
+  readonly row: number;
+  readonly column: number;
+  readonly kind: "Cell";
+  readonly parser: CellParser;
+}
+
+export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget> implements ISheet {
   constructor(
     private readonly ws: WorkSheet,
   ) {
@@ -81,6 +93,17 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
     return this;
   }
 
+  bindToCell(name: string, row: number, column: number, parser: CellParser): this {
+    this.addTarget({
+      name,
+      row,
+      column,
+      parser,
+      kind: "Cell",
+    });
+    return this;
+  }
+
   protected async explore(
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
@@ -95,6 +118,11 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget> impl
           const row = new Row(this.ws, target.index);
           await target.parser(row);
           await appendToOutput(target.name + ":" + target.index, row);
+          break;
+        case "Cell":
+          const cell = new Cell(this.ws, target.row, target.column);
+          await target.parser(cell);
+          await appendToOutput(cell.name + ":" + target.row + ":" + target.column, cell);
           break;
       }
     }
