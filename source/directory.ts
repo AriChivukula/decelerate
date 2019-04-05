@@ -81,7 +81,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
         case "Workbook":
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
-            const data = await promises.readFile(join(this.path, file), {encoding: "utf8"});
+            const data = await promises.readFile(join(this.path, file));
             const workbook = new Workbook(read(data));
             await target.parser(workbook);
             await appendToOutput(file, workbook);
