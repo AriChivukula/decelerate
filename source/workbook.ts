@@ -39,15 +39,14 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
   }
 
   protected async explore(
+    target: IWorkbookTarget,
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
-    for (const target of this.getTargets()) {
-      const sheetNames = await this.getMatchingSheetNames(target.name);
-      for (const sheetName of sheetNames) {
-        const sheet = new Sheet(this.wb.Sheets[sheetName]);
-        await target.parser(sheet);
-        await appendToOutput(sheetName, sheet);
-      }
+    const sheetNames = await this.getMatchingSheetNames(target.name);
+    for (const sheetName of sheetNames) {
+      const sheet = new Sheet(this.wb.Sheets[sheetName]);
+      await target.parser(sheet);
+      await appendToOutput(sheetName, sheet);
     }
   }
 
