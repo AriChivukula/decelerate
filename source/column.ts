@@ -7,6 +7,7 @@ import {
 } from "./common";
 import {
   IList,
+  IListTarget,
   List,
   ListParser,
 } from "./list";
@@ -28,11 +29,10 @@ export class Column extends List implements IColumn {
   }
 
   protected async explore(
+    target: IListTarget,
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
-    for (const target of this.getTargets()) {
-      const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
-      await appendToOutput(target.name + ":" + target.index, cell);
-    }
+    const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
+    await appendToOutput(target.name + ":" + target.index, cell);
   }
 }
