@@ -52,7 +52,6 @@ function sortAndPrintMap(exported: TExported, indent: number = 0): void {
     indent++;
     Object.keys(exported).sort().forEach((key) => {
       process.stdout.write("  ".repeat(indent) + JSON.stringify(key) + ": " + sortAndPrintMap(exported[key], indent) + ",\n");
-      ordered[key] = unordered[key];
     });
     indent--;
     process.stdout.write("  ".repeat(indent) + "},\n");
