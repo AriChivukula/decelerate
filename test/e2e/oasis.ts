@@ -44,7 +44,7 @@ async function otherQuestionsParser(sheet: ISheet): Promise<void> {
     .bindToRow("harm_in_us", 2, otherQuestionsTristateParser(14))
     .bindToColumnRange("mental_health_diagnosis", 3, 2, otherQuestionsMentalHealthDiagnosisParser)
     .bindToColumnRange("serious_harm_type", 6, 2, otherQuestionsSeriousHarmTypeParser)
-    .bindToRow("country_of_origin", 5, otherQuestionsCountryParser);
+    .bindToCell("country_of_origin", 5, 9, CellStringParser);
 }
 
 function otherQuestionsTristateParser(start: number): RowParser {
@@ -71,9 +71,4 @@ async function otherQuestionsSeriousHarmTypeParser(row: IRow): Promise<void> {
     .bindToCell("crime", 7, CellBooleanParser)
     .bindToCell("dv_or_pa", 8, CellBooleanParser)
     .bindToCell("other", 9, CellBooleanParser);
-}
-
-async function otherQuestionsCountryParser(row: IRow): Promise<void> {
-  row
-    .bindToCell("name", 9, CellStringParser);
 }
