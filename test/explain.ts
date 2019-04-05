@@ -54,6 +54,7 @@ describe(
         "N:27": columnExample,
         "P:26": rowExample,
         "P:27": rowExample,
+        "Q:35:35": cellExample,
       },
     };
 
