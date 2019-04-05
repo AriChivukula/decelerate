@@ -16,8 +16,9 @@ import {
   RowParser,
 } from "./row";
 import {
+  Cell,
   CellParser,
-} from "./row";
+} from "./cell";
 
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
