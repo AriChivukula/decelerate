@@ -2,7 +2,7 @@ import * as yargs from "yargs";
 
 import {
   TExported,
-} for "./common";
+} from "./common";
 import {
   Directory,
   DirectoryParser,
