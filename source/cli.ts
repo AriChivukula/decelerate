@@ -1,6 +1,9 @@
 import * as yargs from "yargs";
 
 import {
+  TExported,
+} for "./common";
+import {
   Directory,
   DirectoryParser,
 } from "./directory";
@@ -38,5 +41,20 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   const mod: { default: DirectoryParser } = require(`${process.cwd()}/${argv.parser}`);
   await mod.default(directory);
   const exported = await directory.export();
-  console.log(JSON.stringify(exported));
+  sortAndPrintMap(exported);
+}
+
+function sortAndPrintMap(exported: TExported, indent: number = 0): void {
+  if (typeof exported === "boolean" || typeof exported === "number" || typeof exported === "string") {
+    process.stdout.write(JSON.stringify(exported));
+  } else {
+    process.stdout.write(indent + "{\n");
+    indent++;
+    Object.keys(exported).sort().forEach((key) => {
+      process.stdout.write("  ".repeat(indent) + JSON.stringify(key) + ": " + sortAndPrintMap(exported[key], indent) + ",\n");
+      ordered[key] = unordered[key];
+    });
+    indent--;
+    process.stdout.write("  ".repeat(indent) + "},\n");
+  }
 }
