@@ -46,14 +46,13 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
 
 function sortAndPrintMap(exported: TExported, indent: number = 0): void {
   if (typeof exported === "boolean" || typeof exported === "number" || typeof exported === "string") {
-    process.stdout.write(JSON.stringify(exported));
+    process.stdout.write(JSON.stringify(exported) + ",\n");
   } else {
     process.stdout.write("  ".repeat(indent) + "{\n");
     indent++;
     Object.keys(exported).sort().forEach((key) => {
-      process.stdout.write("  ".repeat(indent) + key + ": ");
+      process.stdout.write("  ".repeat(indent) + JSON.stringify(key) + ": ");
       sortAndPrintMap(exported[key], indent)
-      process.stdout.write(",\n");
     });
     indent--;
     process.stdout.write("  ".repeat(indent) + "},\n");
