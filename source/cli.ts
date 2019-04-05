@@ -45,12 +45,8 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
 }
 
 function sortAndPrintMap(exported: TExported, indent: number = 0): void {
-  if (typeof exported === "boolean") {
-    process.stdout.write(exported ? "true" : "false");
-  } else if (typeof exported === "number") {
-    process.stdout.write(exported);
-  } else if (typeof exported === "string") {
-    process.stdout.write("\"" + exported + "\"");
+  if (typeof exported === "boolean" || typeof exported === "number" || typeof exported === "string") {
+    process.stdout.write(JSON.stringify(exported));
   } else {
     process.stdout.write("  ".repeat(indent) + "{\n");
     indent++;
