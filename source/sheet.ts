@@ -27,7 +27,7 @@ export interface ISheet {
   bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
   bindToRow(name: string, index: number, parser: RowParser): this;
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
-  bindToCell(name: string, row: number, column: number, parser: RowParser): this;
+  bindToCell(name: string, row: number, column: number, parser: CellParser): this;
 }
 
 export interface ISheetTarget extends ITarget {
