@@ -121,8 +121,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
           await appendToOutput(target.name + ":" + target.index, row);
           break;
         case "Cell":
-          const cell = new Cell(this.ws, target.row, target.column);
-          await target.parser(cell);
+          const cell = new Cell(this.ws, target.row, target.column, target.parser);
           await appendToOutput(cell.name + ":" + target.row + ":" + target.column, cell);
           break;
       }
