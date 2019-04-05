@@ -82,7 +82,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
             const data = await promises.readFile(join(this.path, file), {encoding: "utf8"});
-            const workbook = new Workbook(data);
+            const workbook = new Workbook(read(data));
             await target.parser(workbook);
             await appendToOutput(file, workbook);
           }
