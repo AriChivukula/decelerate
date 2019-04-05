@@ -2,6 +2,7 @@ import {
   IDirectory,
   IWorkbook,
   ISheet,
+  IColumn,
   IRow,
   RowParser,
   CellBooleanParser,
@@ -56,16 +57,16 @@ function otherQuestionsTristateParser(start: number): RowParser {
   };
 }
 
-async function otherQuestionsMentalHealthDiagnosisParser(row: IRow): Promise<void> {
-  row
+async function otherQuestionsMentalHealthDiagnosisParser(column: IColumn): Promise<void> {
+  column
     .bindToCell("ptsd", 5, CellBooleanParser)
     .bindToCell("anxiety", 6, CellBooleanParser)
     .bindToCell("depression", 7, CellBooleanParser)
     .bindToCell("other", 8, CellBooleanParser);
 }
 
-async function otherQuestionsSeriousHarmTypeParser(row: IRow): Promise<void> {
-  row
+async function otherQuestionsSeriousHarmTypeParser(column: IColumn): Promise<void> {
+  column
     .bindToCell("medical", 5, CellBooleanParser)
     .bindToCell("economic", 6, CellBooleanParser)
     .bindToCell("crime", 7, CellBooleanParser)
