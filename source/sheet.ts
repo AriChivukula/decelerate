@@ -106,25 +106,24 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
   }
 
   protected async explore(
+    target: ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget,
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
-    for (const target of this.getTargets()) {
-      switch (target.kind) {
-        case "Column":
-          const column = new Column(this.ws, target.index);
-          await target.parser(column);
-          await appendToOutput(target.name + ":" + target.index, column);
-          break;
-        case "Row":
-          const row = new Row(this.ws, target.index);
-          await target.parser(row);
-          await appendToOutput(target.name + ":" + target.index, row);
-          break;
-        case "Cell":
-          const cell = new Cell(this.ws, target.row, target.column, target.parser);
-          await appendToOutput(target.name + ":" + target.row + ":" + target.column, cell);
-          break;
-      }
+    switch (target.kind) {
+      case "Column":
+        const column = new Column(this.ws, target.index);
+        await target.parser(column);
+        await appendToOutput(target.name + ":" + target.index, column);
+        break;
+      case "Row":
+        const row = new Row(this.ws, target.index);
+        await target.parser(row);
+        await appendToOutput(target.name + ":" + target.index, row);
+        break;
+      case "Cell":
+        const cell = new Cell(this.ws, target.row, target.column, target.parser);
+        await appendToOutput(target.name + ":" + target.row + ":" + target.column, cell);
+        break;
     }
   }
 }
