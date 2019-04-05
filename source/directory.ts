@@ -74,22 +74,22 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       case "Directory":
         const subdirs = await this.getMatchingSubDirectories(target.name);
         for (const subdir of subdirs) {
-          promiseArray.push(async () => {
+          promiseArray.push((async () => {
             const directory = new Directory(join(this.path, subdir));
             await target.parser(directory);
             await appendToOutput(subdir, directory);
-          });
+          })());
         }
         break;
       case "Workbook":
         const files = await this.getMatchingFiles(target.name);
         for (const file of files) {
-          promiseArray.push(async () => {
+          promiseArray.push((async () => {
             const data = await promises.readFile(join(this.path, file));
             const workbook = new Workbook(read(data));
             await target.parser(workbook);
             await appendToOutput(file, workbook);
-          });
+          })());
         }
         break;
     }
