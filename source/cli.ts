@@ -48,7 +48,7 @@ function sortAndPrintMap(exported: TExported, indent: number = 0): void {
   if (typeof exported === "boolean" || typeof exported === "number" || typeof exported === "string") {
     process.stdout.write(JSON.stringify(exported));
   } else {
-    process.stdout.write(indent + "{\n");
+    process.stdout.write("  ".repeat(indent) + "{\n");
     indent++;
     Object.keys(exported).sort().forEach((key) => {
       process.stdout.write("  ".repeat(indent) + JSON.stringify(key) + ": " + sortAndPrintMap(exported[key], indent) + ",\n");
