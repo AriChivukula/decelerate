@@ -6,7 +6,7 @@ import {
   join,
 } from "path";
 import {
-  readFile,
+  read,
 } from "xlsx";
 
 import {
@@ -66,30 +66,34 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   }
 
   protected async explore(
+    target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget,
     appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
   ): Promise<void> {
-    for (const target of this.getTargets()) {
-      switch (target.kind) {
-        case "Directory":
-          const subdirs = await this.getMatchingSubDirectories(target.name);
-          for (const subdir of subdirs) {
+    const promiseArray = [];
+    switch (target.kind) {
+      case "Directory":
+        const subdirs = await this.getMatchingSubDirectories(target.name);
+        for (const subdir of subdirs) {
+          promiseArray.push((async () => {
             const directory = new Directory(join(this.path, subdir));
             await target.parser(directory);
             await appendToOutput(subdir, directory);
-          }
-          break;
-        case "Workbook":
-          const files = await this.getMatchingFiles(target.name);
-          for (const file of files) {
-            const workbook = new Workbook(
-              readFile(join(this.path, file)),
-            );
+          })());
+        }
+        break;
+      case "Workbook":
+        const files = await this.getMatchingFiles(target.name);
+        for (const file of files) {
+          promiseArray.push((async () => {
+            const data = await promises.readFile(join(this.path, file));
+            const workbook = new Workbook(read(data));
             await target.parser(workbook);
             await appendToOutput(file, workbook);
-          }
-          break;
-      }
+          })());
+        }
+        break;
     }
+    await Promise.all(promiseArray);
   }
   
   private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {

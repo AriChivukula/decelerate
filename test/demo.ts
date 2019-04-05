@@ -66,7 +66,8 @@ async function demoSheetParser(sheet: ISheet): Promise<void> {
     .bindToColumn("M", 25, demoListParser)
     .bindToColumnRange("N", 26, 2, demoListParser)
     .bindToRow("0", 25, demoListParser)
-    .bindToRowRange("P", 26, 2, demoListParser);
+    .bindToRowRange("P", 26, 2, demoListParser)
+    .bindToCell("Q", 35, 35, CellBooleanParser);
 }
 
 export function demoSheet(): Sheet {
