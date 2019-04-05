@@ -41,9 +41,11 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
       finalTargets.inner[key] = await value.explain();
     };
+    const promises = [];
     for (const target of this.getTargets()) {
-      await this.explore(target, appendToTarget);
+      promises.push(this.explore(target, appendToTarget));
     }
+    await Promise.all(promises);
     return finalTargets;
   }
 
@@ -52,9 +54,11 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
       finalTargets[key] = await value.export();
     };
+    const promises = [];
     for (const target of this.getTargets()) {
-      await this.explore(target, appendToTarget);
+      promises.push(this.explore(target, appendToTarget));
     }
+    await Promise.all(promises);
     return finalTargets;
   }
 }
