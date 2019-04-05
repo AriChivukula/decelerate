@@ -6,7 +6,7 @@ import {
   join,
 } from "path";
 import {
-  readFile,
+  read,
 } from "xlsx";
 
 import {
@@ -81,9 +81,8 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
         case "Workbook":
           const files = await this.getMatchingFiles(target.name);
           for (const file of files) {
-            const workbook = new Workbook(
-              readFile(join(this.path, file)),
-            );
+            const data = await promises.readFile(join(this.path, file), {encoding: "utf8"});
+            const workbook = new Workbook(data);
             await target.parser(workbook);
             await appendToOutput(file, workbook);
           }
