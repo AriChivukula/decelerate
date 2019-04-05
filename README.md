@@ -18,21 +18,22 @@ interface IWorkbook {
 ### Sheet
 ```
 interface ISheet {
-  bindToColumn(index: number, parser: ColumnParser): this;
-  bindToColumnRange(start: number, length: number, parser: ColumnParser): this;
-  bindToRow(index: number, parser: RowParser): this;
-  bindToRowRange(start: number, length: number, parser: RowParser): this;
+  bindToColumn(name: string, index: number, parser: ColumnParser): this;
+  bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
+  bindToRow(name: string, index: number, parser: RowParser): this;
+  bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
+  bindToCell(name: string, row: number, column: number, parser: CellParser): this;
 }
 ```
 ### Column/Row
 ```
 interface IColumn {
-  bindToCell(index: number, parser: CellParser): this;
-  bindToCellRange(start: number, length: number, parser: CellParser): this;
+  bindToCell(name: string, index: number, parser: CellParser): this;
+  bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
 interface IRow {
-  bindToCell(index: number, parser: CellParser): this;
-  bindToCellRange(start: number, length: number, parser: CellParser): this;
+  bindToCell(name: string, index: number, parser: CellParser): this;
+  bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
 ```
 ## External API
