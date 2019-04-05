@@ -122,7 +122,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
           break;
         case "Cell":
           const cell = new Cell(this.ws, target.row, target.column, target.parser);
-          await appendToOutput(cell.name + ":" + target.row + ":" + target.column, cell);
+          await appendToOutput(target.name + ":" + target.row + ":" + target.column, cell);
           break;
       }
     }
