@@ -70,8 +70,8 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
   }
 
   collapse(seperator: string): this {
-    this.collapse = true;
-    this.shouldCollapse = seperator;
+    this.shouldCollapse = true;
+    this.seperator = seperator;
     return this;
   }
 
