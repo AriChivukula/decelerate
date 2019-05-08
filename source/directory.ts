@@ -89,7 +89,14 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
             promiseArray.push((async () => {
               const directory = new Directory(join(this.path, subdir));
               await target.parser(directory);
-              finalTargets.inner[subdir] = await directory.explain();
+              const explained = await directory.explain();
+              if (this.collapse) {
+                for (const key in explained.inner) {
+                  finalTargets.inner[subdir + this.seperator + key] = explained[key];
+                }
+              } else {
+                finalTargets.inner[subdir] = explained;
+              }
             })());
           }
           break;
