@@ -3,8 +3,9 @@ import {
 } from "xlsx";
 
 import {
+  ICanFilterEmpty
   ITarget,
-  HasTargets,
+  HasTargetsAndCanFilterEmpty,
   TExplained,
 } from "./common";
 import {
@@ -22,7 +23,7 @@ import {
 
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
-export interface ISheet {
+export interface ISheet extends ICanFilterEmpty {
   bindToColumn(name: string, index: number, parser: ColumnParser): this;
   bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
   bindToRow(name: string, index: number, parser: RowParser): this;
@@ -53,7 +54,7 @@ export interface ISheetCellTarget extends ISheetTarget {
   readonly parser: CellParser;
 }
 
-export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget> implements ISheet {
+export class Sheet extends HasTargetsAndCanFilterEmpty<ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget> implements ISheet {
   constructor(
     private readonly ws: WorkSheet,
   ) {
