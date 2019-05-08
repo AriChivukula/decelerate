@@ -33,10 +33,9 @@ export class Cell implements ICanExportAndExplain {
   }
 
   async explain(): Promise<TExplained> {
-    const exported = await this.export();
     return {
       parser: this.constructor.name,
-      value: exported,
+      inner: {},
     };
   }
 
