@@ -22,6 +22,7 @@ import {
 export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 
 export interface IDirectory {
+  collapse(): this;
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
 }
@@ -41,10 +42,17 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
 }
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
+  private shouldCollapse = false;
+
   constructor(
     private readonly path: string,
   ) {
     super();
+  }
+  
+  collapse(): this {
+    this.shouldCollapse = true;
+    return this;
   }
 
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this {
