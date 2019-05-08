@@ -3,7 +3,7 @@ export type TExplained = {
   inner: {
     [k: string]: TExplained;
   };
-  value?: boolean | number | string;
+  value?: TExported;
 };
 
 export type TExported = {
