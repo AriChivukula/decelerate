@@ -35,7 +35,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   ): Promise<void>;
 
   async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
+    const finalTargets = {
       parser: this.constructor.name,
       inner: {},
     };
@@ -64,7 +64,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
       return exported;
     }
     if ("value" in explained) {
-      return explained.value;
+      return explained.value as TExported;
     }
     throw new Error("Unreachable");
   }
