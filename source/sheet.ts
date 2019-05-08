@@ -119,20 +119,20 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
             const column = new Column(this.ws, target.index);
             await target.parser(column);
             finalTargets.inner[target.name + ":" + target.index] = await column.explain();
-          });
+          })());
           break;
         case "Row":
           promiseArray.push((async () => {
             const row = new Row(this.ws, target.index);
             await target.parser(row);
             finalTargets.inner[target.name + ":" + target.index] = await row.explain();
-          });
+          })());
           break;
         case "Cell":
           promiseArray.push((async () => {
             const cell = new Cell(this.ws, target.row, target.column, target.parser);
             finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = await cell.explain();
-          });
+          })());
           break;
       }
     }
