@@ -52,7 +52,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   async export(): Promise<TExported> {
     const finalTargets: TExported = {};
     const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
-      finalTargets[key] = await value.export();
+      finalTargets[this.constructor.name + ":" + key] = await value.export();
     };
     const promises = [];
     for (const target of this.getTargets()) {
