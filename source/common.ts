@@ -28,6 +28,8 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   protected getTargets(): T[] {
     return this.targets;
   }
+  
+  abstract explain(): Promise<TExplained>;
 
   async export(): Promise<TExported> {
     const explained = await this.explain();
