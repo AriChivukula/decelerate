@@ -10,10 +10,10 @@ import {
 } from "xlsx";
 
 import {
-  ICanExportAndExplain,
   ICanCollapse,
   ITarget,
   HasTargetsAndCanCollapse,
+  TExplained,
 } from "./common";
 import {
   Workbook,
@@ -67,35 +67,46 @@ export class Directory extends HasTargetsAndCanCollapse<IDirectoryDirectoryTarge
     return this;
   }
 
-  protected async explore(
-    target: IDirectoryDirectoryTarget | IDirectoryWorkbookTarget,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void> {
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
     const promiseArray = [];
-    switch (target.kind) {
-      case "Directory":
-        const subdirs = await this.getMatchingSubDirectories(target.name);
-        for (const subdir of subdirs) {
-          promiseArray.push((async () => {
-            const directory = new Directory(join(this.path, subdir));
-            await target.parser(directory);
-            await appendToOutput(subdir, directory);
-          })());
-        }
-        break;
-      case "Workbook":
-        const files = await this.getMatchingFiles(target.name);
-        for (const file of files) {
-          promiseArray.push((async () => {
-            const data = await promises.readFile(join(this.path, file));
-            const workbook = new Workbook(read(data));
-            await target.parser(workbook);
-            await appendToOutput(file, workbook);
-          })());
-        }
-        break;
+    for (const target of this.getTargets()) {
+      switch (target.kind) {
+        case "Directory":
+          const subdirs = await this.getMatchingSubDirectories(target.name);
+          for (const subdir of subdirs) {
+            promiseArray.push((async () => {
+              const directory = new Directory(join(this.path, subdir));
+              await target.parser(directory);
+              const explained = await directory.explain();
+              if (this.shouldCollapse) {
+                for (const key in explained.inner) {
+                  finalTargets.inner[subdir + this.seperator + key] = explained.inner[key];
+                }
+              } else {
+                finalTargets.inner[subdir] = explained;
+              }
+            })());
+          }
+          break;
+        case "Workbook":
+          const files = await this.getMatchingFiles(target.name);
+          for (const file of files) {
+            promiseArray.push((async () => {
+              const data = await promises.readFile(join(this.path, file));
+              const workbook = new Workbook(read(data));
+              await target.parser(workbook);
+              finalTargets.inner[file] = await workbook.explain();
+            })());
+          }
+          break;
+      }
     }
     await Promise.all(promiseArray);
+    return finalTargets;
   }
   
   private async getMatchingSubDirectories(nameMatch: string | RegExp): Promise<string[]> {

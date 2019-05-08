@@ -16,32 +16,51 @@ chai.use(chaiAsPromised);
 describe(
   "explain",
   async () => {
-    const cellExample = {
+    const booleanCellExample = {
       "parser": "Cell",
       "inner": {},
+      "value": false,
+    };
+
+    const numberCellExample = {
+      "parser": "Cell",
+      "inner": {},
+      "value": 0,
+    };
+
+    const stringCellExample = {
+      "parser": "Cell",
+      "inner": {},
+      "value": "",
+    };
+
+    const customCellExample = {
+      "parser": "Cell",
+      "inner": {},
+      "value": "test",
     };
 
     const rowExample = {
       "parser": "Row",
       "inner": {
-        "A:25": cellExample,
-        "B:26": cellExample,
-        "B:27": cellExample,
-        "C:28": cellExample,
-        "D:29": cellExample,
-        "D:30": cellExample,
+        "A:25": booleanCellExample,
+        "B:26": numberCellExample,
+        "B:27": numberCellExample,
+        "C:28": stringCellExample,
+        "D:29": customCellExample,
+        "D:30": customCellExample,
       },
     };
 
     const columnExample = {
       "parser": "Column",
       "inner": {
-        "A:25": cellExample,
-        "B:26": cellExample,
-        "B:27": cellExample,
-        "C:28": cellExample,
-        "D:29": cellExample,
-        "D:30": cellExample,
+        "A:25": booleanCellExample,
+        "B:26": numberCellExample,
+        "B:27": numberCellExample,
+        "C:28": stringCellExample,
+        "D:29": customCellExample,
+        "D:30": customCellExample,
       },
     };
 
@@ -54,7 +73,7 @@ describe(
         "N:27": columnExample,
         "P:26": rowExample,
         "P:27": rowExample,
-        "Q:35:35": cellExample,
+        "Q:35:35": booleanCellExample,
       },
     };
 
