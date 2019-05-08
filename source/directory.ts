@@ -10,7 +10,6 @@ import {
 } from "xlsx";
 
 import {
-  ICanExportAndExplain,
   ITarget,
   HasTargets,
   TExplained,
