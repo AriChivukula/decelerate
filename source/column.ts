@@ -3,7 +3,7 @@ import {
 } from "xlsx";
 
 import {
-  ICanExportAndExplain,
+  TExplained,
 } from "./common";
 import {
   IList,
@@ -27,12 +27,20 @@ export class Column extends List implements IColumn {
   ) {
     super();
   }
-
-  protected async explore(
-    target: IListTarget,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void> {
-    const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
-    await appendToOutput(target.name + ":" + target.index, cell);
+  
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    const promiseArray = [];
+    for (const target of this.getTargets()) {
+      promiseArray.push((async () => {
+        const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
+        finalTargets.inner[target.name + ":" + target.index] = await cell.explain();
+      })());
+    }
+    await Promise.all(promiseArray);
+    return finalTargets;
   }
 }

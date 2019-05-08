@@ -3,6 +3,7 @@ export type TExplained = {
   inner: {
     [k: string]: TExplained;
   };
+  value?: TExported;
 };
 
 export type TExported = {
@@ -28,37 +29,21 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     return this.targets;
   }
   
-  protected abstract explore(
-    target: T,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void>;
-
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
-      finalTargets.inner[key] = await value.explain();
-    };
-    const promises = [];
-    for (const target of this.getTargets()) {
-      promises.push(this.explore(target, appendToTarget));
-    }
-    await Promise.all(promises);
-    return finalTargets;
-  }
+  abstract explain(): Promise<TExplained>;
 
   async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
-      finalTargets[key] = await value.export();
-    };
-    const promises = [];
-    for (const target of this.getTargets()) {
-      promises.push(this.explore(target, appendToTarget));
+    const explained = await this.explain();
+    return this.exportImpl(explained);
+  }
+  
+  private exportImpl(explained: TExplained): TExported {
+    if ("value" in explained) {
+      return explained.value as TExported;
     }
-    await Promise.all(promises);
-    return finalTargets;
+    const exported: TExported = {};
+    for (const key in explained.inner) {
+      exported[key] = this.exportImpl(explained.inner[key]);
+    }
+    return exported;
   }
 }

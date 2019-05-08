@@ -3,9 +3,9 @@ import {
 } from "xlsx";
 
 import {
-  ICanExportAndExplain,
   ITarget,
   HasTargets,
+  TExplained,
 } from "./common";
 import {
   Column,
@@ -105,25 +105,37 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
     return this;
   }
 
-  protected async explore(
-    target: ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void> {
-    switch (target.kind) {
-      case "Column":
-        const column = new Column(this.ws, target.index);
-        await target.parser(column);
-        await appendToOutput(target.name + ":" + target.index, column);
-        break;
-      case "Row":
-        const row = new Row(this.ws, target.index);
-        await target.parser(row);
-        await appendToOutput(target.name + ":" + target.index, row);
-        break;
-      case "Cell":
-        const cell = new Cell(this.ws, target.row, target.column, target.parser);
-        await appendToOutput(target.name + ":" + target.row + ":" + target.column, cell);
-        break;
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    const promiseArray = [];
+    for (const target of this.getTargets()) {
+      switch (target.kind) {
+        case "Column":
+          promiseArray.push((async () => {
+            const column = new Column(this.ws, target.index);
+            await target.parser(column);
+            finalTargets.inner[target.name + ":" + target.index] = await column.explain();
+          })());
+          break;
+        case "Row":
+          promiseArray.push((async () => {
+            const row = new Row(this.ws, target.index);
+            await target.parser(row);
+            finalTargets.inner[target.name + ":" + target.index] = await row.explain();
+          })());
+          break;
+        case "Cell":
+          promiseArray.push((async () => {
+            const cell = new Cell(this.ws, target.row, target.column, target.parser);
+            finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = await cell.explain();
+          })());
+          break;
+      }
     }
+    await Promise.all(promiseArray)
+    return finalTargets;
   }
 }
