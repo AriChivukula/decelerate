@@ -56,16 +56,13 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   }
   
   private exportImpl(explained: TExplained): TExported {
-    if ("inner" in explained) {
-      const exported: TExported = {};
-      for (const key in explained.inner) {
-        exported[key] = this.exportImpl(explained.inner[key]);
-      }
-      return exported;
-    }
     if ("value" in explained) {
-      return explained.value;
+      return explained.value as TExported;
     }
-    throw new Error("Unreachable");
+    const exported: TExported = {};
+    for (const key in explained.inner) {
+      exported[key] = this.exportImpl(explained.inner[key]);
+    }
+    return exported;
   }
 }
