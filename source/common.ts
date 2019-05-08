@@ -52,14 +52,14 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
 
   async export(): Promise<TExported> {
     const explained = await this.explain();
-    return exportImpl(explained);
+    return this.exportImpl(explained);
   }
   
   private exportImpl(explained: TExplained): Promise<TExported> {
     if ("inner" in explained) {
       const exported: TExported = {};
       for (const key in explained.inner) {
-        exported[key] = exportImpl(explained.inner[key]);
+        exported[key] = this.exportImpl(explained.inner[key]);
       }
       return exported;
     }
