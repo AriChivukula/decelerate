@@ -1,6 +1,7 @@
 import {
+  ICanFilterEmpty,
   ITarget,
-  HasTargets,
+  HasTargetsAndCanFilterEmpty,
 } from "./common";
 import {
   CellParser,
@@ -8,7 +9,7 @@ import {
 
 export type ListParser<T extends IList> = (list: T) => Promise<void>;
 
-export interface IList {
+export interface IList extends ICanFilterEmpty {
   bindToCell(name: string, index: number, parser: CellParser): this;
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
 }
@@ -19,7 +20,7 @@ export interface IListTarget extends ITarget {
   readonly parser: CellParser,
 }
 
-export abstract class List extends HasTargets<IListTarget> implements IList {
+export abstract class List extends HasTargetsAndCanFilterEmpty<IListTarget> implements IList {
   bindToCell(name: string, index: number, parser: CellParser): this {
     this.addTarget({
       name,
