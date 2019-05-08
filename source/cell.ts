@@ -36,6 +36,7 @@ export class Cell implements ICanExportAndExplain {
     const exported = await this.export();
     return {
       parser: this.constructor.name,
+      inner: {},
       value: exported,
     };
   }
