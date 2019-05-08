@@ -5,9 +5,9 @@ Data accessors for directories of workbooks of sheets of rows/columns of cells.
 ### Directory
 ```
 interface IDirectory {
-  collapse(): this;
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
+  collapse(separator: string): this;
 }
 ```
 ### Workbook
