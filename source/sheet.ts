@@ -135,7 +135,7 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
           break;
       }
     }
-    await Promises.all(promiseArray)
+    await Promise.all(promiseArray)
     return finalTargets;
   }
 }
