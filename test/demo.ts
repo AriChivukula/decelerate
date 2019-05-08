@@ -32,6 +32,7 @@ import {
 
 async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
   directory
+    .collapse("/")
     .bindToSubDirectory("sub", demoDirectoryParserB)
     .bindToWorkbook("fake_client_a.xlsx", demoWorkbookParser);
 }
@@ -39,7 +40,6 @@ async function demoDirectoryParserA(directory: IDirectory): Promise<void> {
 
 async function demoDirectoryParserB(directory: IDirectory): Promise<void> {
   directory
-    .collapse("/")
     .bindToSubDirectory(/fake_client/, demoDirectoryParserB)
     .bindToWorkbook(/fake_client_.\.xlsx/, demoWorkbookParser);
 }
