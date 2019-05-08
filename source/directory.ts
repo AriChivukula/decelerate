@@ -42,7 +42,7 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
 }
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
-  private collapse = false;
+  private shouldCollapse = false;
   private seperator = "";
 
   constructor(
@@ -71,7 +71,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
 
   collapse(seperator: string): this {
     this.collapse = true;
-    this.seperator = seperator;
+    this.shouldCollapse = seperator;
     return this;
   }
 
@@ -90,7 +90,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
               const directory = new Directory(join(this.path, subdir));
               await target.parser(directory);
               const explained = await directory.explain();
-              if (this.collapse) {
+              if (this.shouldCollapse) {
                 for (const key in explained.inner) {
                   finalTargets.inner[subdir + this.seperator + key] = explained[key];
                 }
