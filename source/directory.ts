@@ -66,7 +66,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
-  protected async explain(): Promise<TExplained> {
+  async explain(): Promise<TExplained> {
     const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
