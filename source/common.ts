@@ -64,7 +64,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
       return exported;
     }
     if ("value" in explained) {
-      return explained.value as TExported;
+      return explained.value;
     }
     throw new Error("Unreachable");
   }
