@@ -22,6 +22,10 @@ export interface ICanCollapse {
   collapse(seperator: string): this;
 }
 
+export interface ICanFilterEmpty {
+  filterEmpty(): this;
+}
+
 export abstract class HasTargets<T extends ITarget> implements ICanExportAndExplain {
   private targets: T[] = [];
 
@@ -59,6 +63,15 @@ export abstract class HasTargetsAndCanCollapse<T extends ITarget> extends HasTar
   collapse(seperator: string): this {
     this.shouldCollapse = true;
     this.seperator = seperator;
+    return this;
+  }
+}
+
+export abstract class HasTargetsAndCanFilterEmpty<T extends ITarget> extends HasTargets<T> implements ICanFilterEmpty {
+  protected shouldFilterEmpty = false;
+
+  filterEmpty(): this {
+    this.shouldFilterEmpty = true;
     return this;
   }
 }
