@@ -3,8 +3,9 @@ import {
 } from "xlsx";
 
 import {
+  ICanFilterEmpty,
   ITarget,
-  HasTargets,
+  HasTargetsAndCanFilterEmpty,
   TExplained,
 } from "./common";
 import {
@@ -14,7 +15,7 @@ import {
 
 export type WorkbookParser = (workbook: IWorkbook) => Promise<void>;
 
-export interface IWorkbook {
+export interface IWorkbook extends ICanFilterEmpty {
   bindToSheet(name: string | RegExp, parser: SheetParser): this;
 }
 
@@ -23,7 +24,7 @@ export interface IWorkbookTarget extends ITarget {
   readonly parser: SheetParser,
 }
 
-export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
+export class Workbook extends HasTargetsAndCanFilterEmpty<IWorkbookTarget> implements IWorkbook {
   constructor(
     private readonly wb: WorkBook,
   ) {
