@@ -1,8 +1,9 @@
 export type TExplained = {
   parser: string;
-  inner: {
+  inner?: {
     [k: string]: TExplained;
   };
+  value?: boolean | number | string;
 };
 
 export type TExported = {
@@ -50,15 +51,21 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   }
 
   async export(): Promise<TExported> {
-    const finalTargets: TExported = {};
-    const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
-      finalTargets[key] = await value.export();
-    };
-    const promises = [];
-    for (const target of this.getTargets()) {
-      promises.push(this.explore(target, appendToTarget));
+    const explained = await this.explain();
+    return exportImpl(explained);
+  }
+  
+  private exportImpl(explained: TExplained): Promise<TExported> {
+    if ("inner" in explained) {
+      const exported: TExported = {};
+      for (const key in explained.inner) {
+        exported[key] = exportImpl(explained.inner[key]);
+      }
+      return exported;
     }
-    await Promise.all(promises);
-    return finalTargets;
+    if ("value" in explained) {
+      return explained.value;
+    }
+    throw new Error("Unreachable");
   }
 }
