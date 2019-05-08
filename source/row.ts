@@ -28,11 +28,19 @@ export class Row extends List implements IRow {
     super();
   }
 
-  protected async explore(
-    target: IListTarget,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void> {
-    const cell = new Cell(this.ws, this.rowIdx, target.index, target.parser);
-    await appendToOutput(target.name + ":" + target.index, cell);
+  async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    const promiseArray = [];
+    for (const target of this.getTargets()) {
+      promiseArray.push(async () => {
+        const cell = new Cell(this.ws, this.rowIdx, target.index, target.parser);
+        finalTargets.inner[target.name + ":" + target.index] = cell.explain();
+      });
+    }
+    await Promise.all(promiseArray);
+    return finalTargets;
   }
 }
