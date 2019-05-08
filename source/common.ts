@@ -55,7 +55,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     return this.exportImpl(explained);
   }
   
-  private exportImpl(explained: TExplained): Promise<TExported> {
+  private exportImpl(explained: TExplained): TExported {
     if ("inner" in explained) {
       const exported: TExported = {};
       for (const key in explained.inner) {
