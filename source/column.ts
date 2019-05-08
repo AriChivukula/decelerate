@@ -3,7 +3,7 @@ import {
 } from "xlsx";
 
 import {
-  TExported,
+  TExplained,
 } from "./common";
 import {
   IList,
