@@ -56,7 +56,7 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
         })());
       }
     }
-    await Promise.all(promises);
+    await Promise.all(promiseArray);
     return finalTargets;
   }
 
