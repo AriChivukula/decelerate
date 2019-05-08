@@ -6,6 +6,7 @@ import {
   ICanExportAndExplain,
   ITarget,
   HasTargets,
+  TExplained,
 } from "./common";
 import {
   Sheet,
@@ -38,20 +39,25 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     return this;
   }
 
-  protected async explore(
-    target: IWorkbookTarget,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void> {
-    const sheetNames = await this.getMatchingSheetNames(target.name);
-    const promises = [];
-    for (const sheetName of sheetNames) {
-      promises.push((async () => {
-        const sheet = new Sheet(this.wb.Sheets[sheetName]);
-        await target.parser(sheet);
-        await appendToOutput(sheetName, sheet);
-      })());
+  protected async explain(): Promise<TExplained> {
+    const finalTargets: TExplained = {
+      parser: this.constructor.name,
+      inner: {},
+    };
+    const promiseArray = [];
+    for (const target of this.getTargets()) {
+      const sheetNames = await this.getMatchingSheetNames(target.name);
+      const promises = [];
+      for (const sheetName of sheetNames) {
+        promises.push((async () => {
+          const sheet = new Sheet(this.wb.Sheets[sheetName]);
+          await target.parser(sheet);
+          finalTargets.inner[sheetName] = await sheet.explain();
+        })());
+      }
     }
     await Promise.all(promises);
+    return finalTargets;
   }
 
   private async getMatchingSheetNames(nameMatch: string | RegExp): Promise<string[]> {
