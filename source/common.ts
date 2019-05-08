@@ -1,6 +1,6 @@
 export type TExplained = {
   parser: string;
-  inner?: {
+  inner: {
     [k: string]: TExplained;
   };
   value?: boolean | number | string;
@@ -35,7 +35,7 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   ): Promise<void>;
 
   async explain(): Promise<TExplained> {
-    const finalTargets = {
+    const finalTargets: TExplained = {
       parser: this.constructor.name,
       inner: {},
     };
