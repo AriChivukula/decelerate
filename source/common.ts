@@ -17,6 +17,10 @@ export interface ICanExportAndExplain {
   export(): Promise<TExported>;
 }
 
+export interface ICanCollapse {
+  collapse(seperator: string): this;
+}
+
 export abstract class HasTargets<T extends ITarget> implements ICanExportAndExplain {
   private targets: T[] = [];
 
@@ -60,5 +64,16 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
     }
     await Promise.all(promises);
     return finalTargets;
+  }
+}
+
+export abstract class HasTargetsAndCanCollapse<T extends ITarget> extends HasTargets<T> implements ICanCollapse {
+  protected collapse = false;
+  protected seperator = "";
+
+  collapse(seperator: string): this {
+    this.collapse = true;
+    this.seperator = seperator;
+    return this;
   }
 }
