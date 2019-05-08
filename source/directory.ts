@@ -24,6 +24,7 @@ export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 export interface IDirectory {
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
+  collapse(separator: string): this;
 }
 
 export interface IDirectoryTarget extends ITarget {
@@ -41,6 +42,9 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
 }
 
 export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
+  private shouldCollapse = false;
+  private seperator = "";
+
   constructor(
     private readonly path: string,
   ) {
@@ -65,6 +69,12 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
     return this;
   }
 
+  collapse(seperator: string): this {
+    this.shouldCollapse = true;
+    this.seperator = seperator;
+    return this;
+  }
+
   async explain(): Promise<TExplained> {
     const finalTargets: TExplained = {
       parser: this.constructor.name,
@@ -79,7 +89,14 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
             promiseArray.push((async () => {
               const directory = new Directory(join(this.path, subdir));
               await target.parser(directory);
-              finalTargets.inner[subdir] = await directory.explain();
+              const explained = await directory.explain();
+              if (this.shouldCollapse) {
+                for (const key in explained.inner) {
+                  finalTargets.inner[subdir + this.seperator + key] = explained.inner[key];
+                }
+              } else {
+                finalTargets.inner[subdir] = explained;
+              }
             })());
           }
           break;
