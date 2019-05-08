@@ -38,7 +38,7 @@ export class Row extends List implements IRow {
       promiseArray.push(async () => {
         const cell = new Cell(this.ws, this.rowIdx, target.index, target.parser);
         finalTargets.inner[target.name + ":" + target.index] = cell.explain();
-      });
+      })());
     }
     await Promise.all(promiseArray);
     return finalTargets;
