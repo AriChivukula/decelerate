@@ -28,27 +28,6 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
   protected getTargets(): T[] {
     return this.targets;
   }
-  
-  protected abstract explore(
-    target: T,
-    appendToOutput: (key: string, value: ICanExportAndExplain) => Promise<void>,
-  ): Promise<void>;
-
-  async explain(): Promise<TExplained> {
-    const finalTargets: TExplained = {
-      parser: this.constructor.name,
-      inner: {},
-    };
-    const appendToTarget = async (key: string, value: ICanExportAndExplain): Promise<void> => {
-      finalTargets.inner[key] = await value.explain();
-    };
-    const promises = [];
-    for (const target of this.getTargets()) {
-      promises.push(this.explore(target, appendToTarget));
-    }
-    await Promise.all(promises);
-    return finalTargets;
-  }
 
   async export(): Promise<TExported> {
     const explained = await this.explain();
