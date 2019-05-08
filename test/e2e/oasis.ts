@@ -20,17 +20,20 @@ async function directoryParser(directory: IDirectory): Promise<void> {
 
 async function workbookParser(workbook: IWorkbook): Promise<void> {
   workbook
+    .filterEmpty()
     .bindToSheet(/Harm Details/, harmDetailParser)
     .bindToSheet("Other Questions", otherQuestionsParser);
 }
 
 async function harmDetailParser(sheet: ISheet): Promise<void> {
   sheet
+    .filterEmpty()
     .bindToRowRange("row", 4, 14, harmDetailRowParser);
 }
 
 async function harmDetailRowParser(row: IRow): Promise<void> {
   row
+    .filterEmpty()
     .bindToCell("type", 1, CellStringParser)
     .bindToCell("actor", 2, CellStringParser)
     .bindToCell("age", 3, CellStringParser)
@@ -40,6 +43,7 @@ async function harmDetailRowParser(row: IRow): Promise<void> {
 
 async function otherQuestionsParser(sheet: ISheet): Promise<void> {
   sheet
+    .filterEmpty()
     .bindToRow("mental_health", 2, otherQuestionsTristateParser(2))
     .bindToRow("serious_harm", 2, otherQuestionsTristateParser(6))
     .bindToRow("isolation_in_us", 2, otherQuestionsTristateParser(10))
@@ -52,6 +56,7 @@ async function otherQuestionsParser(sheet: ISheet): Promise<void> {
 function otherQuestionsTristateParser(start: number): RowParser {
   return async (row: IRow): Promise<void> => {
     row
+      .filterEmpty()
       .bindToCell("yes", start, CellBooleanParser)
       .bindToCell("no", start + 1, CellBooleanParser)
       .bindToCell("n/a", start + 2, CellBooleanParser);
@@ -60,6 +65,7 @@ function otherQuestionsTristateParser(start: number): RowParser {
 
 async function otherQuestionsMentalHealthDiagnosisParser(column: IColumn): Promise<void> {
   column
+    .filterEmpty()
     .bindToCell("ptsd", 5, CellBooleanParser)
     .bindToCell("anxiety", 6, CellBooleanParser)
     .bindToCell("depression", 7, CellBooleanParser)
@@ -68,6 +74,7 @@ async function otherQuestionsMentalHealthDiagnosisParser(column: IColumn): Promi
 
 async function otherQuestionsSeriousHarmTypeParser(column: IColumn): Promise<void> {
   column
+    .filterEmpty()
     .bindToCell("medical", 5, CellBooleanParser)
     .bindToCell("economic", 6, CellBooleanParser)
     .bindToCell("crime", 7, CellBooleanParser)
