@@ -92,7 +92,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
               const explained = await directory.explain();
               if (this.shouldCollapse) {
                 for (const key in explained.inner) {
-                  finalTargets.inner[subdir + this.seperator + key] = explained[key];
+                  finalTargets.inner[subdir + this.seperator + key] = explained.inner[key];
                 }
               } else {
                 finalTargets.inner[subdir] = explained;
