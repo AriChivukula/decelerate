@@ -80,7 +80,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
             promiseArray.push((async () => {
               const directory = new Directory(join(this.path, subdir));
               await target.parser(directory);
-              finalTargets[subdir] = await directory.explain();
+              finalTargets.inner[subdir] = await directory.explain();
             })());
           }
           break;
@@ -91,7 +91,7 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
               const data = await promises.readFile(join(this.path, file));
               const workbook = new Workbook(read(data));
               await target.parser(workbook);
-              finalTargets[file] = await workbook.explain();
+              finalTargets.inner[file] = await workbook.explain();
             })());
           }
           break;
