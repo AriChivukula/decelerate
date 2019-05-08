@@ -1,6 +1,6 @@
 {
   "name": "decelerate",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Batch Excel Processing",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -13,21 +13,21 @@
     "spec": ["test/*.ts"]
   },
   "dependencies": {
-    "@babel/polyfill": "7.4.3",
-    "xlsx": "0.14.2",
+    "@babel/polyfill": "7.4.4",
+    "xlsx": "0.14.3",
     "yargs": "13.2.2"
   },
   "devDependencies": {
     "@types/chai": "4.1.7",
     "@types/chai-as-promised": "7.1.0",
     "@types/mocha": "5.2.6",
-    "@types/node": "11.13.0",
-    "@types/yargs": "12.0.11",
+    "@types/node": "12.0.0",
+    "@types/yargs": "13.0.0",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
-    "mocha": "6.0.2",
-    "ts-node": "8.0.3",
-    "typescript": "3.4.1"
+    "mocha": "6.1.4",
+    "ts-node": "8.1.0",
+    "typescript": "3.4.5"
   },
   "include": [
     "source/*"
