@@ -47,9 +47,8 @@ export class Workbook extends HasTargets<IWorkbookTarget> implements IWorkbook {
     const promiseArray = [];
     for (const target of this.getTargets()) {
       const sheetNames = await this.getMatchingSheetNames(target.name);
-      const promises = [];
       for (const sheetName of sheetNames) {
-        promises.push((async () => {
+        promiseArray.push((async () => {
           const sheet = new Sheet(this.wb.Sheets[sheetName]);
           await target.parser(sheet);
           finalTargets.inner[sheetName] = await sheet.explain();
