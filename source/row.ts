@@ -3,7 +3,7 @@ import {
 } from "xlsx";
 
 import {
-  ICanExportAndExplain,
+  TExplained,
 } from "./common";
 import {
   IList,
