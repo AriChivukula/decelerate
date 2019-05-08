@@ -53,11 +53,11 @@ export abstract class HasTargets<T extends ITarget> implements ICanExportAndExpl
 }
 
 export abstract class HasTargetsAndCanCollapse<T extends ITarget> extends HasTargets<T> implements ICanCollapse {
-  protected collapse = false;
+  protected shouldCollapse = false;
   protected seperator = "";
 
   collapse(seperator: string): this {
-    this.collapse = true;
+    this.shouldCollapse = true;
     this.seperator = seperator;
     return this;
   }
