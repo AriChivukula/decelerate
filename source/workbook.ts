@@ -51,6 +51,10 @@ export class Workbook extends HasTargetsAndCanFilterEmpty<IWorkbookTarget> imple
         promiseArray.push((async () => {
           const sheet = new Sheet(this.wb.Sheets[sheetName]);
           await target.parser(sheet);
+          const explained = await sheet.explain();
+          if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
+            return;
+          }
           finalTargets.inner[sheetName] = await sheet.explain();
         })());
       }
