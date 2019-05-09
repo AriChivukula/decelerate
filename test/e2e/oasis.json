@@ -82,6 +82,7 @@
     },
   },
   "sub/fake_client_b.xlsx": {
+    "Harm Details": {
       "row:4": {
         "actor:2": "T",
         "age:3": "CH",
@@ -103,6 +104,8 @@
         "notes:5": "c",
         "type:1": "PH",
       },
+    },
+    "Harm Details (2)": {
       "row:4": {
         "actor:2": "SA",
         "age:3": "CH",
