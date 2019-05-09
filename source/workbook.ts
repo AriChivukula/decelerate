@@ -55,7 +55,7 @@ export class Workbook extends HasTargetsAndCanFilterEmpty<IWorkbookTarget> imple
           if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
             return;
           }
-          finalTargets.inner[sheetName] = await sheet.explain();
+          finalTargets.inner[sheetName] = explained;
         })());
       }
     }
