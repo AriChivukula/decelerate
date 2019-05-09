@@ -10,8 +10,9 @@ import {
 } from "xlsx";
 
 import {
+  ICanCollapse,
   ITarget,
-  HasTargets,
+  HasTargetsAndCanCollapse,
   TExplained,
 } from "./common";
 import {
@@ -21,10 +22,9 @@ import {
 
 export type DirectoryParser = (directory: IDirectory) => Promise<void>;
 
-export interface IDirectory {
+export interface IDirectory extends ICanCollapse {
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
-  collapse(separator: string): this;
 }
 
 export interface IDirectoryTarget extends ITarget {
@@ -41,9 +41,7 @@ export interface IDirectoryWorkbookTarget extends IDirectoryTarget {
   readonly parser: WorkbookParser;
 }
 
-export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
-  private shouldCollapse = false;
-  private seperator = "";
+export class Directory extends HasTargetsAndCanCollapse<IDirectoryDirectoryTarget | IDirectoryWorkbookTarget> implements IDirectory {
 
   constructor(
     private readonly path: string,
@@ -66,12 +64,6 @@ export class Directory extends HasTargets<IDirectoryDirectoryTarget | IDirectory
       parser,
       kind: "Workbook",
     });
-    return this;
-  }
-
-  collapse(seperator: string): this {
-    this.shouldCollapse = true;
-    this.seperator = seperator;
     return this;
   }
 

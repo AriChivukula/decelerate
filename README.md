@@ -14,6 +14,7 @@ interface IDirectory {
 ```
 interface IWorkbook {
   bindToSheet(name: string | RegExp, parser: SheetParser): this;
+  filterEmpty();
 }
 ```
 ### Sheet
@@ -24,6 +25,7 @@ interface ISheet {
   bindToRow(name: string, index: number, parser: RowParser): this;
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
   bindToCell(name: string, row: number, column: number, parser: CellParser): this;
+  filterEmpty();
 }
 ```
 ### Column/Row
@@ -31,10 +33,12 @@ interface ISheet {
 interface IColumn {
   bindToCell(name: string, index: number, parser: CellParser): this;
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
+  filterEmpty();
 }
 interface IRow {
   bindToCell(name: string, index: number, parser: CellParser): this;
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
+  filterEmpty();
 }
 ```
 ## External API

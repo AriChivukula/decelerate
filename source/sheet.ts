@@ -3,8 +3,9 @@ import {
 } from "xlsx";
 
 import {
+  ICanFilterEmpty,
   ITarget,
-  HasTargets,
+  HasTargetsAndCanFilterEmpty,
   TExplained,
 } from "./common";
 import {
@@ -22,7 +23,7 @@ import {
 
 export type SheetParser = (sheet: ISheet) => Promise<void>;
 
-export interface ISheet {
+export interface ISheet extends ICanFilterEmpty {
   bindToColumn(name: string, index: number, parser: ColumnParser): this;
   bindToColumnRange(name: string, start: number, length: number, parser: ColumnParser): this;
   bindToRow(name: string, index: number, parser: RowParser): this;
@@ -53,7 +54,7 @@ export interface ISheetCellTarget extends ISheetTarget {
   readonly parser: CellParser;
 }
 
-export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget> implements ISheet {
+export class Sheet extends HasTargetsAndCanFilterEmpty<ISheetColumnTarget | ISheetRowTarget | ISheetCellTarget> implements ISheet {
   constructor(
     private readonly ws: WorkSheet,
   ) {
@@ -117,20 +118,32 @@ export class Sheet extends HasTargets<ISheetColumnTarget | ISheetRowTarget | ISh
           promiseArray.push((async () => {
             const column = new Column(this.ws, target.index);
             await target.parser(column);
-            finalTargets.inner[target.name + ":" + target.index] = await column.explain();
+            const explained = await column.explain();
+            if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.index] = explained;
           })());
           break;
         case "Row":
           promiseArray.push((async () => {
             const row = new Row(this.ws, target.index);
             await target.parser(row);
-            finalTargets.inner[target.name + ":" + target.index] = await row.explain();
+            const explained = await row.explain();
+            if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.index] = explained;
           })());
           break;
         case "Cell":
           promiseArray.push((async () => {
             const cell = new Cell(this.ws, target.row, target.column, target.parser);
-            finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = await cell.explain();
+            const explained = await cell.explain();
+            if ((explained.value === false || explained.value === 0 || explained.value === "") && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = explained;
           })());
           break;
       }
