@@ -118,20 +118,32 @@ export class Sheet extends HasTargetsAndCanFilterEmpty<ISheetColumnTarget | IShe
           promiseArray.push((async () => {
             const column = new Column(this.ws, target.index);
             await target.parser(column);
-            finalTargets.inner[target.name + ":" + target.index] = await column.explain();
+            const explained = await column.explain();
+            if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.index] = explained;
           })());
           break;
         case "Row":
           promiseArray.push((async () => {
             const row = new Row(this.ws, target.index);
             await target.parser(row);
-            finalTargets.inner[target.name + ":" + target.index] = await row.explain();
+            const explained = await row.explain();
+            if (Object.keys(explained.inner).length === 0 && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.index] = explained;
           })());
           break;
         case "Cell":
           promiseArray.push((async () => {
             const cell = new Cell(this.ws, target.row, target.column, target.parser);
-            finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = await cell.explain();
+            const explained = await cell.explain();
+            if ((explained.value === false || explained.value === 0 || explained.value === "") && this.shouldFilterEmpty) {
+              return;
+            }
+            finalTargets.inner[target.name + ":" + target.row + ":" + target.column] = explained;
           })());
           break;
       }
