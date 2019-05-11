@@ -31,10 +31,10 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   const json: any = JSON.parse(data);
   const clients: Client[] = [];
   for (const clientName in json) {
-    clients.push(new Client(clientName, data[clientName]));
+    clients.push(new Client(clientName, json[clientName]));
   }
   for (const client of clients) {
-    console.log(client.name);
+    console.log(client.name + "," + client.countryOfOrigin() + "," + client.experiencedHealthIssues().join("/") + "," + client.experiencedHarmTypes().join("/"));
   }
 }
 
@@ -46,18 +46,69 @@ class Client {
   }
 
   countryOfOrigin(): string {
-    return "";
+    const country = this.getSubData("Other Questions", "country_of_origin:5:9");
+    if (country === null) {
+      throw Error(this.name + " missing country");
+    }
+    const countryMap: any = {
+      "Brazil": "BR",
+      "Colombia": "CO",
+      "Guatemala": "GT",
+      "Honduras": "HN",
+      "Kenya": "KE",
+      "Macedonia": "MK",
+      "Burma": "MM",
+      "Mexico": "MX",
+      "Meixco": "MX",
+      "El Salvador": "SV",
+      "Uganda": "UG",
+      "Venezuela": "VE",
+    };
+    return this.mapData(country, countryMap);
   }
 
   experiencedHealthIssues(): string[] {
-    return [];
+    const healthIssues: string[] = [];
+    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "anxiety:6") ||
+        this.getSubData("Other Questions", "mental_health_diagnosis:4", "anxiety:6")) {
+      healthIssues.push("ANXIETY");
+    }
+    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "depression:7") ||
+        this.getSubData("Other Questions", "mental_health_diagnosis:4", "depression:7")) {
+      healthIssues.push("DEPRESSION");
+    }
+    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "other:8") ||
+        this.getSubData("Other Questions", "mental_health_diagnosis:4", "other:8")) {
+      healthIssues.push("OTHER");
+    }
+    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "ptsd:5") ||
+        this.getSubData("Other Questions", "mental_health_diagnosis:4", "ptsd:5")) {
+      healthIssues.push("PTSD");
+    }
+    return healthIssues;
   }
 
   experiencedHarmTypes(): string[] {
     return [];
   }
 
-  experiencedHarmActors(): string[] {
-    return [];
+  private getSubData(...idxs: string[]): any {
+    let data: any = this.data;
+    for (const idx of idxs) {
+      if (idx in data) {
+        data = data[idx];
+      } else {
+        return null;
+      }
+    }
+    return data;
+  }
+
+  private mapData(data: string, map: {[idx: string]: string}): any {
+    if (data in map) {
+      return map[data];
+    } else {
+      throw Error(data + " not found");
+    }
   }
 }
