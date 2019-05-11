@@ -4,9 +4,6 @@ import * as yargs from "yargs";
 import {
   promises,
 } from "fs";
-import {
-  parse,
-} from "relaxed-json";
 
 yargs
   .usage(
