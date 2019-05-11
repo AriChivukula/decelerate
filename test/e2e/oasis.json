@@ -63,21 +63,8 @@
         "other:8": true,
         "ptsd:5": true
       },
-      "mental_health_diagnosis:4": {
-        "anxiety:6": true,
-        "depression:7": true,
-        "other:8": true,
-        "ptsd:5": true
-      },
       "serious_harm:2": {
         "yes:6": true
-      },
-      "serious_harm_type:7": {
-        "crime:7": true,
-        "dv_or_pa:8": true,
-        "economic:6": true,
-        "medical:5": true,
-        "other:9": true
       }
     }
   },
@@ -139,23 +126,10 @@
       "mental_health:2": {
         "no:3": true
       },
-      "mental_health_diagnosis:4": {
-        "anxiety:6": true,
-        "depression:7": true,
-        "other:8": true,
-        "ptsd:5": true
-      },
       "serious_harm:2": {
         "no:7": true
       },
       "serious_harm_type:6": {
-        "crime:7": true,
-        "dv_or_pa:8": true,
-        "economic:6": true,
-        "medical:5": true,
-        "other:9": true
-      },
-      "serious_harm_type:7": {
         "crime:7": true,
         "dv_or_pa:8": true,
         "economic:6": true,
@@ -176,21 +150,8 @@
       "mental_health:2": {
         "n/a:4": true
       },
-      "mental_health_diagnosis:4": {
-        "anxiety:6": true,
-        "depression:7": true,
-        "other:8": true,
-        "ptsd:5": true
-      },
       "serious_harm:2": {
         "n/a:8": true
-      },
-      "serious_harm_type:7": {
-        "crime:7": true,
-        "dv_or_pa:8": true,
-        "economic:6": true,
-        "medical:5": true,
-        "other:9": true
       }
     }
   }
