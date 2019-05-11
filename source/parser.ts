@@ -33,13 +33,31 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   for (const clientName in json) {
     clients.push(new Client(clientName, data[clientName]));
   }
+  for (const client of clients) {
+    console.log(client.name);
+  }
 }
 
 class Client {
   constructor(
-    private readonly name: string,
-    private readonly data: any,
+    readonly name: string,
+    readonly data: any,
   ) {
-    console.log(name);
+  }
+
+  countryOfOrigin(): string {
+    return "";
+  }
+
+  experiencedHealthIssues(): string[] {
+    return [];
+  }
+
+  experiencedHarmTypes(): string[] {
+    return [];
+  }
+
+  experiencedHarmActors(): string[] {
+    return [];
   }
 }
