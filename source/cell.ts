@@ -12,7 +12,8 @@ import {
 export type CellParser = (raw: string) => Promise<boolean | number | string>;
 
 export async function CellBooleanParser(raw: string): Promise<boolean> {
-  return Boolean(raw);
+  const lowerRaw = raw.toLowerCase().trim();
+  return lowerRaw != "" && lowerRaw != "false" && lowerRaw != "0";
 }
 
 export async function CellNumberParser(raw: string): Promise<number> {
