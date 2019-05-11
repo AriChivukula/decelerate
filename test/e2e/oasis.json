@@ -6,22 +6,22 @@
         "age:3": "CH",
         "frequency:4": "1",
         "notes:5": "x",
-        "type:1": "HR",
+        "type:1": "HR"
       },
       "row:5": {
         "actor:2": "S",
         "age:3": "TN",
         "frequency:4": "MT",
         "notes:5": "y",
-        "type:1": "DI",
+        "type:1": "DI"
       },
       "row:6": {
         "actor:2": "PO",
         "age:3": "AC",
         "frequency:4": "PR",
         "notes:5": "z",
-        "type:1": "TSH",
-      },
+        "type:1": "TSH"
+      }
     },
     "Harm Details (2)": {
       "row:4": {
@@ -29,57 +29,57 @@
         "age:3": "CH",
         "frequency:4": "1",
         "notes:5": "a",
-        "type:1": "PH",
+        "type:1": "PH"
       },
       "row:5": {
         "actor:2": "C",
         "age:3": "TN",
         "frequency:4": "MT",
         "notes:5": "b",
-        "type:1": "SA",
+        "type:1": "SA"
       },
       "row:6": {
         "actor:2": "W",
         "age:3": "AD",
         "frequency:4": "PR",
         "notes:5": "c",
-        "type:1": "RA",
-      },
+        "type:1": "RA"
+      }
     },
     "Other Questions": {
       "country_of_origin:5:9": "Space",
       "harm_in_us:2": {
-        "yes:14": true,
+        "yes:14": true
       },
       "isolation_in_us:2": {
-        "yes:10": true,
+        "yes:10": true
       },
       "mental_health:2": {
-        "yes:2": true,
+        "yes:2": true
       },
       "mental_health_diagnosis:3": {
         "anxiety:6": true,
         "depression:7": true,
         "other:8": true,
-        "ptsd:5": true,
+        "ptsd:5": true
       },
       "mental_health_diagnosis:4": {
         "anxiety:6": true,
         "depression:7": true,
         "other:8": true,
-        "ptsd:5": true,
+        "ptsd:5": true
       },
       "serious_harm:2": {
-        "yes:6": true,
+        "yes:6": true
       },
       "serious_harm_type:7": {
         "crime:7": true,
         "dv_or_pa:8": true,
         "economic:6": true,
         "medical:5": true,
-        "other:9": true,
-      },
-    },
+        "other:9": true
+      }
+    }
   },
   "sub/fake_client_b.xlsx": {
     "Harm Details": {
@@ -88,22 +88,22 @@
         "age:3": "CH",
         "frequency:4": "1",
         "notes:5": "a",
-        "type:1": "RA",
+        "type:1": "RA"
       },
       "row:5": {
         "actor:2": "W",
         "age:3": "TN",
         "frequency:4": "MT",
         "notes:5": "b",
-        "type:1": "SA",
+        "type:1": "SA"
       },
       "row:6": {
         "actor:2": "C",
         "age:3": "AD",
         "frequency:4": "PR",
         "notes:5": "c",
-        "type:1": "PH",
-      },
+        "type:1": "PH"
+      }
     },
     "Harm Details (2)": {
       "row:4": {
@@ -111,87 +111,87 @@
         "age:3": "CH",
         "frequency:4": "1",
         "notes:5": "x",
-        "type:1": "TSH",
+        "type:1": "TSH"
       },
       "row:5": {
         "actor:2": "PO",
         "age:3": "TN",
         "frequency:4": "MT",
         "notes:5": "y",
-        "type:1": "DI",
+        "type:1": "DI"
       },
       "row:6": {
         "actor:2": "S",
         "age:3": "AD",
         "frequency:4": "PR",
         "notes:5": "z",
-        "type:1": "HR",
-      },
+        "type:1": "HR"
+      }
     },
     "Other Questions": {
       "country_of_origin:5:9": "Space",
       "harm_in_us:2": {
-        "no:15": true,
+        "no:15": true
       },
       "isolation_in_us:2": {
-        "no:11": true,
+        "no:11": true
       },
       "mental_health:2": {
-        "no:3": true,
+        "no:3": true
       },
       "mental_health_diagnosis:4": {
         "anxiety:6": true,
         "depression:7": true,
         "other:8": true,
-        "ptsd:5": true,
+        "ptsd:5": true
       },
       "serious_harm:2": {
-        "no:7": true,
+        "no:7": true
       },
       "serious_harm_type:6": {
         "crime:7": true,
         "dv_or_pa:8": true,
         "economic:6": true,
         "medical:5": true,
-        "other:9": true,
+        "other:9": true
       },
       "serious_harm_type:7": {
         "crime:7": true,
         "dv_or_pa:8": true,
         "economic:6": true,
         "medical:5": true,
-        "other:9": true,
-      },
-    },
+        "other:9": true
+      }
+    }
   },
   "sub/fake_client_c.xlsx": {
     "Other Questions": {
       "country_of_origin:5:9": "Space",
       "harm_in_us:2": {
-        "n/a:16": true,
+        "n/a:16": true
       },
       "isolation_in_us:2": {
-        "n/a:12": true,
+        "n/a:12": true
       },
       "mental_health:2": {
-        "n/a:4": true,
+        "n/a:4": true
       },
       "mental_health_diagnosis:4": {
         "anxiety:6": true,
         "depression:7": true,
         "other:8": true,
-        "ptsd:5": true,
+        "ptsd:5": true
       },
       "serious_harm:2": {
-        "n/a:8": true,
+        "n/a:8": true
       },
       "serious_harm_type:7": {
         "crime:7": true,
         "dv_or_pa:8": true,
         "economic:6": true,
         "medical:5": true,
-        "other:9": true,
-      },
-    },
-  },
-},
+        "other:9": true
+      }
+    }
+  }
+}
