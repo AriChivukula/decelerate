@@ -50,21 +50,23 @@ class Client {
     if (country === null) {
       throw Error(this.name + " missing country");
     }
-    const countryMap: any = {
-      "Brazil": "BR",
-      "Colombia": "CO",
-      "Guatemala": "GT",
-      "Honduras": "HN",
-      "Kenya": "KE",
-      "Macedonia": "MK",
-      "Burma": "MM",
-      "Mexico": "MX",
-      "Meixco": "MX",
-      "El Salvador": "SV",
-      "Uganda": "UG",
-      "Venezuela": "VE",
-    };
-    return this.mapData(country, countryMap);
+    return this.mapData(
+      country,
+      {
+        "Brazil": "BR",
+        "Colombia": "CO",
+        "Guatemala": "GT",
+        "Honduras": "HN",
+        "Kenya": "KE",
+        "Macedonia": "MK",
+        "Burma": "MM",
+        "Mexico": "MX",
+        "Meixco": "MX",
+        "El Salvador": "SV",
+        "Uganda": "UG",
+        "Venezuela": "VE",
+      },
+    );
   }
 
   experiencedHealthIssues(): string[] {
@@ -89,7 +91,33 @@ class Client {
   }
 
   experiencedHarmTypes(): string[] {
-    return [];
+    const harmTypes: Set<string> = new Set([]);
+    for (const sheetName in this.data) {
+      if (!sheetName.includes("Harm Details")) {
+        continue;
+      }
+      for (const rowName in this.data[sheetName]) {
+        const localHarmTypes = this.mapData(
+          this.getSubData(sheetName, rowName, "type:1"),
+          {
+            "DI": ["DI"],
+            "HR": ["HR"],
+            "PH": ["PH"],
+            "PA": ["PH"],
+            "RA": ["RA"],
+            "SA/RA": ["SA", "RA"],
+            "SA": ["SA"],
+            "TSH/SA": ["TSH", "SA"],
+            "TA": ["SA"],
+            "TSH": ["TSH"],
+          },
+        );
+        for (const harmType of localHarmTypes) {
+          harmTypes.add(harmType);
+        }
+      }
+    }
+    return Array.from(harmTypes);
   }
 
   private getSubData(...idxs: string[]): any {
@@ -104,7 +132,7 @@ class Client {
     return data;
   }
 
-  private mapData(data: string, map: {[idx: string]: string}): any {
+  private mapData(data: string, map: {[idx: string]: any}): any {
     if (data in map) {
       return map[data];
     } else {
