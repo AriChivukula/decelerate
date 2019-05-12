@@ -2,19 +2,20 @@
 This library provides an extendable spreadsheet parser.
 ## Internal API
 Data accessors for directories of workbooks of sheets of rows/columns of cells.
+### Structural
+```
+```
 ### Directory
 ```
 interface IDirectory {
   bindToSubDirectory(name: string | RegExp, parser: DirectoryParser): this;
   bindToWorkbook(name: string | RegExp, parser: WorkbookParser): this;
-  collapse(separator: string): this;
 }
 ```
 ### Workbook
 ```
 interface IWorkbook {
   bindToSheet(name: string | RegExp, parser: SheetParser): this;
-  filterEmpty();
 }
 ```
 ### Sheet
@@ -25,7 +26,6 @@ interface ISheet {
   bindToRow(name: string, index: number, parser: RowParser): this;
   bindToRowRange(name: string, start: number, length: number, parser: RowParser): this;
   bindToCell(name: string, row: number, column: number, parser: CellParser): this;
-  filterEmpty();
 }
 ```
 ### Column/Row
@@ -33,12 +33,10 @@ interface ISheet {
 interface IColumn {
   bindToCell(name: string, index: number, parser: CellParser): this;
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
-  filterEmpty();
 }
 interface IRow {
   bindToCell(name: string, index: number, parser: CellParser): this;
   bindToCellRange(name: string, start: number, length: number, parser: CellParser): this;
-  filterEmpty();
 }
 ```
 ## External API
