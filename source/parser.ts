@@ -3,6 +3,23 @@ import {
   promises,
 } from "fs";
 
+interface Client {
+  client_name: string;
+  country_of_origin: string;
+  has_ptsd: boolean;
+  has_depression: boolean;
+  has_anxiety: boolean;
+  has_other: boolean;
+  was_raped: boolean;
+  was_raped_as_a_child: boolean;
+  was_sexually_abused: boolean;
+  was_sexually_abused_as_a_child: boolean;
+  was_physically_harmed: boolean;
+  was_physically_harmed_as_a_child: boolean;
+  was_harmed_by_state_actor: boolean;
+  was_harmed_by_police: boolean;
+}
+
 yargs
   .usage(
     "$0",
@@ -12,34 +29,6 @@ yargs
   )
   .help()
   .argv;
-
-/*
-^ broken down by country
->> country_of_origin: string
-
-% of clients who have been diagnosed with ____ (PTSD, Depression, Anxiety, Other)
->> has_ptsd: boolean
->> has_depression: boolean
->> has_anxiety: boolean
->> has_other: boolean
-
-% of clients sexually abused (include SA and rape)
-% of clients raped
-% of clients physically harmed
->> was_raped: boolean
->> was_sexually_abused: boolean
->> was_physically_harmed: boolean
-
-^ all of the above + as a child specifically, and broken down by country of origin
->> was_raped_as_a_child: boolean
->> was_sexually_abused_as_a_child: boolean
->> was_physically_harmed_as_a_child: boolean
-
-% of clients harmed by a non-police state actor
-% of clients harmed by police
->> was_harmed_by_state_actor: boolean
->> was_harmed_by_police: boolean
-*/
 
 export function argParse(y: yargs.Argv<any>): yargs.Argv<any> {
   return y
@@ -57,44 +46,81 @@ export async function entryPoint(argv: yargs.Arguments<any>): Promise<void> {
   const json: any = JSON.parse(data);
   const clients: Client[] = [];
   for (const clientName in json) {
-    clients.push(new Client(clientName, json[clientName]));
+    clients.push(makeClient(clientName, json[clientName]));
   }
+  let didPrintFirst = false;
   for (const client of clients) {
-    console.log(client.name + "," + client.countryOfOrigin() + "," + client.experiencedHealthIssues().join("/") + "," + client.experiencedHarmTypes().join("/"));
+    if (!didPrintFirst) {
+      console.log(Object.keys(client).join(","));
+      didPrintFirst = true;
+    }
+    console.log(Object.values(client).join(","));
   }
 }
 
-class Client {
-  constructor(
-    readonly name: string,
-    readonly data: any,
-  ) {
-  }
+function makeClient(client_name: string, data: any): Client {
+  return {
+    client_name,
+    country_of_origin: getCountryOfOrigin(data),
+    has_ptsd: false, // TODO
+    has_depression: false, // TODO
+    has_anxiety: false, // TODO
+    has_other: false, // TODO
+    was_raped: false, // TODO
+    was_raped_as_a_child: false, // TODO
+    was_sexually_abused: false, // TODO
+    was_sexually_abused_as_a_child: false, // TODO
+    was_physically_harmed: false, // TODO
+    was_physically_harmed_as_a_child: false, // TODO
+    was_harmed_by_state_actor: false, // TODO
+    was_harmed_by_police: false, // TODO
+  };
+}
 
-  countryOfOrigin(): string {
-    const country = this.getSubData("Other Questions", "country_of_origin:5:9");
-    if (country === null) {
-      throw Error(this.name + " missing country");
+function getCountryOfOrigin(data: any) {
+  const country = getSubData(data, "Other Questions", "country_of_origin:5:9");
+  if (country === null) {
+    throw Error("missing country");
+  }
+  return mapDatum(
+    country,
+    {
+      "Brazil": "BR",
+      "Colombia": "CO",
+      "Guatemala": "GT",
+      "Honduras": "HN",
+      "Kenya": "KE",
+      "Macedonia": "MK",
+      "Burma": "MM",
+      "Mexico": "MX",
+      "Meixco": "MX",
+      "El Salvador": "SV",
+      "Uganda": "UG",
+      "Venezuela": "VE",
+    },
+  );
+}
+
+function getSubData(data: any, ...idxs: string[]): any {
+  for (const idx of idxs) {
+    if (idx in data) {
+      data = data[idx];
+    } else {
+      return null;
     }
-    return this.mapData(
-      country,
-      {
-        "Brazil": "BR",
-        "Colombia": "CO",
-        "Guatemala": "GT",
-        "Honduras": "HN",
-        "Kenya": "KE",
-        "Macedonia": "MK",
-        "Burma": "MM",
-        "Mexico": "MX",
-        "Meixco": "MX",
-        "El Salvador": "SV",
-        "Uganda": "UG",
-        "Venezuela": "VE",
-      },
-    );
   }
+  return data;
+}
 
+function mapDatum<T>(datum: string, map: {[idx: string]: T}): T {
+  if (datum in map) {
+    return map[datum];
+  } else {
+    throw Error(datum + " not found");
+  }
+}
+
+/*
   experiencedHealthIssues(): string[] {
     const healthIssues: string[] = [];
     if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "anxiety:6") ||
@@ -145,24 +171,4 @@ class Client {
     }
     return Array.from(harmTypes);
   }
-
-  private getSubData(...idxs: string[]): any {
-    let data: any = this.data;
-    for (const idx of idxs) {
-      if (idx in data) {
-        data = data[idx];
-      } else {
-        return null;
-      }
-    }
-    return data;
-  }
-
-  private mapData(data: string, map: {[idx: string]: any}): any {
-    if (data in map) {
-      return map[data];
-    } else {
-      throw Error(data + " not found");
-    }
-  }
-}
+*/
