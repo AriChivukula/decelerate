@@ -13,6 +13,34 @@ yargs
   .help()
   .argv;
 
+/*
+^ broken down by country
+>> country_of_origin: string
+
+% of clients who have been diagnosed with ____ (PTSD, Depression, Anxiety, Other)
+>> has_ptsd: boolean
+>> has_depression: boolean
+>> has_anxiety: boolean
+>> has_other: boolean
+
+% of clients sexually abused (include SA and rape)
+% of clients raped
+% of clients physically harmed
+>> was_raped: boolean
+>> was_sexually_abused: boolean
+>> was_physically_harmed: boolean
+
+^ all of the above + as a child specifically, and broken down by country of origin
+>> was_raped_as_a_child: boolean
+>> was_sexually_abused_as_a_child: boolean
+>> was_physically_harmed_as_a_child: boolean
+
+% of clients harmed by a non-police state actor
+% of clients harmed by police
+>> was_harmed_by_state_actor: boolean
+>> was_harmed_by_police: boolean
+*/
+
 export function argParse(y: yargs.Argv<any>): yargs.Argv<any> {
   return y
     .option(
