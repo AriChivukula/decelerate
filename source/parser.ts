@@ -62,10 +62,10 @@ function makeClient(client_name: string, data: any): Client {
   return {
     client_name,
     country_of_origin: getCountryOfOrigin(data),
-    has_ptsd: false, // TODO
-    has_depression: false, // TODO
-    has_anxiety: false, // TODO
-    has_other: false, // TODO
+    has_ptsd: checkForDiagnosis(data, "ptsd:5"),
+    has_depression: checkForDiagnosis(data, "anxiety:6"),
+    has_anxiety: checkForDiagnosis(data, "depression:7"),
+    has_other: checkForDiagnosis(data, "other:8"),
     was_raped: false, // TODO
     was_raped_as_a_child: false, // TODO
     was_sexually_abused: false, // TODO
@@ -77,7 +77,7 @@ function makeClient(client_name: string, data: any): Client {
   };
 }
 
-function getCountryOfOrigin(data: any) {
+function getCountryOfOrigin(data: any): string {
   const country = getSubData(data, "Other Questions", "country_of_origin:5:9");
   if (country === null) {
     throw Error("missing country");
@@ -101,6 +101,12 @@ function getCountryOfOrigin(data: any) {
   );
 }
 
+function checkForDiagnosis(data: any, condition: string): boolean {
+  return getSubData(data, "Other Questions", "mental_health_diagnosis:3", condition) ||
+         getSubData(data, "Other Questions", "mental_health_diagnosis:4", condition) ||
+         false;
+}
+
 function getSubData(data: any, ...idxs: string[]): any {
   for (const idx of idxs) {
     if (idx in data) {
@@ -121,27 +127,6 @@ function mapDatum<T>(datum: string, map: {[idx: string]: T}): T {
 }
 
 /*
-  experiencedHealthIssues(): string[] {
-    const healthIssues: string[] = [];
-    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "anxiety:6") ||
-        this.getSubData("Other Questions", "mental_health_diagnosis:4", "anxiety:6")) {
-      healthIssues.push("ANXIETY");
-    }
-    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "depression:7") ||
-        this.getSubData("Other Questions", "mental_health_diagnosis:4", "depression:7")) {
-      healthIssues.push("DEPRESSION");
-    }
-    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "other:8") ||
-        this.getSubData("Other Questions", "mental_health_diagnosis:4", "other:8")) {
-      healthIssues.push("OTHER");
-    }
-    if (this.getSubData("Other Questions", "mental_health_diagnosis:3", "ptsd:5") ||
-        this.getSubData("Other Questions", "mental_health_diagnosis:4", "ptsd:5")) {
-      healthIssues.push("PTSD");
-    }
-    return healthIssues;
-  }
-
   experiencedHarmTypes(): string[] {
     const harmTypes: Set<string> = new Set([]);
     for (const sheetName in this.data) {
