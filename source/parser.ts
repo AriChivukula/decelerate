@@ -72,8 +72,8 @@ function makeClient(client_name: string, data: any): Client {
     was_sexually_abused_as_a_child: false, // TODO
     was_physically_harmed: false, // TODO
     was_physically_harmed_as_a_child: false, // TODO
-    was_harmed_by_state_actor: false, // TODO
-    was_harmed_by_police: false, // TODO
+    was_harmed_by_state_actor: checkForHarmActor(data, "SA"),
+    was_harmed_by_police: checkForHarmActor(data, "PO"),
   };
 }
 
@@ -107,6 +107,21 @@ function checkForDiagnosis(data: any, condition: string): boolean {
          false;
 }
 
+function checkForHarmActor(data: any, actor: string): boolean {
+  for (const sheetName in data) {
+    if (!sheetName.includes("Harm Details")) {
+      continue;
+    }
+    for (const rowName in data[sheetName]) {
+      const actors: string = getSubData(data, sheetName, rowName, "actor:2");
+      if (actors.includes(actor)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function getSubData(data: any, ...idxs: string[]): any {
   for (const idx of idxs) {
     if (idx in data) {
@@ -125,35 +140,3 @@ function mapDatum<T>(datum: string, map: {[idx: string]: T}): T {
     throw Error(datum + " not found");
   }
 }
-
-/*
-  experiencedHarmTypes(): string[] {
-    const harmTypes: Set<string> = new Set([]);
-    for (const sheetName in this.data) {
-      if (!sheetName.includes("Harm Details")) {
-        continue;
-      }
-      for (const rowName in this.data[sheetName]) {
-        const localHarmTypes = this.mapData(
-          this.getSubData(sheetName, rowName, "type:1"),
-          {
-            "DI": ["DI"],
-            "HR": ["HR"],
-            "PH": ["PH"],
-            "PA": ["PH"],
-            "RA": ["RA"],
-            "SA/RA": ["SA", "RA"],
-            "SA": ["SA"],
-            "TSH/SA": ["TSH", "SA"],
-            "TA": ["SA"],
-            "TSH": ["TSH"],
-          },
-        );
-        for (const harmType of localHarmTypes) {
-          harmTypes.add(harmType);
-        }
-      }
-    }
-    return Array.from(harmTypes);
-  }
-*/
