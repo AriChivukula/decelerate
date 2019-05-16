@@ -66,11 +66,11 @@ function makeClient(client_name: string, data: any): Client {
     has_depression: checkForDiagnosis(data, "anxiety:6"),
     has_anxiety: checkForDiagnosis(data, "depression:7"),
     has_other: checkForDiagnosis(data, "other:8"),
-    was_raped: false, // TODO
+    was_raped: checkForHarmType(data, "RA"),
     was_raped_as_a_child: false, // TODO
-    was_sexually_abused: false, // TODO
+    was_sexually_abused: checkForHarmType(data, "SA"),
     was_sexually_abused_as_a_child: false, // TODO
-    was_physically_harmed: false, // TODO
+    was_physically_harmed: checkForHarmType(data, "PH"),
     was_physically_harmed_as_a_child: false, // TODO
     was_harmed_by_state_actor: checkForHarmActor(data, "SA"),
     was_harmed_by_police: checkForHarmActor(data, "PO"),
@@ -115,6 +115,21 @@ function checkForHarmActor(data: any, actor: string): boolean {
     for (const rowName in data[sheetName]) {
       const actors: string = getSubData(data, sheetName, rowName, "actor:2");
       if (actors.includes(actor)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function checkForHarmType(data: any, harm_type: string): boolean {
+  for (const sheetName in data) {
+    if (!sheetName.includes("Harm Details")) {
+      continue;
+    }
+    for (const rowName in data[sheetName]) {
+      const types: string = getSubData(data, sheetName, rowName, "type:1");
+      if (types.includes(harm_type)) {
         return true;
       }
     }
