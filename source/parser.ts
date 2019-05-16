@@ -1,5 +1,3 @@
-/* EXPERIMENTAL */
-
 import * as yargs from "yargs";
 import {
   promises,
