@@ -38,9 +38,6 @@ export class Column extends List implements IColumn {
       promiseArray.push((async () => {
         const cell = new Cell(this.ws, target.index, this.columnIdx, target.parser);
         const explained = await cell.explain();
-        if ((explained.value === false || explained.value === 0 || explained.value === "") && this.shouldFilterEmpty) {
-          return;
-        }
         finalTargets.inner[target.name + ":" + target.index] = explained;
       })());
     }
