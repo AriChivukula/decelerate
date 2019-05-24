@@ -10,7 +10,6 @@ jobs:
   - stage: Test
     if: type = push
     script:
-    - yarn outdated
     - yarn mocha
     - yarn tsc
     - bash test/e2e.sh
