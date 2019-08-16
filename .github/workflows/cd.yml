@@ -15,3 +15,7 @@ jobs:
         yarn tsc
         yarn npm-cli-login
         npm publish .
+      env:
+        NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
+        NPM_PASS: ${{ secrets.NPM_PASS }}
+        NPM_USER: ${{ secrets.NPM_USER }}
