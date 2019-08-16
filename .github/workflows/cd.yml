@@ -13,7 +13,10 @@ jobs:
         npm install --global --upgrade yarn
         yarn install
         yarn tsc
-        npx npm-cli-login
+        echo "registry=https://registry.npmjs.com/" >> .npmrc
+        echo "_auth=$NPM_PASS" >> .npmrc
+        echo "email=$NPM_EMAIL" >> .npmrc
+        echo "always-auth=true" >> .npmrc
         npm publish .
       env:
         NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
