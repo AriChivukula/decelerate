@@ -1,0 +1,14 @@
+ on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@master
+    - name: Setup and Test
+      run: |
+        npm install --global --upgrade yarn
+        yarn install
+        yarn mocha
+        yarn tsc
+        bash test/e2e.sh
