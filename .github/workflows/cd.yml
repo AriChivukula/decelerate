@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@master
+    - name: Setup and Publish
+      run: |
+        npm install --global --upgrade yarn
+        yarn install
+        yarn tsc
+        yarn npm-cli-login
+        npm publish .
+      env:
+        NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
+        NPM_PASS: ${{ secrets.NPM_PASS }}
+        NPM_USER: ${{ secrets.NPM_USER }}
