@@ -14,11 +14,10 @@ jobs:
         yarn install
         yarn tsc
         echo "registry=https://registry.npmjs.com/" >> .npmrc
-        echo "_auth=$NPM_PASS" >> .npmrc
+        echo "_auth=$NPM_TOKEN" >> .npmrc
         echo "email=$NPM_EMAIL" >> .npmrc
         echo "always-auth=true" >> .npmrc
         npm publish .
       env:
         NPM_EMAIL: ${{ secrets.NPM_EMAIL }}
-        NPM_PASS: ${{ secrets.NPM_PASS }}
-        NPM_USER: ${{ secrets.NPM_USER }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
