@@ -13,7 +13,7 @@
     "spec": ["test/*.ts"]
   },
   "dependencies": {
-    "@babel/polyfill": "7.4.4",
+    "@babel/polyfill": "7.6.0",
     "xlsx": "0.15.1",
     "yargs": "14.0.0"
   },
