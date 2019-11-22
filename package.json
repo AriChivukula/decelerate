@@ -21,7 +21,7 @@
     "@types/chai": "4.2.5",
     "@types/chai-as-promised": "7.1.2",
     "@types/mocha": "5.2.7",
-    "@types/node": "12.12.7",
+    "@types/node": "12.12.11",
     "@types/yargs": "13.0.3",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
