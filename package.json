@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.7.0",
-    "xlsx": "0.15.2",
+    "xlsx": "0.15.3",
     "yargs": "15.0.2"
   },
   "devDependencies": {
