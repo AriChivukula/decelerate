@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/chai": "4.2.9",
     "@types/chai-as-promised": "7.1.2",
-    "@types/mocha": "7.0.1",
+    "@types/mocha": "7.0.2",
     "@types/node": "13.7.6",
     "@types/yargs": "15.0.4",
     "chai": "4.2.0",
