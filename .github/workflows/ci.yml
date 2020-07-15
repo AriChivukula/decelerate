@@ -7,7 +7,7 @@ jobs:
     - uses: actions/setup-node@master
     - name: Setup and Test
       run: |
-        npm install --global --upgrade yarn
+        npm install --upgrade yarn
         yarn install
         yarn mocha
         yarn tsc

@@ -10,7 +10,7 @@ jobs:
     - uses: actions/setup-node@master
     - name: Setup and Publish
       run: |
-        npm install --global --upgrade yarn
+        npm install --upgrade yarn
         yarn install
         yarn tsc
         echo "registry=https://registry.npmjs.com/" >> .npmrc
