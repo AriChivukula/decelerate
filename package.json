@@ -27,7 +27,7 @@
     "chai-as-promised": "7.1.1",
     "mocha": "8.0.1",
     "ts-node": "8.10.2",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "include": [
     "source/*"
